@@ -16,7 +16,7 @@ SweetClaude is not just a coding tool. Even on an existing project, the strategi
 2. Open Claude Code in your project folder
 3. Run:
    ```
-   /sweetclaude:on
+   /sweetclaude
    ```
 
 > **Quick try without installing:** `claude --plugin-dir /path/to/sweetclaude` loads all skills for a single session.
@@ -56,7 +56,7 @@ Based on the scan and your answers, SweetClaude proposes where your project sits
 - Actively building → IMPLEMENT
 - Code exists but untested → IMPLEMENT (lock behavior with tests)
 - Feature-complete → VERIFY
-- Shipping → use `/sweetclaude:go` for each piece of work
+- Shipping → use `/sweetclaude` for each piece of work
 
 You confirm or adjust. SweetClaude does not assume it knows better than you.
 
@@ -197,6 +197,6 @@ You can change this mid-session.
 - **You do not have to use every skill.** If you only want TDD enforcement, just use the code skills. If you only want strategic help, just use the strategy skills. There is no required sequence.
 - **Strategic work on existing projects is valuable.** Many projects have implicit strategy that was never documented. Making it explicit helps you prioritize, communicate with stakeholders, and make better decisions.
 - **SweetClaude does not judge your code.** When adopting a project, it treats your codebase like an archaeologist treats a dig site — understanding before changing, respecting what is already there.
-- **Status fires automatically at session start.** For active projects, SweetClaude shows status without being asked. Run `/sweetclaude:go` to immediately pick up where you left off.
+- **Status fires automatically at session start.** For active projects, SweetClaude shows status without being asked. Run `/sweetclaude` to immediately pick up where you left off.
 - **Keep SweetClaude updated.** Run `/sweetclaude:update` periodically to get the latest skills, hooks, and fixes.
 - **Enable auto version bumping.** Create `.sweetclaude/version-bump.yaml` listing your version files. Every git commit automatically bumps the version based on conventional commit prefixes.

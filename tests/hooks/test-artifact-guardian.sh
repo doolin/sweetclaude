@@ -19,6 +19,34 @@ mkdir -p "$TEST_TMPDIR/.sweetclaude/state"
 cleanup() { cd "$REPO_ROOT"; rm -rf "$TEST_TMPDIR"; }
 trap cleanup EXIT
 
+SC_YAML="$TEST_TMPDIR/.sweetclaude/state/sweetclaude.yaml"
+
+write_phase() {
+  local phase="$1"
+  python3 -c "
+import yaml, sys
+d = {
+    'schema_version': 1,
+    'project': {'name': 'test', 'type': 'existing-code', 'version_stage': 'BETA', 'safety_snapshot': ''},
+    'session': {'deference_level': 'collaborative', 'default_action': None},
+    'work': {
+        'last_item_id': None,
+        'active': {
+            'id': 'WI-001', 'type': 'net-new-feature',
+            'workflow': [], 'phase': sys.argv[1],
+            'title': 'test', 'started': None, 'entry_category': None,
+        },
+    },
+    'features': {},
+    'framework': {'installed_version': '3.0.0', 'setup_complete': True,
+                  'hook_last_ran': None, 'consistency': {'last_checked': None, 'status': 'ok', 'drift': [], 'check_error': None},
+                  'update': {'available': None, 'last_checked': None, 'declined': False, 'check_error': None}},
+    'work_history': [], 'learnings': [],
+}
+yaml.dump(d, open(sys.argv[2], 'w'), default_flow_style=False)
+" "$phase" "$SC_YAML"
+}
+
 run_hook() {
   local cmd="$1"
   CLAUDE_TOOL_NAME="Bash" \
@@ -28,7 +56,7 @@ run_hook() {
 
 # Test 1: non-commit command → allow (exit 0, no output)
 touch "$TEST_TMPDIR/.sweetclaude/state/guardian-enabled"
-echo "phase: implement" > "$TEST_TMPDIR/.sweetclaude/state/phase.yaml"
+write_phase "IMPLEMENT"
 run_hook "npm test" 2>&1
 [ $? -eq 0 ] && pass "non-commit command → exit 0" || fail "non-commit command → exit 0" "exit $?"
 
@@ -40,6 +68,7 @@ echo "$OUT" | grep -qi "warning" && fail "guardian off → no warning expected" 
 
 # Test 3: guardian enabled, implement phase, no test files → warning
 touch "$TEST_TMPDIR/.sweetclaude/state/guardian-enabled"
+write_phase "IMPLEMENT"
 echo '{"test_files_written":[],"artifacts_created":[],"tdd_status":"pending"}' \
   > "$TEST_TMPDIR/.sweetclaude/state/session-guardian.json"
 OUT=$(run_hook "git commit -m 'wip'" 2>&1)
@@ -52,21 +81,21 @@ OUT=$(run_hook "git commit -m 'feat: done'" 2>&1)
 echo "$OUT" | grep -qi "warning\|WARNING" && fail "green tests → no warning expected" "$OUT" || pass "green tests → no warning"
 
 # Test 5: design phase, no artifacts → warning
-echo "phase: design" > "$TEST_TMPDIR/.sweetclaude/state/phase.yaml"
+write_phase "DESIGN"
 echo '{"test_files_written":[],"artifacts_created":[],"tdd_status":"pending"}' \
   > "$TEST_TMPDIR/.sweetclaude/state/session-guardian.json"
 OUT=$(run_hook "git commit -m 'wip'" 2>&1)
 echo "$OUT" | grep -qi "warning\|WARNING" && pass "design, no artifacts → warning" || fail "design, no artifacts → expected warning" "$OUT"
 
 # Test 6: define phase, no artifacts → warning
-echo "phase: define" > "$TEST_TMPDIR/.sweetclaude/state/phase.yaml"
+write_phase "DEFINE"
 echo '{"test_files_written":[],"artifacts_created":[],"tdd_status":"pending"}' \
   > "$TEST_TMPDIR/.sweetclaude/state/session-guardian.json"
 OUT=$(run_hook "git commit -m 'wip'" 2>&1)
 echo "$OUT" | grep -qi "warning\|WARNING" && pass "define, no artifacts → warning" || fail "define, no artifacts → expected warning" "$OUT"
 
 # Test 7: design phase, session file missing → warning
-echo "phase: design" > "$TEST_TMPDIR/.sweetclaude/state/phase.yaml"
+write_phase "DESIGN"
 rm -f "$TEST_TMPDIR/.sweetclaude/state/session-guardian.json"
 OUT=$(run_hook "git commit -m 'wip'" 2>&1)
 echo "$OUT" | grep -qi "warning\|WARNING" && pass "design, no session file → warning" || fail "design, no session file → expected warning" "$OUT"

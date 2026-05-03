@@ -14,7 +14,7 @@ You have an idea. Maybe it is well-formed, maybe it is a napkin sketch. SweetCla
 2. Create an empty folder for your project and open Claude Code in it
 3. Run:
    ```
-   /sweetclaude:on
+   /sweetclaude
    ```
 
 That is it. SweetClaude takes over from here and walks you through each step.
@@ -106,7 +106,7 @@ These are not part of the automatic flow. They are available anytime.
 
 ## Tips
 
-- **You can stop and resume anytime.** SweetClaude saves your progress in `.sweetclaude/`. Run `/sweetclaude:go` to pick up exactly where you left off — it reads your phase state and acts.
+- **You can stop and resume anytime.** SweetClaude saves your progress in `.sweetclaude/`. Run `/sweetclaude` to pick up exactly where you left off — it reads your phase state and acts.
 - **You can skip ahead.** The pipeline is a guide, not a cage. If you want to jump straight to architecture, do it.
 - **You can go back.** Revisiting earlier phases is normal. New information during design might change your pain thesis. That is how good work happens.
 - **You control the pace.** SweetClaude never pushes you to the next step. It waits until you say you are ready.

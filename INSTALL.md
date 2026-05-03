@@ -105,4 +105,4 @@ To suspend SweetClaude for one project without uninstalling globally:
 touch .sweetclaude/disabled
 ```
 
-Run `/sweetclaude:on` to reactivate.
+Run `/sweetclaude` to reactivate.

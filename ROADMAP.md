@@ -9,7 +9,7 @@ SweetClaude is in active development. This roadmap reflects current direction, n
 Work that is actively in progress or nearly complete.
 
 - **OSS launch readiness** — Community surface, documentation gaps, README restructuring, behavioral contract status tracking. Most of Phase 1 and Phase 2 complete. See [oss-launch-readiness plan](docs/plans/oss-launch-readiness-2026-05-01.md) for the full breakdown.
-- **Demo terminal recording** — A 90-second recording showing `/sweetclaude:on` through a first product brief skeleton. Pending.
+- **Demo terminal recording** — A 90-second recording showing `/sweetclaude` through a first product brief skeleton. Pending.
 - **Co-maintainer search** — Actively looking. See [issue #7](https://github.com/carson-sweet/sweetclaude/issues/7).
 
 ---
@@ -20,7 +20,7 @@ Committed work that hasn't started yet.
 
 - **Behavioral regression CI** — Automate the 15-contract behavioral test suite against a CI trigger tied to model version tags. Turns the manual process into published, model-version-tagged compliance reports. Significant engineering; the most differentiating capability on the roadmap.
 - **Deploy bucket** — SweetClaude covers everything up to SHIP but has no skills for deployment workflows. This is the largest functional gap. Likely covers: infrastructure-as-code review, environment promotion, rollback procedures, post-deploy smoke tests.
-- **Standalone `init` and `adopt` skills** — Currently `/sweetclaude:on` handles both new and existing projects. Separating them into `init` (cold start) and `adopt` (existing codebase) would make the entry paths clearer and easier to maintain independently.
+- **Standalone `init` and `adopt` skills** — The v3 `setup` skill handles new and existing projects via auto-detection. `init` and `adopt` still exist as explicit alternatives. More distinct entry path UX may still be worth investing in.
 
 ---
 

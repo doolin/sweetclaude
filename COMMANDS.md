@@ -2,7 +2,7 @@
 
 All SweetClaude slash commands organized by domain. The core and orchestration commands are in the [README](README.md). This page covers the domain-specific workflows.
 
-> Most of these are invoked automatically by `/sweetclaude:go` based on your project state. You rarely need to invoke them directly — but you can if you know what you want.
+> Most of these are invoked automatically by `/sweetclaude` based on your project state and what you describe. You rarely need to invoke them directly — but you can if you know what you want.
 
 ---
 
@@ -117,12 +117,12 @@ SweetClaude framework management. These commands configure, repair, and control 
 
 | Command | What it does |
 |---|---|
-| `/sweetclaude:on` | Activate SweetClaude on a project — new idea or existing codebase. Detects context automatically. |
+| `/sweetclaude` | The front door — activate, resume, or route to any skill. Detect project state automatically. |
 | `/sweetclaude:init` | Bootstrap infrastructure only (no product discovery). Use when you want the scaffolding without the onboarding ceremony. |
 | `/sweetclaude:adopt` | Onboard an existing or messy codebase. Full ASSESS → DIAGNOSE → PLAN → SCAFFOLD → ITERATE pipeline. |
-| `/sweetclaude:off` | Deactivate SweetClaude. Preserves all artifacts. Reactivate with `:on`. |
-| `/sweetclaude:update` | Fetch and install the latest SweetClaude version. Migrates state files and prompts to onboard new skills. |
-| `/sweetclaude:fix-sweetclaude` | Audit and repair SweetClaude configuration — phase state, CLAUDE.md accuracy, file locations, skills.yaml, registers, hooks, git tracking. |
+| `/sweetclaude:off` | Deactivate SweetClaude. Preserves all artifacts. Reactivate with `/sweetclaude`. |
+| `/sweetclaude:update` | Fetch and install the latest SweetClaude version. Migrates state files from v2.x format. |
+| `/sweetclaude:fix-sweetclaude` | Audit and repair SweetClaude configuration — `sweetclaude.yaml`, CLAUDE.md accuracy, file locations, registers, hooks, git tracking. |
 | `/sweetclaude:purge` | Delete all SweetClaude artifacts from the project. Requires typed confirmation. |
 | `/sweetclaude:behavioral-regression` | Validate that the current Claude model version honors the framework's 15 behavioral contracts. Run after model upgrades. |
 | `/sweetclaude:guardian-on` | Enable Protocol Guardian for the session — enforces skill invocations, TDD discipline, artifact saves. |

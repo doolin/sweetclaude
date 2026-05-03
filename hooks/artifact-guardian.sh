@@ -33,13 +33,21 @@ if [ ! -f "$GUARDIAN_FLAG" ]; then
   exit 0
 fi
 
-# No phase file — allow
+# Read phase from sweetclaude.yaml (v3) or phase.yaml (v2 fallback)
+SC_YAML="$STATE_DIR/sweetclaude.yaml"
 PHASE_FILE="$STATE_DIR/phase.yaml"
-if [ ! -f "$PHASE_FILE" ]; then
+
+if [ -f "$SC_YAML" ]; then
+  PHASE=$(python3 -c "
+import sys, yaml
+d = yaml.safe_load(open(sys.argv[1])) or {}
+print((d.get('work',{}).get('active',{}).get('phase') or '').lower())
+" "$SC_YAML" 2>/dev/null)
+elif [ -f "$PHASE_FILE" ]; then
+  PHASE=$(grep "^phase:" "$PHASE_FILE" 2>/dev/null | awk '{print $2}' | tr '[:upper:]' '[:lower:]')
+else
   exit 0
 fi
-
-PHASE=$(grep "^phase:" "$PHASE_FILE" 2>/dev/null | awk '{print $2}' | tr '[:upper:]' '[:lower:]')
 SESSION_FILE="$STATE_DIR/session-guardian.json"
 
 warn() {

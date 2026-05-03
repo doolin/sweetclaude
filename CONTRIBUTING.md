@@ -6,7 +6,7 @@ SweetClaude is AGPL-3.0. Contributions are welcome.
 
 ## Where to Start
 
-The lowest-friction contribution surface is the **product and design skills** (`skills/product-*/SKILL.md`, `skills/design-*/SKILL.md`). These skills have isolated state footprints — they read and write their own data files, don't modify shared state files like `phase.yaml`, and don't require knowledge of the hook system or subagent architecture to improve.
+The lowest-friction contribution surface is the **product and design skills** (`skills/product-*/SKILL.md`, `skills/design-*/SKILL.md`). These skills have isolated state footprints — they read and write their own data files, don't modify shared state like `sweetclaude.yaml`, and don't require knowledge of the hook system or subagent architecture to improve.
 
 **Good first contributions:**
 
@@ -59,7 +59,7 @@ The body is instruction text that Claude follows when the skill is invoked. No c
 
 **Test your skill before submitting.** Run it in a real Claude Code session. Check that the behavior matches what the SKILL.md describes. If it doesn't, the skill is wrong — update it.
 
-**Don't touch `phase.yaml` from product or design skills.** Those skills have isolated state footprints by design. Phase state is managed by the orchestration layer (`go`, `find-skill`, `master`).
+**Don't touch `sweetclaude.yaml` from product or design skills.** Those skills have isolated state footprints by design. Phase state is managed by the orchestration layer (the `/sweetclaude` front door and its internal sub-skills).
 
 **Don't add behavioral claims that aren't tested.** If you add a property like "always asks for a concrete example," verify it holds during testing. See `skills/behavioral-regression/SKILL.md` for the test protocol.
 
