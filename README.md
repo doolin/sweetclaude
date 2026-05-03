@@ -15,23 +15,24 @@
 
 ## What SweetClaude Is
 
-A Claude Code plugin covering the full product lifecycle across 77 skills. Works with any language or framework.
+A Claude Code plugin covering the full product lifecycle. One entry point — `/sweetclaude` — routes everything. Works with any language or framework.
 
 **Major features:**
 
 - **Discovery-first pipeline** — Product discovery derives compliance requirements (GDPR, HIPAA, PCI DSS) from your actual users and data. That context flows automatically into architecture, tech spec, data model, and final code review — not a checkbox at the end.
 - **Enforced TDD at four levels** — At the highest level, test writer and implementer are separate AI agents in isolated contexts. Test files are physically blocked from modification during implementation by PostToolUse hooks. Tests run after every source edit.
-- **Persistent phase state** — `.sweetclaude/` tracks phase, decisions, assumptions, and scope changes in git. Return after weeks and `/sweetclaude:go` re-orients without you re-explaining anything.
+- **Persistent phase state** — `.sweetclaude/` tracks phase, decisions, assumptions, and scope changes in git. Return after weeks and `/sweetclaude` re-orients without you re-explaining anything.
 - **Mockup pipeline** — Design UI components in an isolated Vite + React sandbox before touching production code. Graduate approved mockups with acceptance criteria extracted automatically.
 - **Corpus management** — Four-step pipeline (consolidate → triage → reconcile → promote) for messy document collections, with local RAG indexing for semantic search. No external services.
 - **Behavioral contracts** — 15 behavioral properties tested against each Claude model version. Hook-enforced properties are deterministic; instruction-guided properties are validated by a regression suite after every model upgrade.
 
 **Key architectural decisions:**
 
-- **Skills, not chat** — Every capability is a slash command with defined entry criteria, deference levels, and exit gates. Structured contracts replace freeform prompting.
+- **Single front door** — `/sweetclaude` is the only command you need. Describe what you want in plain English, and it routes to the right skill. Or just run it for a status and routing prompt.
+- **Skills under the hood** — Every capability is a skill with defined entry criteria, deference levels, and exit gates. Structured contracts replace freeform prompting. Skills are accessible directly if you know what you want.
 - **Hooks for enforcement** — TDD rules and session discipline are enforced by shell hooks (PreToolUse/PostToolUse), not instructions. Instructions can drift; hooks cannot.
 - **Agent isolation** — Test writer and implementer run in separate AI contexts with restricted tool sets (`tools:` frontmatter). The implementer never sees the spec — only failing tests.
-- **State as git history** — `.sweetclaude/state/` is committed, not gitignored. Phase progression, decisions, and assumptions are project history, not session memory.
+- **State as git history** — `.sweetclaude/sweetclaude.yaml` is committed, not gitignored. Phase progression, decisions, and assumptions are project history, not session memory.
 - **Deference levels** — Collaborative (stop after every sub-step), Guided (stop at major decisions), Autonomous (stop only at phase gates). Set in state, changeable mid-session.
 
 ## Quick Start
@@ -44,45 +45,49 @@ cd sweetclaude && ./install.sh
 Then go to your project and run:
 
 ```
-/sweetclaude:on
+/sweetclaude
 ```
 
-`:on` detects whether you're starting from a new idea or an existing codebase, walks through setup, and leaves you at `/sweetclaude:go` ready to work.
+Describe what you want in plain English — "I want to start building X", "pick up where I left off", "what should I work on next" — or just press enter for a status prompt. The orchestrator detects your project state and routes to the right skill.
 
 → [Full install options, updating, uninstalling](INSTALL.md)
 → [First session walkthrough](QUICKSTART.md)
-→ [All 77 skills by category](docs/user-guide/skills-reference.md)
+→ [All skills by category](docs/user-guide/skills-reference.md)
 
 ## All Commands
 
-### Core Commands
+### The Front Door
 | Command | What it does |
 |---|---|
-| `/sweetclaude:on` | Activate SweetClaude — new or existing project, detects context and walks through setup. Also reactivates a suspended project. |
-| `/sweetclaude:off` | Suspend SweetClaude — preserves all artifacts, reactivate with `:on` |
+| `/sweetclaude` | Everything. Describe what you want, or run with no arguments for a status prompt. Routes to setup, go, feature offers, or any skill based on project state and plain-English input. |
+| `/sweetclaude:help` | Conversational help — describe what you want to do, browse features, or ask questions |
+
+### Housekeeping
+| Command | What it does |
+|---|---|
+| `/sweetclaude:off` | Suspend SweetClaude — preserves all artifacts, reactivate with `/sweetclaude` |
 | `/sweetclaude:purge` | Delete all SweetClaude artifacts — recommends a backup branch, shows all files, requires "I understand" |
-| `/sweetclaude:go` | Pick up where you left off — reads state, checks phase exit criteria, routes to the right skill. No menu. |
-| `/sweetclaude:status` | Full project picture: phase, work item, SweetClaude version, RAG corpus state. Auto-fires at session start. |
 | `/sweetclaude:update` | Fetch latest SweetClaude from GitHub and sync to all projects |
-| `/sweetclaude:help` | Conversational help — describe what you want to do, learn how to work through prompting |
+| `/sweetclaude:fix-sweetclaude` | Audit and repair SweetClaude configuration |
 
 ### Advanced
 | Command | What it does |
 |---|---|
-| `/sweetclaude:fix-sweetclaude` | Audit and repair SweetClaude configuration |
 | `/sweetclaude:behavioral-regression` | Run the 15-contract behavioral test suite — validates that the current model version honors SweetClaude's behavioral contracts. Run after any Claude model upgrade. **15/15 passing on claude-sonnet-4-6 (2026-05-01).** [Contract status by model version →](docs/user-guide/behavioral-contracts.md) |
 | `/sweetclaude:guardian-on` | Enable Protocol Guardian — enforces skill invocations and protocol steps for the session |
 | `/sweetclaude:guardian-off` | Disable Protocol Guardian |
 | `/sweetclaude:session-export` | Export a Claude.ai session as a structured document |
 | `/sweetclaude:usage` | View, enable, or disable local usage tracking |
 
-→ [Full command reference — product, design, code, project management, testing, corpus, and autonomous pipeline skills](COMMANDS.md)
+Individual workflow skills (product, design, code, testing, corpus) are accessible directly if you know what you want, but `/sweetclaude` routes to all of them automatically.
+
+→ [All skills by category](docs/user-guide/skills-reference.md)
 
 ## How It Works
 
 SweetClaude is a Claude Code plugin. After install, all skills are available as slash commands in every Claude Code session. You can also load it for a single session with `--plugin-dir` without a global install.
 
-**State tracking.** SweetClaude creates a `.sweetclaude/` directory in your project to track progress, decisions, assumptions, and scope changes. Commit it to git — it is project history, not cache. When you return, `/sweetclaude:go` reads state and re-orients. You do not need to remember where you left off.
+**State tracking.** SweetClaude creates a `.sweetclaude/` directory in your project. The unified state file `.sweetclaude/sweetclaude.yaml` tracks phase, decisions, assumptions, scope changes, and feature activation. Commit it to git — it is project history, not cache. When you return, `/sweetclaude` reads state and re-orients without you re-explaining anything.
 
 **Enforcement.** TDD hooks physically block test file modification during implementation (hook-enforced, not advisory) and run tests automatically after every source edit. At higher TDD levels, test writer and implementer are separate AI agents in separate contexts — the implementer never sees the spec, only the failing tests.
 
