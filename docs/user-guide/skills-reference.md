@@ -3,9 +3,9 @@
 **Version:** 1.4
 **Date:** 2026-05-03
 
-All 81 skills, organized by domain. This page is reference — for narrative explanations of how skills fit together, read [Walkthroughs](walkthroughs.md) and [How It Works](how-it-works.md).
+All skills, organized by domain. This page is reference — for narrative explanations of how skills fit together, read [Walkthroughs](walkthroughs.md) and [How It Works](how-it-works.md).
 
-You rarely need to memorize commands. `/sweetclaude:go` and `/sweetclaude:find-skill` route automatically based on project state and what you describe. The list below is for when you know what you want.
+You rarely need to memorize commands. `/sweetclaude` routes automatically based on project state and what you describe in plain English. The list below is for when you know exactly what you want.
 
 Many skills accept `$ARGUMENTS` to skip menus: `/sweetclaude:code-testing security`, `/sweetclaude:product-milestones add`, `/sweetclaude:document-corpus triage`.
 
@@ -19,20 +19,20 @@ If you are wondering "which skills go together for X?", the [Walkthroughs](walkt
 
 ---
 
-## Orchestration (8 skills)
+## Orchestration
 
-Session navigation and automatic routing. Most of these fire without being invoked directly.
+Session navigation and automatic routing. Most of these fire without being invoked directly — `/sweetclaude` is the entry point for all of them.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| **Master** | _(auto)_ | Session entry point. Pre-flight check, phase state read, route to the right skill. Fires automatically at session start for configured projects. |
-| **Go** | `/sweetclaude:go` | Pick up where you left off. Reads state, checks phase exit criteria, routes to the right skill. No menu — it acts. |
-| **Find Skill** | `/sweetclaude:find-skill` | Describe what you want to do. The framework classifies, confirms, updates state, and starts the right skill. |
-| **Status** | `/sweetclaude:status` | Project status dashboard. Active work item, phase, recent commits, open issues, what's next. Shows warnings when a data-owning skill is marked `active` but its artifacts are missing on disk — directs to `/sweetclaude:fix-sweetclaude`. Fires automatically at session start for active projects. |
-| **Next Steps** | `/sweetclaude:next-steps` | Walk through the pipeline step by step. Explains what the current phase requires and what comes after. |
+| **SweetClaude** | `/sweetclaude` | The unified front door. Reads `sweetclaude.yaml`, detects project state, and routes to the right skill. Pass plain-English arguments or run with no arguments for a status+routing prompt. |
+| **Go** | _(internal)_ | Pick up where you left off. Reads state, checks phase exit criteria, routes to the right skill. Invoked automatically by `/sweetclaude`. |
+| **Find Skill** | _(internal)_ | Classifies plain-English input, confirms routing, updates state, and starts the right skill. Invoked automatically by `/sweetclaude` when arguments are present. |
+| **Status** | _(internal)_ | Project status dashboard. Active work item, phase, recent commits, framework health. Fires automatically at session start for active projects via the health hook. |
+| **Next Steps** | _(internal)_ | Walk through the pipeline step by step. Explains what the current phase requires and what comes after. |
 | **Retro** | `/sweetclaude:retro` | End-of-phase or end-of-project retrospective. Surfaces what went well, what didn't, and what to adjust. Writes learnings to the improvement register so future sessions start with them applied. |
 | **Session Export** | `/sweetclaude:session-export` | Export a Claude.ai conversation as a structured document for corpus ingestion. |
-| **Hibernate** | `/sweetclaude:hibernate` | Freeze a project. Saves full state, exports session context, disables auto-status. Resume later with `:on`. |
+| **Hibernate** | `/sweetclaude:hibernate` | Freeze a project. Saves full state, exports session context, disables auto-status. Resume later with `/sweetclaude`. |
 
 ---
 
@@ -42,12 +42,12 @@ Framework management — setup, teardown, updates, audits, and guards. Always av
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| **On** | `/sweetclaude:on` | Activate on any project — new idea or existing codebase. Detects context. Walks through setup. |
+| **Setup** | _(internal)_ | Activate on any project — new idea or existing codebase. Detects context, walks through setup, writes `sweetclaude.yaml`. Invoked automatically by `/sweetclaude` when no state file exists. |
 | **Init** | `/sweetclaude:init` | Bootstrap SweetClaude infrastructure only (no product discovery). Detects project type, creates `.sweetclaude/`, generates CLAUDE.md stub. For existing codebases with real history, use `:adopt` instead. |
 | **Adopt** | `/sweetclaude:adopt` | Onboard an existing codebase with real history. ASSESS → DIAGNOSE → PLAN → SCAFFOLD → ITERATE. Never touches src/ or tests/ without consent. |
-| **Off** | `/sweetclaude:off` | Suspend SweetClaude for this project. Preserves all artifacts. Reactivate with `:on`. |
-| **Update** | `/sweetclaude:update` | Fetch the latest version from GitHub and sync to all installed locations. Shows what changed. Migrates `skills.yaml` from schema v1 to v2 and prompts to onboard skills that are still `uninitialized`. |
-| **Fix SweetClaude** | `/sweetclaude:fix-sweetclaude` | Audit and repair configuration. Checks CLAUDE.md accuracy, phase state, file locations, `skills.yaml` consistency, empty registers, hook registrations. Proposes fixes — does not change anything without asking. |
+| **Off** | `/sweetclaude:off` | Suspend SweetClaude for this project. Preserves all artifacts. Reactivate with `/sweetclaude`. |
+| **Update** | `/sweetclaude:update` | Fetch the latest version from GitHub and sync to all installed locations. Shows what changed. Migrates `phase.yaml`/`skills.yaml` from v2.x to `sweetclaude.yaml` format. |
+| **Fix SweetClaude** | `/sweetclaude:fix-sweetclaude` | Audit and repair configuration. Checks CLAUDE.md accuracy, phase state, file locations, `sweetclaude.yaml` consistency, empty registers, hook registrations. If `sweetclaude.yaml` is unparseable, offers repair options. Proposes fixes — does not change anything without asking. |
 | **Purge** | `/sweetclaude:purge` | Delete all SweetClaude artifacts. Recommends a backup branch first. Requires typed confirmation. |
 | **Behavioral Regression** | `/sweetclaude:behavioral-regression` | Run the 15-contract behavioral test suite against the current model version. Tests phase dwelling, propose-not-ask, TDD enforcement claims, deference levels, detour recovery, improvement register triggers, and more. Run after any Claude model upgrade to detect silent behavioral drift. |
 | **Guardian On** | `/sweetclaude:guardian-on` | Enable Protocol Guardian. Enforces skill invocations, TDD discipline, and artifact saves for the rest of the session. |
@@ -221,7 +221,7 @@ You rarely use one skill in isolation. The patterns below are the chains that sh
 
 **New project from idea to first feature:**
 ```
-/sweetclaude:on
+/sweetclaude   (routes to setup → product-discovery automatically)
 → product-discovery (L2 or L3)
 → product-brief
 → product-prd

@@ -33,7 +33,7 @@ If you are deciding whether SweetClaude is the right tool for what you are doing
 | [How It Works](how-it-works.md) | The mental model. Why two-dimensional state, why phase dwelling, why deference levels, what survives a crash. |
 | [Walkthroughs](walkthroughs.md) | Six concrete scenarios end-to-end. New product from a napkin sketch, hotfix, doc pile, course correction, existing repo, building one feature with full TDD. |
 | [Phases and Workflows](phases-and-workflows.md) | Reference for the 7 phases, 6 workflow shapes, 19 work types, hard and soft gates, progressive disclosure by version stage. |
-| [Skills Reference](skills-reference.md) | All 52 skills with invocation, purpose, and common combinations. |
+| [Skills Reference](skills-reference.md) | All skills with invocation, purpose, and common combinations. |
 | [TDD Levels](tdd.md) | The four enforcement levels and the design choice underneath them. Why hooks, not prompts. |
 | [State and Memory](state-and-memory.md) | What lives in `.sweetclaude/`, how it survives sessions, what to commit. |
 | [Corpus and RAG](corpus-system.md) | Document pipeline (consolidate → triage → reconcile → promote) and local semantic search. |
@@ -52,11 +52,10 @@ This is by design. SweetClaude is opinionated software with a workflow that came
 ## Quick Reference
 
 ```
-/sweetclaude:on          Activate on any project — new or existing
-/sweetclaude:go          Pick up where you left off
-/sweetclaude:find-skill  Describe what you want to do
-/sweetclaude:status      Where am I in the pipeline
-/sweetclaude:help        All commands organized by category
+/sweetclaude        Everything — describe what you want, or just run it
+/sweetclaude:help   All commands organized by category
 ```
 
-The other 47 skills are documented in the [Skills Reference](skills-reference.md). Most of them are invoked automatically by `/sweetclaude:go` based on your project state. You rarely need to memorize commands.
+`/sweetclaude` is the single entry point. It reads state, detects where you are (setup needed, work in flight, feature offer due), and routes to the right skill. You can also pass plain-English arguments: `/sweetclaude pick up where I left off`, `/sweetclaude I want to work on the auth flow`.
+
+All workflow skills are documented in the [Skills Reference](skills-reference.md). You rarely need to memorize commands — `/sweetclaude` routes to all of them automatically.

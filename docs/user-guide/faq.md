@@ -79,7 +79,7 @@ What it does not do:
 - Permissions or role-based access (everyone with repo access has equal SweetClaude access).
 - Integration with team ceremonies (standups, retros, sprint planning rituals).
 
-If your team uses SweetClaude, treat the state files as shared project context. Conflicts on `phase.yaml` get resolved like any merge conflict.
+If your team uses SweetClaude, treat the state files as shared project context. Conflicts on `sweetclaude.yaml` get resolved like any merge conflict.
 
 ---
 
@@ -105,7 +105,7 @@ Yes. The lever depends on what you want to disable.
 |---|---|
 | All of SweetClaude for one project | `touch .sweetclaude/disabled` |
 | TDD hooks globally | Edit `~/.claude/settings.json`, remove the hook entries (the installer wires them in; you can wire them out) |
-| Auto status at session start | Touch `.sweetclaude/disabled` then run `/sweetclaude:on` only when you want it |
+| Auto status at session start | Touch `.sweetclaude/disabled` then run `/sweetclaude` only when you want it |
 | Specific skills | Skills are individual `.md` files in `~/.claude/skills/sweetclaude/`. Delete the directory of any skill you do not want. The framework continues working. |
 | Protocol Guardian (when enabled) | `/sweetclaude:guardian-off` |
 
@@ -137,7 +137,7 @@ If you find yourself overriding the same gate repeatedly, that is a signal worth
 
 Everything in `.sweetclaude/`. Specifically:
 
-- `state/phase.yaml` — current phase, work item, deference level
+- `state/sweetclaude.yaml` — current phase, work item, deference level, feature state
 - `state/project.yaml` — project metadata
 - `state/decision-log.md` — every decision recorded
 - `state/assumption-register.md` — assumptions worth checking
@@ -147,7 +147,7 @@ Everything in `.sweetclaude/`. Specifically:
 
 Plus whatever skills wrote during the session — discovery output, persona files, briefs, PRDs, architecture docs, code commits.
 
-What does not survive: in-flight conversation context. If you were in the middle of a discovery interview when the session died, you will need to resume it. SweetClaude does not silently lose work, but it cannot read your mind about what was about to be said. Run `/sweetclaude:go` to re-orient.
+What does not survive: in-flight conversation context. If you were in the middle of a discovery interview when the session died, you will need to resume it. SweetClaude does not silently lose work, but it cannot read your mind about what was about to be said. Run `/sweetclaude` to re-orient.
 
 ---
 
@@ -191,7 +191,7 @@ The current backlog priorities are personas and synthetic research (a focus-grou
 
 The README has examples. The `/sweetclaude:help` command produces a live tour. The walkthroughs in this guide simulate end-to-end flows.
 
-For a real demonstration, the SweetClaude repo itself dogfoods SweetClaude — `.sweetclaude/state/phase.yaml`, `decision-log.md`, and the rest are visible in the repo. You can see how the framework manages its own development.
+For a real demonstration, the SweetClaude repo itself dogfoods SweetClaude — `.sweetclaude/state/sweetclaude.yaml`, `decision-log.md`, and the rest are visible in the repo. You can see how the framework manages its own development.
 
 ---
 

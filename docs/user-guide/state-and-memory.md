@@ -1,7 +1,7 @@
 # State and Memory
 
-**Version:** 1.1
-**Date:** 2026-05-01
+**Version:** 2.0
+**Date:** 2026-05-03
 
 SweetClaude persists project context across sessions in `.sweetclaude/`. Commit this directory to git. It is project-critical data, not cache. Decision history, assumptions, scope changes, and progress live here — and they need to travel with the repo.
 
@@ -14,9 +14,8 @@ This page is reference. For why state is structured the way it is, read [How It 
 ```
 .sweetclaude/
 ├── state/
-│   ├── phase.yaml              ← Active phase, work item, version stage, deference level
+│   ├── sweetclaude.yaml        ← Unified state: phase, work item, features, framework health
 │   ├── project.yaml            ← Language, framework, test runner, build commands
-│   ├── skills.yaml             ← Onboarding state for each data-owning skill
 │   ├── decision-log.md         ← Architecture and design decisions with rationale
 │   ├── assumption-register.md  ← Assumptions worth checking later
 │   ├── improvement-register.md ← Feedback and learnings from each phase
@@ -31,83 +30,75 @@ Skills create additional state files as they run — `state/discovery.yaml`, `st
 
 ---
 
-## phase.yaml
+## sweetclaude.yaml
 
-The central state file. Two orthogonal dimensions, both tracked here.
+The unified state file. Everything the framework needs to know about the project lives here — version stage, active work, feature activation, framework health.
 
 ```yaml
-schema_version: 2
-version_stage: BETA
-deference_level: collaborative
-project_type: existing-code
-safety_snapshot: pre-sweetclaude
-last_work_item_id: WI-013
+schema_version: 1
+project:
+  name: my-project
+  type: existing-code
+  version_stage: BETA
+  safety_snapshot: pre-sweetclaude
 
-active_work_item:
-  id: WI-014
-  type: net-new-feature
-  workflow: [DISCOVER, DEFINE, DESIGN, PLAN, IMPLEMENT, VERIFY, SHIP]
-  phase: IMPLEMENT
-  title: "OAuth login flow"
-  started: 2026-04-29
-  entry_category: mid-project-planned
+session:
+  deference_level: collaborative
+  default_action: null
+
+work:
+  last_item_id: WI-013
+  active:
+    id: WI-014
+    type: net-new-feature
+    workflow: [DISCOVER, DEFINE, DESIGN, PLAN, IMPLEMENT, VERIFY, SHIP]
+    phase: IMPLEMENT
+    title: "OAuth login flow"
+    started: 2026-04-29T14:00:00+00:00
+    entry_category: mid-project-planned
+
+features:
+  product_milestones:
+    status: active
+    offered_at: 2026-04-15T10:00:00+00:00
+    decided_at: 2026-04-15T10:05:00+00:00
+    defer_until: null
+  product_backlog:
+    status: not_offered
+    offered_at: null
+    decided_at: null
+    defer_until: null
+  # ... other features
+
+framework:
+  installed_version: 3.0.0
+  setup_complete: true
+  hook_last_ran: 2026-05-03T14:00:00+00:00
+  consistency:
+    last_checked: 2026-05-03T14:00:00+00:00
+    status: ok
+    drift: []
+    check_error: null
+  update:
+    available: null
+    last_checked: 2026-05-03T14:00:00+00:00
+    declined: false
+    check_error: null
 ```
 
 | Field | What it is |
 |---|---|
-| `version_stage` | Where the major version is in its release lifecycle. Slow-moving. PROTOTYPE → ALPHA → BETA → GA → SCALED → MAINTAINED. Controls progressive disclosure. You declare; the system never advances. |
-| `deference_level` | `collaborative`, `guided`, or `autonomous`. Changeable mid-session. |
-| `project_type` | `cold-start` or `existing-code`. Set at activation. |
-| `safety_snapshot` | The git branch created during onboarding (`pre-sweetclaude`). Your insurance. |
-| `last_work_item_id` | Monotonic counter. Persists across work item completions so IDs do not repeat. |
-| `active_work_item` | The work in flight right now. Fast-moving. Type, workflow, phase, title, start date, entry category. |
+| `project.version_stage` | Where the major version is in its release lifecycle. Slow-moving. PROTOTYPE → ALPHA → BETA → GA → SCALED → MAINTAINED. Controls progressive disclosure. You declare; the system never advances. |
+| `session.deference_level` | `collaborative`, `guided`, or `autonomous`. Changeable mid-session. |
+| `project.type` | `cold-start` or `existing-code`. Set at activation. |
+| `project.safety_snapshot` | The git branch created during onboarding (`pre-sweetclaude`). Your insurance. |
+| `work.last_item_id` | Monotonic counter. Persists across work item completions so IDs do not repeat. |
+| `work.active` | The work in flight right now. Fast-moving. Type, workflow, phase, title, start date, entry category. |
+| `features.*` | Per-feature activation state. `not_offered` → offered → `active`, `declined`, or `deferred`. Managed by the `/sweetclaude` orchestrator. |
+| `framework.consistency` | Last drift-check result. Updated by the health hook. |
+| `framework.update` | Whether a newer version is available. Updated by the health hook. |
 
----
-
-## skills.yaml
-
-Tracks onboarding state for the six data-owning skills: `product-milestones`, `product-parking-lot`, `product-sprint-plan`, `product-user-personas`, `product-user-stories`, and `document-corpus`. Each skill reads this file at entry to know whether to proceed normally, offer a lightweight first-time setup, or resume from a paused state.
-
-```yaml
-schema_version: 2
-skills:
-  product-parking-lot:
-    status: active
-    last_changed_at: 2026-05-01
-    last_changed_by: first-invocation
-  product-milestones:
-    status: active
-    last_changed_at: 2026-05-01
-    last_changed_by: onboard
-  product-sprint-plan:
-    status: uninitialized
-    last_changed_at: ~
-    last_changed_by: ~
-  product-user-personas:
-    status: paused
-    last_changed_at: 2026-05-01
-    last_changed_by: pause
-  product-user-stories:
-    status: uninitialized
-    last_changed_at: ~
-    last_changed_by: ~
-  document-corpus:
-    status: uninitialized
-    last_changed_at: ~
-    last_changed_by: ~
-```
-
-| Status | Meaning |
-|---|---|
-| `active` | Skill is in use; data artifacts exist; normal invocation proceeds immediately |
-| `paused` | Skill is off but data is intact; normal invocation asks "Resume?" first |
-| `uninitialized` | Skill has never been set up; first normal invocation runs a lightweight onboarding flow |
-
-**Pause vs. offboard:** Pausing a skill marks it inactive but leaves all data files on disk. Offboarding exports data and then deletes it — irreversible without the export. Pause is the safe default when you just want to stop using a skill temporarily.
-
-**Dependency enforcement:** Some skills require others to be `active` first. `product-sprint-plan` requires `product-parking-lot`. `product-user-stories` will warn (but not block) if `product-user-personas` is not active. These dependencies are declared in `config/skills-registry.yaml` at the framework level — skills read the registry at entry rather than hardcoding their own dependency logic.
-
-**Automatic migration:** Running `/sweetclaude:update` migrates a schema v1 `skills.yaml` (which used `enabled: true/false`) to v2 automatically. Running `/sweetclaude:fix-sweetclaude` can bootstrap a missing `skills.yaml` by inferring state from artifact files on disk.
+**Migration from v2.x:** If your project has `phase.yaml` and `skills.yaml`, run `/sweetclaude` and the orchestrator will detect the old format and route to the migration flow automatically. The migration is non-destructive — originals are archived before any changes.
 
 ---
 
@@ -269,7 +260,7 @@ To disable for a project without uninstalling:
 touch .sweetclaude/disabled
 ```
 
-Running `/sweetclaude:on` removes the file and reactivates. The status skill fires automatically at session start only when `disabled` does not exist.
+Running `/sweetclaude` removes the file and reactivates. The session-start health check fires automatically only when `disabled` does not exist.
 
 To uninstall globally:
 
@@ -296,7 +287,7 @@ What does not survive:
 - Drafts that were in progress but not committed
 - Anything you typed but did not act on
 
-If a session dies mid-discovery interview, you do not lose the answers you already gave (those are in state files). You lose the next question. Run `/sweetclaude:go` and SweetClaude re-orients from state and resumes from the next step.
+If a session dies mid-discovery interview, you do not lose the answers you already gave (those are in state files). You lose the next question. Run `/sweetclaude` and it re-orients from state and resumes from the next step.
 
 ---
 

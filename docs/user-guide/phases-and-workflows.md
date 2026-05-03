@@ -158,7 +158,7 @@ The `reactive` category is what makes hotfixes work. You cannot stop in the midd
 
 ## Progressive Disclosure by Version Stage
 
-The work types you see depend on the `version_stage` in `.sweetclaude/state/phase.yaml`. This prevents early-stage projects from being overwhelmed by work types they do not need yet.
+The work types you see depend on the `version_stage` in `sweetclaude.yaml`. This prevents early-stage projects from being overwhelmed by work types they do not need yet.
 
 | Stage | Visible buckets | Notes |
 |---|---|---|
@@ -187,27 +187,28 @@ You can run the gate explicitly with `/sweetclaude:design-solutioning-gate`, or 
 
 ## Where Phase State Lives
 
-`.sweetclaude/state/phase.yaml` is the source of truth:
+`sweetclaude.yaml` is the source of truth. The relevant fields:
 
 ```yaml
-schema_version: 2
-version_stage: BETA
-deference_level: collaborative
-project_type: existing-code
-safety_snapshot: pre-sweetclaude
-last_work_item_id: WI-013
+project:
+  version_stage: BETA
 
-active_work_item:
-  id: WI-014
-  type: net-new-feature
-  workflow: [DISCOVER, DEFINE, DESIGN, PLAN, IMPLEMENT, VERIFY, SHIP]
-  phase: IMPLEMENT
-  title: "OAuth login flow"
-  started: 2026-04-29
-  entry_category: mid-project-planned
+session:
+  deference_level: collaborative
+
+work:
+  last_item_id: WI-013
+  active:
+    id: WI-014
+    type: net-new-feature
+    workflow: [DISCOVER, DEFINE, DESIGN, PLAN, IMPLEMENT, VERIFY, SHIP]
+    phase: IMPLEMENT
+    title: "OAuth login flow"
+    started: 2026-04-29T14:00:00+00:00
+    entry_category: mid-project-planned
 ```
 
-`last_work_item_id` is the monotonic counter — it persists across work item completions so IDs do not repeat.
+`work.last_item_id` is the monotonic counter — it persists across work item completions so IDs do not repeat.
 
 ---
 

@@ -70,10 +70,10 @@ claude
 Then in Claude Code:
 
 ```
-/sweetclaude:on
+/sweetclaude
 ```
 
-SweetClaude detects the empty folder, asks if you want a git repo (say yes), creates `.sweetclaude/`, `strategy/`, and a `CLAUDE.md`. Then it asks how collaborative you want to be this session — pick **Collaborative** for your first run so you can see every step.
+SweetClaude detects the empty folder and routes to setup. It asks if you want a git repo (say yes), creates `.sweetclaude/`, `strategy/`, and a `CLAUDE.md`. Then it asks how collaborative you want to be this session — pick **Collaborative** for your first run so you can see every step.
 
 Then it asks you to describe the idea.
 
@@ -95,10 +95,10 @@ claude
 ```
 
 ```
-/sweetclaude:on
+/sweetclaude
 ```
 
-SweetClaude does five things in order:
+SweetClaude detects the existing codebase and routes to setup. It does five things in order:
 
 1. **Safety snapshot.** Creates a `pre-sweetclaude` git branch from your current state. If you ever want to undo everything SweetClaude added to your repo, that branch is your insurance. SweetClaude will not proceed without this.
 2. **Project scan.** Reads the codebase (read-only). Detects languages, frameworks, test runners, doc files, open issues. Reports what it found.
@@ -117,12 +117,10 @@ The "Is there anything messy" question is intentional. It is the thing most onbo
 You set SweetClaude up yesterday. You are coming back today.
 
 ```
-/sweetclaude:go
+/sweetclaude
 ```
 
-That is it. SweetClaude reads `.sweetclaude/state/phase.yaml`, sees what work item is active, checks the phase exit criteria, and either advances or tells you what is missing. It does not show a menu. It just goes.
-
-If you have not used SweetClaude on this project yet, `/sweetclaude:go` falls through to `/sweetclaude:on`.
+That is it. SweetClaude reads `sweetclaude.yaml`, sees what work item is active, checks the phase exit criteria, and either advances or tells you what is missing. It does not show a menu. It just goes.
 
 ---
 
@@ -138,7 +136,7 @@ Every session, SweetClaude asks how collaborative to be. Three levels:
 
 You can change the level mid-session by saying "Switch to guided" or "go autonomous." Respect is immediate.
 
-The level is stored in `.sweetclaude/state/phase.yaml`. SweetClaude reads it next session and acts accordingly.
+The level is stored in `sweetclaude.yaml`. SweetClaude reads it next session and acts accordingly.
 
 ---
 
@@ -150,7 +148,7 @@ If you started a new project and ran through Discovery to Define:
 your-project/
 ├── .sweetclaude/
 │   ├── state/
-│   │   ├── phase.yaml              ← which phase you are in, what work item is active
+│   │   ├── sweetclaude.yaml        ← unified state: phase, work item, features, framework
 │   │   ├── project.yaml            ← language, framework, build commands
 │   │   ├── decision-log.md         ← any decisions you made with rationale
 │   │   ├── assumption-register.md  ← assumptions worth checking later
@@ -201,7 +199,7 @@ These cost nothing and surface capabilities that are not obvious from the comman
 
 **You want to undo everything SweetClaude added.** If you are on an existing repo, check out the `pre-sweetclaude` branch. If you are mid-session and want to reset state without losing the project, run `/sweetclaude:purge` (it asks for typed confirmation before deleting `.sweetclaude/`).
 
-**Status fired automatically and you did not want it.** Touch `.sweetclaude/disabled` in the project root. Status will not fire until you run `/sweetclaude:on` again.
+**Status fired automatically and you did not want it.** Touch `.sweetclaude/disabled` in the project root. The session-start check will not fire until you run `/sweetclaude` again.
 
 **Want to keep SweetClaude updated.** Run `/sweetclaude:update` from any project. Fetches the latest from GitHub, shows what changed, syncs everywhere.
 

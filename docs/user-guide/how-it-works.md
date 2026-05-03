@@ -25,20 +25,24 @@ Most workflow tools track one thing: what step are you on? SweetClaude tracks tw
 
 **`active_work_item`** is the *specific work* in flight right now. It moves fast. A bug fix work item lives for an hour or two. A net-new feature work item might span weeks. Each work item has a type (one of 19), a workflow (a sequence of phases), and a current phase.
 
-Both live in `.sweetclaude/state/phase.yaml`:
+Both live in `.sweetclaude/state/sweetclaude.yaml`:
 
 ```yaml
-version_stage: BETA
-deference_level: collaborative
+project:
+  version_stage: BETA
 
-active_work_item:
-  id: WI-014
-  type: net-new-feature
-  workflow: [DISCOVER, DEFINE, DESIGN, PLAN, IMPLEMENT, VERIFY, SHIP]
-  phase: IMPLEMENT
-  title: "OAuth login flow"
-  started: 2026-04-29
-  entry_category: mid-project-planned
+session:
+  deference_level: collaborative
+
+work:
+  active:
+    id: WI-014
+    type: net-new-feature
+    workflow: [DISCOVER, DEFINE, DESIGN, PLAN, IMPLEMENT, VERIFY, SHIP]
+    phase: IMPLEMENT
+    title: "OAuth login flow"
+    started: 2026-04-29T14:00:00+00:00
+    entry_category: mid-project-planned
 ```
 
 The two-dimension model matters because it lets the framework do **progressive disclosure**. A PROTOTYPE-stage project does not see compliance work types — those are noise at that stage. A MAINTAINED project gets feature work de-emphasized in favor of operations and security patches. The pipeline you see is appropriate to where the project actually is, not a feature dump.
@@ -122,7 +126,7 @@ The honest framing: **deference levels are about how much you trust the framewor
 
 Autonomous does not mean unsupervised. The framework still pauses at phase gates. It still respects hard gates. It still saves state. It just stops asking "okay to proceed?" between every micro-step.
 
-The level is changeable mid-session by saying "switch to guided" or "go autonomous." SweetClaude immediately respects the change and updates `.sweetclaude/state/phase.yaml`.
+The level is changeable mid-session by saying "switch to guided" or "go autonomous." SweetClaude immediately respects the change and updates `sweetclaude.yaml`.
 
 ---
 
@@ -132,7 +136,7 @@ Claude Code sessions die. Context windows fill. Networks drop. SweetClaude is de
 
 The structured state files in `.sweetclaude/state/` are the source of truth — not conversation history. Skills re-read state files at every step rather than relying on what was said earlier. Decisions go to `decision-log.md`. Assumptions go to `assumption-register.md`. Scope changes go to `scope-changes.md`. Improvement feedback goes to `improvement-register.md`.
 
-When you resume a session, `/sweetclaude:go` reads state and re-orients. You do not have to remember what you were doing.
+When you resume a session, `/sweetclaude` reads state and re-orients. You do not have to remember what you were doing.
 
 This is also why `.sweetclaude/` is committed to git. The state is project history, not scratch. If you switch machines or someone else picks up the work, the context travels with the repo.
 
@@ -142,7 +146,7 @@ This is also why `.sweetclaude/` is committed to git. The state is project histo
 
 ```
 ~/.claude/                          ← Global SweetClaude install
-├── skills/sweetclaude/             ← 52 skills
+├── skills/sweetclaude/             ← all skills
 ├── agents/sweetclaude/             ← 8 isolated subagents
 ├── hooks/sweetclaude/              ← TDD enforcement hooks
 ├── rules/sweetclaude/              ← Phase gates, TDD levels, interaction model
@@ -150,7 +154,7 @@ This is also why `.sweetclaude/` is committed to git. The state is project histo
 
 your-project/.sweetclaude/          ← Per-project state
 ├── state/
-│   ├── phase.yaml                  ← Two-dimension state
+│   ├── sweetclaude.yaml            ← Unified state
 │   ├── project.yaml                ← Language, framework, commands
 │   ├── decision-log.md
 │   ├── assumption-register.md

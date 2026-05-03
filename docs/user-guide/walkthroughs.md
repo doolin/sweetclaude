@@ -18,7 +18,7 @@ mkdir feedback-tool && cd feedback-tool && claude
 ```
 
 ```
-/sweetclaude:on
+/sweetclaude
 ```
 
 SweetClaude detects the empty folder. It asks if you want a git repo (yes), what deference level (collaborative for the first run), and then asks you to describe the idea.
@@ -85,7 +85,7 @@ claude
 ```
 
 ```
-/sweetclaude:on
+/sweetclaude
 ```
 
 The first thing SweetClaude does is create a `pre-sweetclaude` git branch from your current state. That branch is your insurance — if you ever want to undo every byte SweetClaude added to your repo, `git checkout pre-sweetclaude` gets you back. SweetClaude refuses to proceed without this branch.
