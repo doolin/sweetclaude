@@ -21,8 +21,10 @@ restore-config.sh
 # Explicit belt-and-braces: internal design docs, plans, backlog, etc.
 /docs/internal/
 
-# Scratch and session artifacts
+# Scratch, session artifacts, and personal setup docs
 /scratch/
+/audit/
+/playbooks/
 
 # Claude Code agent worktrees and local settings (machine-specific)
 /.claude/
