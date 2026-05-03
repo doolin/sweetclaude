@@ -73,10 +73,13 @@ cat requirements.txt 2>/dev/null | wc -l || true
 grep -c "^[a-zA-Z]" pyproject.toml 2>/dev/null || true
 
 echo "=== SECURITY SURFACE ==="
-grep -rn "SECRET\|API_KEY\|PASSWORD\|TOKEN\|PRIVATE_KEY" . --include="*.py" --include="*.ts" --include="*.js" --include="*.go" --include="*.rb" --include="*.java" --include="*.env" 2>/dev/null | grep -v node_modules | grep -v ".git" | grep -v "test\|spec\|mock\|example\|template\|sample" | grep -v "#\|//.*SECRET\|//.*TOKEN" | head -10
+# Count only — never output matched lines (matched lines may contain real secret values)
+grep -rn "SECRET\|API_KEY\|PASSWORD\|TOKEN\|PRIVATE_KEY" . --include="*.py" --include="*.ts" --include="*.js" --include="*.go" --include="*.rb" --include="*.java" 2>/dev/null | grep -v node_modules | grep -v ".git" | grep -v "test\|spec\|mock\|example\|template\|sample" | grep -v "#\|//.*SECRET\|//.*TOKEN" | wc -l
 ls .env .env.local .env.production 2>/dev/null
 cat .gitignore 2>/dev/null | grep -i "\.env\|secret\|key\|cred" | head -5
 ```
+
+**IMPORTANT:** The credential pattern count above is a number only. Never output the matched lines — they may contain real secret values. Report "N potential matches found in source files" and flag if > 0.
 
 Organize findings into five categories. Present factually — no recommendations yet:
 
@@ -84,7 +87,7 @@ Organize findings into five categories. Present factually — no recommendations
 **Documentation:** README present (y/n), docs/ contents, ADRs found, architecture docs
 **Project management:** git history (commits), open work tracked (y/n)
 **Dependencies:** runtime count, dev count
-**Security surface:** any pattern matches (flag as "needs review" — do not assert a vulnerability), .env files present (y/n), .env in .gitignore (y/n)
+**Security surface:** number of potential matches (never quote the lines), .env files present (y/n), .env in .gitignore (y/n)
 
 ---
 

@@ -21,6 +21,12 @@
 - Never force-push to main/master without explicit user approval.
 - Never run destructive commands (`rm -rf`, `git reset --hard`, `DROP TABLE`) without confirming intent.
 
+## Credential safety
+
+- If you encounter what looks like a real secret, API key, token, or credential anywhere — in a file, grep output, diff, or log — **stop immediately and tell the user it exists. Never reproduce the value in your response, never quote it, never echo it.** Flag the location only.
+- Never read the contents of `.env`, `.env.*`, `*.pem`, `*.p12`, `id_rsa`, `credentials`, `~/.aws/credentials`, or any file whose name suggests it holds secrets. If a task requires knowing what's in such a file, tell the user to check it themselves.
+- When running credential-detection greps, report counts only. The matched lines may contain real values.
+
 ## Git workflow
 
 - Conventional commit format, no emoji.

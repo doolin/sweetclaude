@@ -80,8 +80,9 @@ Work through each item explicitly. Record responses.
 2. **All tests passing** — last test run green? (check git history or ask)
 3. **No secrets in the diff** — scan the changes going out:
    ```bash
-   git diff HEAD~5..HEAD -- . 2>/dev/null | grep -iE "(SECRET|API_KEY|PASSWORD|TOKEN|PRIVATE_KEY|CREDENTIALS)" | grep -v "test\|mock\|example\|template" | head -10 || echo "NO_SECRETS_FOUND"
+   git diff HEAD~5..HEAD -- . 2>/dev/null | grep -icE "(SECRET|API_KEY|PASSWORD|TOKEN|PRIVATE_KEY|CREDENTIALS)" || echo "0"
    ```
+   Report the count only. If count > 0, stop and tell the user "N potential secret patterns found in the diff — review before shipping." Never output the matched lines.
 4. **Changelog / release notes** — exists and current? (`ls CHANGELOG.md CHANGELOG.rst CHANGELOG.txt docs/changelog.md 2>/dev/null`)
 5. **Rollback plan confirmed** — what is the rollback if this goes wrong? Get a one-line answer.
 6. **Break-glass notes exist** (GA+ only) — runbook present? (from Step 2 scan)
