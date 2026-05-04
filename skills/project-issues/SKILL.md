@@ -23,6 +23,26 @@ Manage project issues. Arguments: `$ARGUMENTS`
 
 ---
 
+## MODE CHECK
+
+Read `mode` from pre-loaded session state.
+
+### Level Up (shape_up) — pitch source enforcement
+
+If `mode` is `shape_up` AND operation is `create` (not `pitch`, `list`, or `update`):
+
+Ask: "Is this issue derived from an approved pitch?"
+
+- **Yes** → Ask for pitch ID (e.g., `PITCH-001`). Link it by including `pitch_id: {PITCH-XXX}` in the artifact. Proceed with create.
+- **No / I don't have a pitch** → Output and stop:
+  > "In Level Up mode, all issues must come from an approved pitch. The betting table has already decided what's worth building — issues outside approved pitches expand scope without an appetite trade-off.
+  >
+  > Write a pitch first: `/sweetclaude:project-issues pitch`"
+
+All other modes: proceed with standard create flow. No pitch source required.
+
+---
+
 ## Routing
 
 Parse the first word of `$ARGUMENTS` to determine the operation.
