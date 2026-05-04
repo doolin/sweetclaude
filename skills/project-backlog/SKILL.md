@@ -4,6 +4,20 @@ name: sweetclaude:project-backlog
 description: "View and manage the unscheduled issue backlog. Promotes issues into sprints. Surfaces triage needs."
 ---
 
+## MODE CHECK
+
+Read `mode` from pre-loaded session state.
+
+If `mode` is `shape_up`, output and stop:
+
+> "This skill is not active in **Level Up** mode.
+>
+> Level Up has no backlog by design. New work enters through pitches: describe the problem and proposed solution, get it approved at the betting table, then create issues from the approved pitch.
+>
+> Write a pitch: `/sweetclaude:project-issues pitch`"
+
+All other modes: proceed normally.
+
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
