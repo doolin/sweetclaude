@@ -1,5 +1,6 @@
 ---
 spdx-license: AGPL-3.0-or-later
+name: sweetclaude
 user-invocable: true
 description: "Your SweetClaude entry point. Describe what you want to do in plain English, or press enter to see where things stand."
 ---
