@@ -243,6 +243,6 @@ CTX="SweetClaude is active. Pre-loaded session state:"$'\n\n'"${STATE_CONTENT}"
 _BR=$'\033[1;31m'
 _BB=$'\033[1;34m'
 _RST=$'\033[0m'
-_ACTIVE_MSG="${_BR}SweetClaude is active. Type ${_BB}/sweetclaude${_BR} to begin.${_RST}"
+_ACTIVE_MSG="${_BR}SweetClaude is active. Type ${_BB}/sweetclaude:go${_BR} to begin.${_RST}"
 
 emit_ctx "$_ACTIVE_MSG" "${CTX}"$'\n\n'"Invoke sweetclaude:bootstrap now before responding to the user."

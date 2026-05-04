@@ -9,15 +9,15 @@ You have SweetClaude installed. Here is how to use it.
 **Everything starts here:**
 
 ```
-/sweetclaude
+/sweetclaude:go
 ```
 
-Detects where you are and routes automatically. Empty folder → setup. Active project → picks up where you left off. No project state yet → walks through setup, product discovery, and hands off to the pipeline. Pass plain-English arguments to skip the prompt: `/sweetclaude I need to fix a bug in auth`.
+Detects where you are and routes automatically. Empty folder → setup. Active project → picks up where you left off. No project state yet → walks through setup, product discovery, and hands off to the pipeline. Pass plain-English arguments to skip the prompt: `/sweetclaude:go I need to fix a bug in auth`.
 
 **Suspend or remove SweetClaude:**
 
 ```
-/sweetclaude:off    # suspend — preserves all artifacts, reactivate with /sweetclaude
+/sweetclaude:off    # suspend — preserves all artifacts, reactivate with /sweetclaude:go
 /sweetclaude:purge  # delete all artifacts — warns and requires typed confirmation first
 ```
 
@@ -35,7 +35,7 @@ Conversational assistant. Describe what you want to do and it shows you how.
 
 ### "I have an idea for a product but have not started building anything"
 
-Run `/sweetclaude` in an empty folder. SweetClaude will:
+Run `/sweetclaude:go` in an empty folder. SweetClaude will:
 1. Set up the project (git, directory structure, CLAUDE.md)
 2. Run a short mode-assessment interview (5 questions) to configure enforcement — Flow, Kanban, Level Up, or Agile
 3. Ask what you want to build
@@ -44,7 +44,7 @@ Run `/sweetclaude` in an empty folder. SweetClaude will:
 
 ### "I have a codebase and want to start using SweetClaude"
 
-Run `/sweetclaude` in your project folder. SweetClaude will:
+Run `/sweetclaude:go` in your project folder. SweetClaude will:
 1. Detect the existing project
 2. Create a safety snapshot branch before touching anything
 3. Scan your code, tests, docs, and issues
@@ -55,11 +55,11 @@ Run `/sweetclaude` in your project folder. SweetClaude will:
 
 ### "I need to build a specific feature"
 
-Run `/sweetclaude` and describe what you need. SweetClaude classifies the work and routes to the right starting point.
+Run `/sweetclaude:go` and describe what you need. SweetClaude classifies the work and routes to the right starting point.
 
 ### "I have a GitHub issue to implement"
 
-Run `/sweetclaude` and mention the issue number or paste the title. SweetClaude reads the issue, proposes a plan, implements with TDD, verifies, updates docs, and opens a PR.
+Run `/sweetclaude:go` and mention the issue number or paste the title. SweetClaude reads the issue, proposes a plan, implements with TDD, verifies, updates docs, and opens a PR.
 
 ### "Production is broken"
 

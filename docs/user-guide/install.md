@@ -31,7 +31,7 @@ The installer:
 - Wires TDD enforcement hooks into `settings.json`
 - Generates `uninstall.sh` and `restore-config.sh` for clean removal
 
-After install, all skills are available as `/sweetclaude:skill-name` in every Claude Code session. The first time you run `/sweetclaude` in a project, it will walk through setup and run a short mode-assessment interview to configure enforcement for your workflow (Flow, Kanban, Level Up, or Agile).
+After install, all skills are available as `/sweetclaude:skill-name` in every Claude Code session. The first time you run `/sweetclaude:go` in a project, it will walk through setup and run a short mode-assessment interview to configure enforcement for your workflow (Flow, Kanban, Level Up, or Agile).
 
 ---
 

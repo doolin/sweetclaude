@@ -5,7 +5,7 @@
 
 All skills, organized by domain. This page is reference — for narrative explanations of how skills fit together, read [Walkthroughs](walkthroughs.md) and [How It Works](how-it-works.md).
 
-You rarely need to memorize commands. `/sweetclaude` routes automatically based on project state and what you describe in plain English. The list below is for when you know exactly what you want.
+You rarely need to memorize commands. `/sweetclaude:go` routes automatically based on project state and what you describe in plain English. The list below is for when you know exactly what you want.
 
 Many skills accept `$ARGUMENTS` to skip menus: `/sweetclaude:code-testing security`, `/sweetclaude:product-milestones add`, `/sweetclaude:document-corpus triage`.
 
@@ -21,18 +21,17 @@ If you are wondering "which skills go together for X?", the [Walkthroughs](walkt
 
 ## Orchestration
 
-Session navigation and automatic routing. Most of these fire without being invoked directly — `/sweetclaude` is the entry point for all of them.
+Session navigation and automatic routing. Most of these fire without being invoked directly — `/sweetclaude:go` is the primary entry point.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| **SweetClaude** | `/sweetclaude` | The unified front door. Reads `sweetclaude.yaml`, detects project state, and routes to the right skill. Pass plain-English arguments or run with no arguments for a status+routing prompt. |
-| **Go** | _(internal)_ | Pick up where you left off. Reads state, checks phase exit criteria, routes to the right skill. Invoked automatically by `/sweetclaude`. |
-| **Find Skill** | _(internal)_ | Classifies plain-English input, confirms routing, updates state, and starts the right skill. Invoked automatically by `/sweetclaude` when arguments are present. |
-| **Status** | _(internal)_ | Project status dashboard. Active work item, phase, recent commits, framework health. Fires automatically at session start for active projects via the health hook. |
+| **Go** | `/sweetclaude:go` | Pick up where you left off. Reads state, checks phase exit criteria, routes to the right skill. Pass plain-English arguments to describe what you want. |
+| **Status** | `/sweetclaude:status` | Project status dashboard. Active work item, phase, roadmap, backlog, recent commits. |
+| **Find Skill** | _(internal)_ | Classifies plain-English input, confirms routing, updates state, and starts the right skill. Invoked automatically by `/sweetclaude:go` when arguments are present. |
 | **Next Steps** | _(internal)_ | Walk through the pipeline step by step. Explains what the current phase requires and what comes after. |
 | **Retro** | `/sweetclaude:retro` | End-of-phase or end-of-project retrospective. Surfaces what went well, what didn't, and what to adjust. Writes learnings to the improvement register so future sessions start with them applied. |
 | **Session Export** | `/sweetclaude:session-export` | Export a Claude.ai conversation as a structured document for corpus ingestion. |
-| **Hibernate** | `/sweetclaude:hibernate` | Freeze a project. Saves full state, exports session context, disables auto-status. Resume later with `/sweetclaude`. |
+| **Hibernate** | `/sweetclaude:hibernate` | Freeze a project. Saves full state, exports session context, disables auto-status. Resume later with `/sweetclaude:go`. |
 
 ---
 

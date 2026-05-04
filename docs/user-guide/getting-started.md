@@ -70,7 +70,7 @@ claude
 Then in Claude Code:
 
 ```
-/sweetclaude
+/sweetclaude:go
 ```
 
 SweetClaude detects the empty folder and routes to setup. It asks if you want a git repo (say yes), creates `.sweetclaude/`, `strategy/`, and a `CLAUDE.md`. Then it asks how collaborative you want to be this session — pick **Collaborative** for your first run so you can see every step.
@@ -95,7 +95,7 @@ claude
 ```
 
 ```
-/sweetclaude
+/sweetclaude:go
 ```
 
 SweetClaude detects the existing codebase and routes to setup. It does five things in order:

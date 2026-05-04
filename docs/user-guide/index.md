@@ -52,10 +52,11 @@ This is by design. SweetClaude is opinionated software with a workflow that came
 ## Quick Reference
 
 ```
-/sweetclaude        Everything — describe what you want, or just run it
+/sweetclaude:go     Pick up where you left off — routes to the right skill automatically
+/sweetclaude:status Project status — active work, roadmap, backlog
 /sweetclaude:help   All commands organized by category
 ```
 
-`/sweetclaude` is the single entry point. It reads state, detects where you are (setup needed, work in flight, feature offer due), and routes to the right skill. You can also pass plain-English arguments: `/sweetclaude pick up where I left off`, `/sweetclaude I want to work on the auth flow`.
+`/sweetclaude:go` reads state, detects where you are (setup needed, work in flight, phase exit criteria), and routes to the right skill. You can also pass plain-English arguments: `/sweetclaude:go pick up where I left off`, `/sweetclaude:go I want to work on the auth flow`.
 
-All workflow skills are documented in the [Skills Reference](skills-reference.md). You rarely need to memorize commands — `/sweetclaude` routes to all of them automatically.
+All workflow skills are documented in the [Skills Reference](skills-reference.md). You rarely need to memorize commands — `/sweetclaude:go` routes to all of them automatically.

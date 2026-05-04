@@ -29,16 +29,16 @@ cd sweetclaude && ./install.sh
 Then go to your project and run:
 
 ```
-/sweetclaude introduce me to sweetclaude
+/sweetclaude:go introduce me to sweetclaude
 ```
 
 
 
 ## Basic Usage
 
-Inside Claude Code, one entry point handles everything:  `/sweetclaude` 
+Inside Claude Code, the primary command is `/sweetclaude:go`.
 
-That's it. Install SweetClaude and use the single entry point followed by what you want to do. Describe what you want in plain English — "I want to start building X", "pick up where I left off", "what should I work on next" — or just press enter for a status prompt. SweetClaude will ask questions if needed and the orchestrator detects your project state, routes to the right skill, and collaborates with you - it handles the red tape, you do the thinking.
+Install SweetClaude and run `/sweetclaude:go` with what you want to do — or with no arguments to pick up where you left off. Describe what you want in plain English — "I want to start building X", "pick up where I left off", "what should I work on next". SweetClaude will ask questions if needed and the orchestrator detects your project state, routes to the right skill, and collaborates with you — it handles the red tape, you do the thinking.
 
 You can use SweetClaude to start a new effort from scratch, or have it adopt an existing project. Just point to any documents you might have — backlog, roadmaps, design, etc. — it will assess and migrate what you have and then help you fill in the gaps.
 
@@ -54,14 +54,14 @@ You can use SweetClaude to start a new effort from scratch, or have it adopt an 
 
 Once SweetClaude is installed, here are some things to try. You'll quickly get oriented.
 
-* `/sweetclaude help`
-* `/sweetclaude give me a quick overview of what you can do`
-* `/sweetclaude tell me about the product development lifecycle phases you use`
-* `/sweetclaude tell me about the differences in flow mode, kanban mode, level up mode, and agile mode`
-* `/sweetclaude help me choose the best mode for my project` 
-* `/sweetclaude give me a breakdown of all skills by product lifecycle phase`
-* `/sweetclaude explain how you would onboard my existing project`
-* `/sweetclaude tell me about your RAG enabled design and doc management`
+* `/sweetclaude:help`
+* `/sweetclaude:go give me a quick overview of what you can do`
+* `/sweetclaude:go tell me about the product development lifecycle phases you use`
+* `/sweetclaude:go tell me about the differences in flow mode, kanban mode, level up mode, and agile mode`
+* `/sweetclaude:go help me choose the best mode for my project`
+* `/sweetclaude:go give me a breakdown of all skills by product lifecycle phase`
+* `/sweetclaude:go explain how you would onboard my existing project`
+* `/sweetclaude:go tell me about your RAG enabled design and doc management`
 
 
 
@@ -69,7 +69,7 @@ Once SweetClaude is installed, here are some things to try. You'll quickly get o
 
 - **Discovery-first pipeline** — Compliance requirements (GDPR, HIPAA, PCI DSS) flow from user and data discovery into architecture and code review automatically — not a checkbox at the end.
 - **Enforced TDD at four levels** — At the highest level, test writer and implementer are separate AI agents. Test files are physically blocked from modification during implementation by hooks. Tests run after every source edit.
-- **Persistent phase state** — `.sweetclaude/` tracks phase, decisions, and scope changes in git. Return after weeks and `/sweetclaude` re-orients without re-explaining.
+- **Persistent phase state** — `.sweetclaude/` tracks phase, decisions, and scope changes in git. Return after weeks and `/sweetclaude:go` re-orients without re-explaining.
 - **Mockup pipeline** — Design UI components in an isolated Vite + React sandbox before touching production code. Graduate approved mockups with acceptance criteria extracted automatically.
 - **Corpus management** — Four-step pipeline (consolidate → triage → reconcile → promote) for messy document collections, with local RAG indexing. No external services.
 - **Behavioral contracts** — 15 behavioral properties tested against each Claude model version. Hook-enforced properties are deterministic; instruction-guided properties are validated by a regression suite.
@@ -86,18 +86,19 @@ TDD hooks physically block test file modification during implementation and run 
 
 ## Common Commands
 
-Even though the single entry point will support you completely, you can invoke most of the under-the-hood commands manually if you wish. These are the most common. You can also refer to the [complete skills reference](docs/user-guide/skills-reference.md).
+You can invoke skills directly if you know what you want. These are the most common. You can also refer to the [complete skills reference](docs/user-guide/skills-reference.md).
 
-### Primary Entry Point
+### Primary Commands
 | Command | What it does |
 |---|---|
-| `/sweetclaude` | Everything. Describe what you want, or run with no arguments for a status prompt. Routes to setup, go, feature offers, or any skill based on project state and plain-English input. |
+| `/sweetclaude:go` | Pick up where you left off. Reads state, checks phase exit criteria, routes to the right skill. Pass plain-English arguments to describe what you want. |
+| `/sweetclaude:status` | Project status dashboard — active work item, phase, roadmap, backlog. |
 | `/sweetclaude:help` | Conversational help — describe what you want to do, browse features, or ask questions |
 
 ### Housekeeping
 | Command | What it does |
 |---|---|
-| `/sweetclaude:off` | Suspend SweetClaude — preserves all artifacts, reactivate with `/sweetclaude` |
+| `/sweetclaude:off` | Suspend SweetClaude — preserves all artifacts, reactivate with `/sweetclaude:go` |
 | `/sweetclaude:purge` | Delete all SweetClaude artifacts — recommends a backup branch, shows all files, requires "I understand". **Taking a branch snapshot before is highly recommended.** |
 | `/sweetclaude:update` | Fetch latest SweetClaude from GitHub and sync to all projects |
 | `/sweetclaude:fix-sweetclaude` | Audit and repair SweetClaude configuration |
@@ -111,7 +112,7 @@ Even though the single entry point will support you completely, you can invoke m
 | `/sweetclaude:session-export` | Export a Claude.ai session as a structured document |
 | `/sweetclaude:usage` | View, enable, or disable local usage tracking |
 
-Individual workflow skills (product, design, code, testing, corpus) are accessible directly if you know what you want, but `/sweetclaude` routes to all of them automatically.
+Individual workflow skills (product, design, code, testing, corpus) are accessible directly if you know what you want, but `/sweetclaude:go` routes to all of them automatically.
 
 → [All skills by category](docs/user-guide/skills-reference.md)
 
