@@ -135,6 +135,37 @@ Artifacts being archived (soft — not deleted):
 
 Confirm: "Proceed with shift?"
 
+**Step 2a: Cascade check (upshift to more structured mode).**
+
+### Cascade check (upshift to more structured mode)
+
+**Shifting to Agile:**
+Check for `{product_base}/backlog/BACKLOG-INDEX.md` and at least one file in `{product_base}/epics/`. If missing:
+> "Agile works best with an organized backlog and epics. Missing: {list}. Set these up now, or skip and set them up later? (setup now / skip)"
+
+**Shifting to Level Up:**
+Check for any files in `{product_base}/pitches/`. If none:
+> "Level Up uses pitches as the entry point for all work. You don't have any yet. Write your first pitch now, or skip? (write pitch / skip)"
+
+**Shifting to Kanban:**
+If `wip_limit` is not set in sweetclaude.yaml, ask:
+> "Kanban enforces WIP limits to control flow. What's your WIP limit for in_progress items? (default: 3)"
+Write `wip_limit: {N}` to sweetclaude.yaml.
+
+**Step 2b: Cascade clean (downshift to less structured mode).**
+
+### Cascade clean (downshift to less structured mode)
+
+**Shifting from Agile:**
+Check for any sprint artifact with `status: active`. If found:
+> "You have an active sprint. Close or cancel it before shifting modes."
+> Run `/sweetclaude:project-sprints close` or `/sweetclaude:project-sprints cancel`.
+Block until resolved.
+
+**Shifting from Level Up:**
+Check for any cycle artifact with `status: planning` or `status: active`. If found:
+> "You have an open cycle ({CYC-XXX}). Close it before shifting? (yes / skip)"
+
 **Step 3: Create snapshot.**
 
 ```bash
@@ -214,7 +245,15 @@ print('ok')
 PYEOF
 ```
 
-**Step 6: Confirm.**
+**Step 6: Regenerate effective gates.**
+
+```bash
+bash $HOME/dev/sweetclaude/scripts/generate-effective-gates.sh
+```
+
+Output: "Mode set to **{mode}**. Effective gates compiled."
+
+**Step 7: Confirm.**
 
 ```
 Mode shifted: {from} → {to}
@@ -264,3 +303,37 @@ Date        Mode         Snapshot
 - If an active sprint exists when shifting away from agile, block: "Close the active sprint before shifting modes."
 - Storage backend changes take effect after the next session start — skills reload the backend on invocation.
 - `agile_enterprise` → `flow` requires explicit `--force` because it hides compliance artifacts.
+
+---
+
+## Level Up — Solo Betting Table (DEFINE phase)
+
+When `mode` is `shape_up` and the current phase is `DEFINE`, after the pitch document is written, present three required questions:
+
+1. "What is the core outcome if this ships? (one sentence)"
+2. "What are the rabbit holes — the parts most likely to blow up the appetite?"
+3. "What is explicitly NOT in scope for this cycle?"
+
+All three must be answered. Write to the pitch artifact:
+
+```yaml
+betting_table:
+  core_outcome: "{answer 1}"
+  rabbit_holes: "{answer 2}"
+  non_goals: "{answer 3}"
+  approved: true
+  approved_at: "{ISO timestamp}"
+```
+
+Set `betting_table_approved: true` on linked issues. This is the gate the IMPLEMENT phase checks.
+
+---
+
+## Level Up — Cycle Duration
+
+Ask at setup:
+> "What is your cycle duration? Shape Up default is 6 weeks. (Enter number of weeks, or press Enter for 6)"
+
+Write `cycle_duration_weeks: {N}` to sweetclaude.yaml before running generate-effective-gates.
+
+Available as a standalone configuration update: `/sweetclaude:project-mode configure cycle_duration_weeks <N>`
