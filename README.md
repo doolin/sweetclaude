@@ -17,6 +17,8 @@ SweetClaude has 70+ skills under the hood, mostly purpose-developed and refined.
 
 You can start with one mode and migrate later. So start with vibe-coding in flow mode, which will passively and quietly collect artifacts as you go. When you're ready for Kanban or higher-level structures, those artifacts will be there, so you're not starting from zero.
 
+Requires [Claude Code](https://claude.ai/code) and an Anthropic subscription.
+
 ## Quick Start
 
 ```bash
@@ -63,37 +65,20 @@ Once SweetClaude is installed, here are some things to try. You'll quickly get o
 
 ## Major Features
 
-- **Discovery-first pipeline** — Product discovery derives compliance requirements (GDPR, HIPAA, PCI DSS) from your actual users and data. That context flows automatically into architecture, tech spec, data model, and final code review — not a checkbox at the end.
-- **Enforced TDD at four levels** — At the highest level, test writer and implementer are separate AI agents in isolated contexts. Test files are physically blocked from modification during implementation by PostToolUse hooks. Tests run after every source edit.
-- **Persistent phase state** — `.sweetclaude/` tracks phase, decisions, assumptions, and scope changes in git. Return after weeks and `/sweetclaude` re-orients without you re-explaining anything.
+- **Discovery-first pipeline** — Compliance requirements (GDPR, HIPAA, PCI DSS) flow from user and data discovery into architecture and code review automatically — not a checkbox at the end.
+- **Enforced TDD at four levels** — At the highest level, test writer and implementer are separate AI agents. Test files are physically blocked from modification during implementation by hooks. Tests run after every source edit.
+- **Persistent phase state** — `.sweetclaude/` tracks phase, decisions, and scope changes in git. Return after weeks and `/sweetclaude` re-orients without re-explaining.
 - **Mockup pipeline** — Design UI components in an isolated Vite + React sandbox before touching production code. Graduate approved mockups with acceptance criteria extracted automatically.
-- **Corpus management** — Four-step pipeline (consolidate → triage → reconcile → promote) for messy document collections, with local RAG indexing for semantic search. No external services.
-- **Behavioral contracts** — 15 behavioral properties tested against each Claude model version. Hook-enforced properties are deterministic; instruction-guided properties are validated by a regression suite after every model upgrade.
-
-**Key architectural decisions:**
-
-- **Single front door** — `/sweetclaude` is the only command you need. Describe what you want in plain English, and it routes to the right skill. Or just run it for a status and routing prompt.
-- **Skills under the hood** — Every capability is a skill with defined entry criteria, deference levels, and exit gates. Structured contracts replace freeform prompting. Skills are accessible directly if you know what you want.
-- **Hooks for enforcement** — TDD rules and session discipline are enforced by shell hooks (PreToolUse/PostToolUse), not instructions. Instructions can drift; hooks cannot.
-- **Agent isolation** — Test writer and implementer run in separate AI contexts with restricted tool sets (`tools:` frontmatter). The implementer never sees the spec — only failing tests.
-- **State as git history** — `.sweetclaude/sweetclaude.yaml` should be committed to git, not gitignored. Phase progression, decisions, and assumptions are project history, not session memory.
-- **Deference levels** — Collaborative (stop after every sub-step), Guided (stop at major decisions), Autonomous (stop only at phase gates). Set in state, changeable mid-session.
-
-
+- **Corpus management** — Four-step pipeline (consolidate → triage → reconcile → promote) for messy document collections, with local RAG indexing. No external services.
+- **Behavioral contracts** — 15 behavioral properties tested against each Claude model version. Hook-enforced properties are deterministic; instruction-guided properties are validated by a regression suite.
 
 ## How It Works
 
-SweetClaude is a Claude Code plugin. After install, all skills are available as slash commands in every Claude Code session. You can also load it for a single session with `--plugin-dir` without a global install.
+SweetClaude is a Claude Code plugin. After install, all skills are available as slash commands in every session. Load for a single session with `--plugin-dir` without a global install.
 
-**State tracking.** SweetClaude creates a `.sweetclaude/` directory in your project. The unified state file `.sweetclaude/sweetclaude.yaml` tracks phase, decisions, assumptions, scope changes, and feature activation. Commit it to git — it is project history, not cache. When you return, `/sweetclaude` reads state and re-orients without you re-explaining anything.
+TDD hooks physically block test file modification during implementation and run tests automatically after every source edit. At higher TDD levels, test writer and implementer are separate AI agents — the implementer never sees the spec, only failing tests.
 
-**Enforcement.** TDD hooks physically block test file modification during implementation (hook-enforced, not advisory) and run tests automatically after every source edit. At higher TDD levels, test writer and implementer are separate AI agents in separate contexts — the implementer never sees the spec, only the failing tests.
-
-**Behavioral stability.** Not all behavioral properties are guaranteed equally. Hook-enforced properties are deterministic and version-stable. Protocol Guardian (`/sweetclaude:guardian-on`) upgrades instruction-guided properties to deterministic enforcement for a session. The 15-contract behavioral regression suite validates properties after model upgrades.
-
-**Deference levels.** Collaborative (stop after every sub-step), Guided (stop at major decisions), Autonomous (stop only at phase gates). Changeable mid-session.
-
-For a full explanation of the architecture and design decisions behind SweetClaude → [How It Works](docs/user-guide/how-it-works.md)
+→ [Full architecture and design decisions](docs/user-guide/how-it-works.md)
 
 
 
@@ -118,7 +103,7 @@ Even though the single entry point will support you completely, you can invoke m
 ### Advanced
 | Command | What it does |
 |---|---|
-| `/sweetclaude:behavioral-regression` | Run the 15-contract behavioral test suite — validates that the current model version honors SweetClaude's behavioral contracts. Run after any Claude model upgrade. **15/15 passing on claude-sonnet-4-6 (2026-05-01).** [Contract status by model version →](docs/user-guide/behavioral-contracts.md) |
+| `/sweetclaude:behavioral-regression` | Run the 15-contract behavioral test suite — validates that the current model version honors SweetClaude's behavioral contracts. Run after any Claude model upgrade. **15/15 passing on claude-sonnet-4-6 (2026-05-01).** [Contract status by model version →](docs/user-guide/behavioral-contracts.md) · [Full contract list →](skills/behavioral-regression/SKILL.md) |
 | `/sweetclaude:guardian-on` | Enable Protocol Guardian — enforces skill invocations and protocol steps for the session |
 | `/sweetclaude:guardian-off` | Disable Protocol Guardian |
 | `/sweetclaude:session-export` | Export a Claude.ai session as a structured document |
@@ -145,7 +130,7 @@ For dependency risk, failure modes, and contingency plans → [Platform Dependen
 
 ## License
 
-[GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0-or-later) — free to use, modify, and distribute. No restrictions for personal or commercial tools you build. AGPL obligations activate only if you deploy SweetClaude as a network service offered to others — in that case, you must make your modified source available under the same license. See [LICENSE](LICENSE) for full terms.
+[GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0-or-later) — free to use, modify, and distribute. No restrictions for personal or commercial tools you build. AGPL obligations activate only if you deploy SweetClaude as a network service offered to others — full terms in [LICENSE](LICENSE).
 
 Contact the project owner with questions about licensing.
 
