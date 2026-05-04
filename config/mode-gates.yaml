@@ -1,0 +1,69 @@
+# config/mode-gates.yaml
+# Mode gate overlays — compiled into .sweetclaude/state/effective-gates.yaml at mode setup.
+# Source of truth for mode behavior. Do not edit per-project — use sweetclaude.yaml overrides.
+schema_version: 1
+
+mode_defaults:
+
+  flow:
+    default_tdd_level: 1
+    wip_limit: null
+    cycle_duration_weeks: null
+    blocked_skills: []
+    gates: []
+
+  kanban:
+    default_tdd_level: 1
+    wip_limit: 3
+    cycle_duration_weeks: null
+    blocked_skills:
+      - project-sprints
+    gates:
+      - phase: IMPLEMENT
+        condition: wip_limit_reached
+        action: block
+        message: "WIP limit reached ({current}/{limit} items in_progress). Complete or move an item before starting new work."
+
+  shape_up:
+    default_tdd_level: 2
+    wip_limit: null
+    cycle_duration_weeks: 6
+    blocked_skills:
+      - project-sprints
+      - project-backlog
+    gates:
+      - phase: IMPLEMENT
+        requires: betting_table_approved
+        action: block
+        message: "Work must be pitched and bet before implementation begins. Run /sweetclaude:project-issues to create issues from a pitch."
+      - phase: VERIFY
+        condition: ship_no_ship_decision
+        action: required
+        message: "Ship/no-ship decision required. Did the core outcome land within appetite?"
+      - phase: PLAN
+        condition: issues_from_backlog
+        action: block
+        message: "Level Up has no backlog. Issues must be derived from an approved pitch."
+
+  agile:
+    default_tdd_level: 2
+    wip_limit: null
+    cycle_duration_weeks: null
+    blocked_skills: []
+    gates:
+      - phase: IMPLEMENT
+        condition: no_active_sprint
+        action: block
+        message: "No active sprint. Run /sweetclaude:project-sprints start to activate a sprint."
+      - phase: IMPLEMENT
+        condition: issue_not_in_sprint
+        action: warn
+        message: "This issue is not assigned to the active sprint. Assign it or start a new sprint."
+      - phase: SHIP
+        condition: sprint_complete
+        action: prompt
+        message: "All sprint issues are done. Run sprint close before shipping."
+
+  # agile_enterprise: DEFERRED
+  # Prerequisites: compliance-context.yaml schema, two-path traceability design,
+  # Level 3 TDD pipeline integration, commercial licensing decision.
