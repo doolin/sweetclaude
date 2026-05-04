@@ -1,7 +1,7 @@
 ---
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:go
-user-invocable: false
+user-invocable: true
 description: Figure out what to do next and do it. Reads project state, assesses progress against phase gate exit criteria, and routes to the right skill without asking for a menu selection.
 ---
 
