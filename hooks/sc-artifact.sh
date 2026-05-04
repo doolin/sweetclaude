@@ -10,7 +10,13 @@
 #
 # Requires: python3, pyyaml
 
-SC_ARTIFACT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_sc_self="${BASH_SOURCE[0]:-}"
+if [[ -n "$_sc_self" && "$_sc_self" != "source" && -f "$(cd "$(dirname "$_sc_self")" 2>/dev/null && pwd)/sc-artifact-impl.py" ]]; then
+    SC_ARTIFACT_DIR="$(cd "$(dirname "$_sc_self")" && pwd)"
+else
+    SC_ARTIFACT_DIR="${HOME}/.claude/hooks/sweetclaude"
+fi
+unset _sc_self
 SC_IMPL="${SC_ARTIFACT_DIR}/sc-artifact-impl.py"
 
 # Project root: prefer explicit override, fall back to PWD
