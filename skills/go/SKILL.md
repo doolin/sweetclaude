@@ -86,6 +86,25 @@ Read `~/.claude/rules/sweetclaude/phase-gates.md`. Extract only the section for 
 
 If yes, run the phase transition sequence from the master skill. Stop.
 
+### Mode gate overlay
+
+```bash
+cat .sweetclaude/state/effective-gates.yaml 2>/dev/null
+```
+
+For each gate in `effective-gates.yaml` matching the target phase:
+
+| Condition | Action |
+|-----------|--------|
+| `requires: betting_table_approved` | Check current issue for `betting_table_approved: true`. If missing: block with gate message. |
+| `condition: no_active_sprint` | Check for sprint with `status: active` in artifacts. If none: block with gate message. |
+| `condition: issue_not_in_sprint` | Check if current issue has `sprint_id` matching active sprint. If not: warn (do not block). |
+| `condition: sprint_complete` | Check if all sprint issues are `done`. If yes: prompt with gate message. |
+| `condition: ship_no_ship_decision` | Require explicit user statement before proceeding. |
+| `condition: wip_limit_reached` | Handled by wip-limit.sh hook — skip in go skill. |
+
+If `effective-gates.yaml` does not exist: skip mode gate checks (fail open, mode defaults to flow).
+
 **Pre-SHIP security check** (fires when advancing to SHIP, before evaluating other criteria):
 
 If `active_work_item.phase` is SHIP and the work type is one of `net-new-feature`, `external-integration`, `enhancement`, `infrastructure-change`: check the checkpoint for either a security review completion entry or an explicit security skip entry. If neither is found:
@@ -139,6 +158,17 @@ Ask exactly one question to resolve it. After the answer, re-assess and act. If 
 | security-patch | DIAGNOSE | Blast radius not assessed | `sweetclaude:code-review` |
 | performance-optimization | DIAGNOSE | Baseline benchmark not established | `sweetclaude:code-issue` |
 | hotfix | DIAGNOSE | Reproduction case not documented | `sweetclaude:code-issue` |
+
+### Mode-filtered routing
+
+Read `blocked_skills` from `effective-gates.yaml`. Remove blocked skills from all suggestion lists.
+
+Apply per mode:
+- **flow:** surface project-issues, project-roadmap, product-milestones. Omit project-sprints from all suggestions.
+- **kanban:** surface project-issues, project-roadmap, product-milestones, project-backlog. Omit project-sprints.
+- **shape_up:** surface project-issues (pitch-source note), project-roadmap, product-milestones. Omit project-sprints, project-backlog.
+- **agile:** surface all skills including project-sprints, project-epics.
+- **unset:** apply flow filtering.
 
 ---
 
