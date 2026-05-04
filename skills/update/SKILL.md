@@ -111,6 +111,7 @@ diff -rq $SOURCE_DIR/rules/ ~/.claude/rules/sweetclaude/ 2>/dev/null
 diff -rq $SOURCE_DIR/hooks/ ~/.claude/hooks/sweetclaude/ 2>/dev/null
 diff -rq $SOURCE_DIR/config/ ~/.claude/config/sweetclaude/ 2>/dev/null
 diff -rq $SOURCE_DIR/agents/ ~/.claude/agents/sweetclaude/ 2>/dev/null
+diff -rq $SOURCE_DIR/scripts/ {installPath}/scripts/ 2>/dev/null
 ```
 
 Present a summary:
@@ -128,6 +129,7 @@ Changes:
   Hooks:   {N}
   Config:  {N}
   Agents:  {N}
+  Scripts: {N}
 ```
 
 Wait for user confirmation before proceeding.
@@ -153,6 +155,11 @@ rsync -a $SOURCE_DIR/.claude-plugin/ {installPath}/.claude-plugin/
 # Skills → legacy install path (created by install.sh — must stay in sync)
 if [ -d "$HOME/.claude/skills/sweetclaude" ]; then
   rsync -a --delete $SOURCE_DIR/skills/ ~/.claude/skills/sweetclaude/
+fi
+
+# Scripts → plugin cache (contains migration scripts and other utilities)
+if [ -d "$SOURCE_DIR/scripts" ]; then
+  rsync -a --delete $SOURCE_DIR/scripts/ {installPath}/scripts/
 fi
 
 # Framework dirs → ~/.claude/
@@ -194,6 +201,7 @@ Run a final diff to confirm sync:
 ```bash
 diff -rq $SOURCE_DIR/skills/ {installPath}/skills/ 2>/dev/null
 diff -rq $SOURCE_DIR/skills/ ~/.claude/skills/sweetclaude/ 2>/dev/null
+diff -rq $SOURCE_DIR/scripts/ {installPath}/scripts/ 2>/dev/null
 ```
 
 Report:
