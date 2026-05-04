@@ -8,21 +8,43 @@ PROJECT_DIR=$(git rev-parse --show-toplevel 2>/dev/null || echo "")
 if [ -z "$PROJECT_DIR" ]; then exit 0; fi
 
 PHASE_YAML="$PROJECT_DIR/.sweetclaude/state/phase.yaml"
-if [ ! -f "$PHASE_YAML" ]; then exit 0; fi
+SC_YAML_STATE="$PROJECT_DIR/.sweetclaude/state/sweetclaude.yaml"
+if [ ! -f "$PHASE_YAML" ] && [ ! -f "$SC_YAML_STATE" ]; then exit 0; fi
 
 OUTPUT="$PROJECT_DIR/.sweetclaude/state/session-state.yaml"
 
 export PROJECT_DIR
 
 python3 - > "$OUTPUT" 2>/dev/null <<'PYEOF'
-import yaml, os, json
+import yaml, os, json, sys
 from datetime import datetime, timezone, date
 
 project_dir = os.environ['PROJECT_DIR']
 state_dir = os.path.join(project_dir, '.sweetclaude', 'state')
 
-with open(os.path.join(state_dir, 'phase.yaml')) as f:
-    phase = yaml.safe_load(f) or {}
+phase_path = os.path.join(state_dir, 'phase.yaml')
+sc_path    = os.path.join(state_dir, 'sweetclaude.yaml')
+
+phase = {}
+if os.path.exists(phase_path):
+    with open(phase_path) as f:
+        phase = yaml.safe_load(f) or {}
+elif os.path.exists(sc_path):
+    with open(sc_path) as f:
+        sc = yaml.safe_load(f) or {}
+    proj = sc.get('project', {})
+    sess = sc.get('session', {})
+    work_data = sc.get('work', {})
+    active = work_data.get('active') or {}
+    phase = {
+        'project_name': proj.get('name', ''),
+        'version_stage': proj.get('version_stage', ''),
+        'deference_level': sess.get('deference_level', ''),
+        'schema_version': 2,
+        'active_work_item': active,
+    }
+else:
+    sys.exit(0)
 
 def effective_weight(entry):
     if entry.get('decay_exempt', False):
