@@ -1,10 +1,10 @@
-<img src="sweetclaude.png" alt="SweetClaude" width="180" align="left">
-
-# SweetClaude
+<table><tr>
+<td><img src="sweetclaude.png" alt="SweetClaude" width="180"></td>
+<td valign="middle"><h1>SweetClaude</h1>
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
-
-<br clear="left">
+</td>
+</tr></table>
 
 A Claude Code plugin based on the Skills 2.0 framework that implements full product / project lifecycle workflows, from concept to production maintenance.
 
