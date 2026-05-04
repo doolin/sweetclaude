@@ -1,5 +1,4 @@
 <img src="sweetclaude.png" alt="SweetClaude" width="180" align="left">
-<br clear="all"/>
 
 # SweetClaude
 
@@ -7,23 +6,18 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/carson-sweet/sweetclaude)](https://github.com/carson-sweet/sweetclaude/graphs/contributors)
 [![GitHub last commit](https://img.shields.io/github/last-commit/carson-sweet/sweetclaude)](https://github.com/carson-sweet/sweetclaude/commits/main)
 
-A Claude Code plugin based on the Skills 2.0 framework that implements full product / project lifecycle workflows, from concept to production maintenance. 
+A Claude Code plugin based on the Skills 2.0 framework that implements full product / project lifecycle workflows, from concept to production maintenance.
 
 SweetClaude exists to take a project from idea through discovery, architecture, test-driven implementation, and shipped code as a single coherent workflow — with discipline enforced, not suggested. It was originally built as my own personal Claude Code toolchain. It quickly evolved to support early-stage founders, technical solopreneurs, and senior independent consultants who want structure — from strategy to deployment, with variable discipline levels depending on your project needs.
 
-SweetClaude has 70+ skills under the hood, mostly purpose-developed and refined. Some code-related skills leverage Jesse Vincent's excellent Superpowers project.  These skills are combined into workflows that operate in one of five modes:
+SweetClaude has 70+ skills under the hood, mostly purpose-developed and refined. Some code-related skills leverage Jesse Vincent's excellent Superpowers project.  These skills are combined into workflows that operate in one of four modes:
 
 - **Flow** — Solo dev in early exploration. No ceremony. SweetClaude observes quietly and stays out of the way.
 - **Kanban** — Continuous delivery, no fixed sprints. Issues flow through a status board at whatever pace fits.
 - **Level Up** — 6-week cycles with pitches. Fixed appetite, variable scope. Structure without standups.
 - **Agile** — Sprint-based. Velocity tracking, backlog grooming, retrospectives. Full rhythm.
-- **Agile + Enterprise** — Agile with compliance gates, mandatory traceability, and security review checkpoints.
 
-
-One entry point handles everything:  `/sweetclaude` 
-
-That's it. Install SweetClaude and use the single entry point, followed by what you want to do. SweetClaude will ask questions if needed and will kick of the right workflow automatically. You can use SweetClaude to start a new effort from scratch, or have it adopt an existing project.
-
+You can start with one mode and migrate later. So start with vibe-coding in flow mode, which will passively and quietly collect artifacts as you go. When you're ready for Kanban or higher-level structures, those artifacts will be there, so you're not starting from zero.
 
 ## Quick Start
 
@@ -38,7 +32,15 @@ Then go to your project and run:
 /sweetclaude introduce me to sweetclaude
 ```
 
-Describe what you want in plain English — "I want to start building X", "pick up where I left off", "what should I work on next" — or just press enter for a status prompt. The orchestrator detects your project state and routes to the right skill.
+
+
+## Basic Usage
+
+Inside Claude Code, one entry point handles everything:  `/sweetclaude` 
+
+That's it. Install SweetClaude and use the single entry point followed by what you want to do. Describe what you want in plain English — "I want to start building X", "pick up where I left off", "what should I work on next" — or just press enter for a status prompt. SweetClaude will ask questions if needed and the orchestrator detects your project state, routes to the right skill, and collaborates with you - it handles the red tape, you do the thinking.
+
+You can use SweetClaude to start a new effort from scratch, or have it adopt an existing project. Just point to any documents you might have — backlog, roadmaps, design, etc. — it will assess and migrate what you have and then help you fill in the gaps.
 
 → [Full install options, updating, uninstalling](INSTALL.md)
 → [First session walkthrough](QUICKSTART.md)
@@ -51,11 +53,13 @@ Describe what you want in plain English — "I want to start building X", "pick 
 Once SweetClaude is installed, here are some things to try. You'll quickly get oriented.
 
 * `/sweetclaude help`
-* `/sweetclaude tell me about the differences in flow mode, kanban mode, level up mode, and agile mode`
+* `/sweetclaude give me a quick overview of what you can do`
 * `/sweetclaude tell me about the product development lifecycle phases you use`
+* `/sweetclaude tell me about the differences in flow mode, kanban mode, level up mode, and agile mode`
+* `/sweetclaude help me choose the best mode for my project` 
 * `/sweetclaude give me a breakdown of all skills by product lifecycle phase`
 * `/sweetclaude explain how you would onboard my existing project`
-* `/sweetclaude tell me about your RAG enabled design and doc management ` 
+* `/sweetclaude tell me about your RAG enabled design and doc management`
 
 
 
@@ -97,9 +101,9 @@ For a full explanation of the architecture and design decisions behind SweetClau
 
 ## All Commands
 
-Even though the single entry point will support you completely, you can invoke most of the 
+Even though the single entry point will support you completely, you can invoke most of the under-the-hood commands manually if you wish.
 
-### The Front Door
+### Primary Entry Point
 | Command | What it does |
 |---|---|
 | `/sweetclaude` | Everything. Describe what you want, or run with no arguments for a status prompt. Routes to setup, go, feature offers, or any skill based on project state and plain-English input. |
