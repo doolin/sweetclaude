@@ -245,11 +245,4 @@ _BB=$'\033[1;34m'
 _RST=$'\033[0m'
 _ACTIVE_MSG="${_BR}SweetClaude is active. Type ${_BB}/sweetclaude${_BR} to begin.${_RST}"
 
-STATUS_FILE="$PROJECT_DIR/.sweetclaude/state/session-status.txt"
-if [ -f "$STATUS_FILE" ]; then
-  STATUS_BLOCK=$(cat "$STATUS_FILE")
-  CTX="${CTX}"$'\n\n'"<sweetclaude-status>"$'\n'"${STATUS_BLOCK}"$'\n'"</sweetclaude-status>"$'\n\n'"Present the content between the <sweetclaude-status> tags verbatim as your first response. Do not invoke any skills. Do not run any tools."
-  emit_ctx "$_ACTIVE_MSG" "$CTX"
-else
-  emit_ctx "$_ACTIVE_MSG" "${CTX}"$'\n\n'"Invoke sweetclaude:status now before responding to the user."
-fi
+emit_ctx "$_ACTIVE_MSG" "${CTX}"$'\n\n'"Invoke sweetclaude:status now before responding to the user."
