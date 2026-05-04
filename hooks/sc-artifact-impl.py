@@ -311,7 +311,7 @@ def _calculate_sprint_velocity(product_base: Path, sprint_id: str) -> int:
     for fname in _glob.glob(str(issues_dir / "*.md")):
         with open(fname, encoding="utf-8") as fh:
             issue = _parse_metadata(fh.read())
-        if issue and issue.get("sprint") == sprint_id and issue.get("status") == "done":
+        if issue and (issue.get("sprint") == sprint_id or issue.get("sprint_id") == sprint_id) and issue.get("status") == "done":
             try:
                 total += int(issue.get("story_points") or 0)
             except (TypeError, ValueError):

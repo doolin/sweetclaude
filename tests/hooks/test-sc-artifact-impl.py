@@ -122,3 +122,24 @@ def test_close_sprint_calculates_velocity(project_dir):
     assert read_r.returncode == 0, read_r.stderr
     out = json.loads(read_r.stdout)
     assert out['velocity'] == 6, f"Expected velocity=6, got {out['velocity']}"
+
+
+def test_velocity_counts_issues_linked_via_op_write(project_dir):
+    sprint = run_create(project_dir, 'sprint', {'title': 'Sprint 2', 'goal': 'Ship'})
+    assert sprint.returncode == 0, sprint.stderr
+    sprint_id = json.loads(sprint.stdout)['id']
+
+    issue = run_create(project_dir, 'issue', {'title': 'Late-assigned issue', 'story_points': 3})
+    assert issue.returncode == 0, issue.stderr
+    issue_id = json.loads(issue.stdout)['id']
+
+    assign = run_write(project_dir, issue_id, {'sprint_id': sprint_id, 'status': 'done'})
+    assert assign.returncode == 0, assign.stderr
+
+    close = run_write(project_dir, sprint_id, {'status': 'closed'})
+    assert close.returncode == 0, close.stderr
+
+    read_r = run_read(project_dir, sprint_id)
+    assert read_r.returncode == 0, read_r.stderr
+    out = json.loads(read_r.stdout)
+    assert out['velocity'] == 3, f"Expected velocity=3, got {out['velocity']}"
