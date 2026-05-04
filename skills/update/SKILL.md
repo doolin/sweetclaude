@@ -136,6 +136,50 @@ Wait for user confirmation before proceeding.
 
 ---
 
+## Step 3b: Artifact safety check for removed skills
+
+Before syncing, identify skills being removed — present in installed but absent in source:
+
+```bash
+diff -rq {installPath}/skills/ $SOURCE_DIR/skills/ 2>/dev/null \
+  | grep "^Only in {installPath}/skills" \
+  | sed 's|.*skills/||'
+```
+
+For each removed skill, check whether it owns live artifact content. Read `base_path` from session-state (`paths.product_base`) or fall back to `.sweetclaude/artifacts/product`.
+
+| Skill | Artifact path |
+|---|---|
+| `product-milestones` | `{base_path}/milestones/MILESTONES-INDEX.md` |
+| `product-parking-lot` or `product-backlog` | `{base_path}/backlog/BACKLOG-INDEX.md` |
+| `product-sprint-plan` | `{base_path}/sprints/` (any files) |
+| `product-user-personas` | `.sweetclaude/state/personas.yaml` |
+| `product-user-stories` | `{base_path}/stories/US-*.md` (any files) |
+| `document-corpus` | `.sweetclaude/state/corpus-pipeline.yaml` |
+
+Only run this check if `.sweetclaude/` exists in the current project directory.
+
+If any removed skill has matching live artifacts, pause and present:
+
+```
+⚠ Artifact safety check — removed skills with live content:
+  {skill-name}: {artifact path} — {N} items found
+  [repeat per affected skill]
+
+  This content will become orphaned when these skills are removed.
+
+  Options:
+    1. Proceed anyway — I understand the content will be orphaned
+    2. Cancel — I'll migrate the content before updating
+    3. Skip removing these skills — sync everything else
+```
+
+Wait for user choice before continuing.
+
+If no removed skills have live artifacts, continue silently to Step 4.
+
+---
+
 ## Step 4: Sync
 
 Copy from SOURCE_DIR to installed locations. Use `rsync --delete` to remove files that no longer exist in the source.

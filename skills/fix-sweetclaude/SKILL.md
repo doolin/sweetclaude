@@ -212,6 +212,33 @@ If any exist, ask:
 
 For each skill the user enables, invoke it with argument `onboard`. Complete each onboard before starting the next.
 
+**5e: Artifact safety check for deprecated or deleted skills**
+
+Read `skills.yaml`. For any skill with `status: deprecated` or any skill directory present in the installed location but absent from the source (detected via diff), scan artifact paths for live content that would be orphaned.
+
+Use `base_path` from session-state (`paths.product_base`) or fall back to `.sweetclaude/artifacts/product`.
+
+| Skill | Artifact path |
+|---|---|
+| `product-milestones` | `{base_path}/milestones/MILESTONES-INDEX.md` |
+| `product-parking-lot` or `product-backlog` | `{base_path}/backlog/BACKLOG-INDEX.md` |
+| `product-sprint-plan` | `{base_path}/sprints/` (any files) |
+| `product-user-personas` | `.sweetclaude/state/personas.yaml` |
+| `product-user-stories` | `{base_path}/stories/US-*.md` (any files) |
+| `document-corpus` | `.sweetclaude/state/corpus-pipeline.yaml` |
+
+If live content is found for a deprecated/deleted skill:
+
+```
+⚠ Skill marked deprecated but has live artifact content:
+  {skill-name}: {artifact path} — {N} items found
+
+  This content will become orphaned if the skill is removed.
+  Inspect before deleting. Run /{skill-name} to review the content.
+```
+
+Propose no automatic action — surface only. User decides what to do with the content before any deletion proceeds.
+
 ---
 
 ## Step 6: Audit registers
