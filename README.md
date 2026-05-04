@@ -7,17 +7,59 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/carson-sweet/sweetclaude)](https://github.com/carson-sweet/sweetclaude/graphs/contributors)
 [![GitHub last commit](https://img.shields.io/github/last-commit/carson-sweet/sweetclaude)](https://github.com/carson-sweet/sweetclaude/commits/main)
 
-**Not the right tool for everyone.** If you want fast, frictionless code completion, [Cursor](https://cursor.sh) is a better fit. SweetClaude is for a different job: taking a project from idea through discovery, architecture, test-driven implementation, and shipped code as a single coherent workflow — with discipline enforced, not suggested.
+A Claude Code plugin based on the Skills 2.0 framework that implements full product / project lifecycle workflows, from concept to production maintenance. 
 
-**Built for:** Early-stage founders, technical solopreneurs, and senior ICs who want structure from strategy to code. Projects where what you build and why matters as much as how fast you write it.
+SweetClaude exists to take a project from idea through discovery, architecture, test-driven implementation, and shipped code as a single coherent workflow — with discipline enforced, not suggested. It was originally built as my own personal Claude Code toolchain. It quickly evolved to support early-stage founders, technical solopreneurs, and senior independent consultants who want structure — from strategy to deployment, with variable discipline levels depending on your project needs.
 
-**Requires:** [Claude Code](https://claude.ai/code).
+SweetClaude has 70+ skills under the hood, mostly purpose-developed and refined. Some code-related skills leverage Jesse Vincent's excellent Superpowers project.  These skills are combined into workflows that operate in one of five modes:
 
-## What SweetClaude Is
+- **Flow** — Solo dev in early exploration. No ceremony. SweetClaude observes quietly and stays out of the way.
+- **Kanban** — Continuous delivery, no fixed sprints. Issues flow through a status board at whatever pace fits.
+- **Level Up** — 6-week cycles with pitches. Fixed appetite, variable scope. Structure without standups.
+- **Agile** — Sprint-based. Velocity tracking, backlog grooming, retrospectives. Full rhythm.
+- **Agile + Enterprise** — Agile with compliance gates, mandatory traceability, and security review checkpoints.
 
-A Claude Code plugin covering the full product lifecycle. One entry point — `/sweetclaude` — routes everything. Works with any language or framework.
 
-**Major features:**
+One entry point handles everything:  `/sweetclaude` 
+
+That's it. Install SweetClaude and use the single entry point, followed by what you want to do. SweetClaude will ask questions if needed and will kick of the right workflow automatically. You can use SweetClaude to start a new effort from scratch, or have it adopt an existing project.
+
+
+## Quick Start
+
+```bash
+git clone https://github.com/carson-sweet/sweetclaude.git
+cd sweetclaude && ./install.sh
+```
+
+Then go to your project and run:
+
+```
+/sweetclaude introduce me to sweetclaude
+```
+
+Describe what you want in plain English — "I want to start building X", "pick up where I left off", "what should I work on next" — or just press enter for a status prompt. The orchestrator detects your project state and routes to the right skill.
+
+→ [Full install options, updating, uninstalling](INSTALL.md)
+→ [First session walkthrough](QUICKSTART.md)
+→ [All skills by category](docs/user-guide/skills-reference.md)
+
+
+
+## First Steps
+
+Once SweetClaude is installed, here are some things to try. You'll quickly get oriented.
+
+* `/sweetclaude help`
+* `/sweetclaude tell me about the differences in flow mode, kanban mode, level up mode, and agile mode`
+* `/sweetclaude tell me about the product development lifecycle phases you use`
+* `/sweetclaude give me a breakdown of all skills by product lifecycle phase`
+* `/sweetclaude explain how you would onboard my existing project`
+* `/sweetclaude tell me about your RAG enabled design and doc management ` 
+
+
+
+## Major Features
 
 - **Discovery-first pipeline** — Product discovery derives compliance requirements (GDPR, HIPAA, PCI DSS) from your actual users and data. That context flows automatically into architecture, tech spec, data model, and final code review — not a checkbox at the end.
 - **Enforced TDD at four levels** — At the highest level, test writer and implementer are separate AI agents in isolated contexts. Test files are physically blocked from modification during implementation by PostToolUse hooks. Tests run after every source edit.
@@ -35,26 +77,27 @@ A Claude Code plugin covering the full product lifecycle. One entry point — `/
 - **State as git history** — `.sweetclaude/sweetclaude.yaml` is committed, not gitignored. Phase progression, decisions, and assumptions are project history, not session memory.
 - **Deference levels** — Collaborative (stop after every sub-step), Guided (stop at major decisions), Autonomous (stop only at phase gates). Set in state, changeable mid-session.
 
-## Quick Start
 
-```bash
-git clone https://github.com/carson-sweet/sweetclaude.git
-cd sweetclaude && ./install.sh
-```
 
-Then go to your project and run:
+## How It Works
 
-```
-/sweetclaude
-```
+SweetClaude is a Claude Code plugin. After install, all skills are available as slash commands in every Claude Code session. You can also load it for a single session with `--plugin-dir` without a global install.
 
-Describe what you want in plain English — "I want to start building X", "pick up where I left off", "what should I work on next" — or just press enter for a status prompt. The orchestrator detects your project state and routes to the right skill.
+**State tracking.** SweetClaude creates a `.sweetclaude/` directory in your project. The unified state file `.sweetclaude/sweetclaude.yaml` tracks phase, decisions, assumptions, scope changes, and feature activation. Commit it to git — it is project history, not cache. When you return, `/sweetclaude` reads state and re-orients without you re-explaining anything.
 
-→ [Full install options, updating, uninstalling](INSTALL.md)
-→ [First session walkthrough](QUICKSTART.md)
-→ [All skills by category](docs/user-guide/skills-reference.md)
+**Enforcement.** TDD hooks physically block test file modification during implementation (hook-enforced, not advisory) and run tests automatically after every source edit. At higher TDD levels, test writer and implementer are separate AI agents in separate contexts — the implementer never sees the spec, only the failing tests.
+
+**Behavioral stability.** Not all behavioral properties are guaranteed equally. Hook-enforced properties are deterministic and version-stable. Protocol Guardian (`/sweetclaude:guardian-on`) upgrades instruction-guided properties to deterministic enforcement for a session. The 15-contract behavioral regression suite validates properties after model upgrades.
+
+**Deference levels.** Collaborative (stop after every sub-step), Guided (stop at major decisions), Autonomous (stop only at phase gates). Changeable mid-session.
+
+For a full explanation of the architecture and design decisions behind SweetClaude → [How It Works](docs/user-guide/how-it-works.md)
+
+
 
 ## All Commands
+
+Even though the single entry point will support you completely, you can invoke most of the 
 
 ### The Front Door
 | Command | What it does |
@@ -66,7 +109,7 @@ Describe what you want in plain English — "I want to start building X", "pick 
 | Command | What it does |
 |---|---|
 | `/sweetclaude:off` | Suspend SweetClaude — preserves all artifacts, reactivate with `/sweetclaude` |
-| `/sweetclaude:purge` | Delete all SweetClaude artifacts — recommends a backup branch, shows all files, requires "I understand" |
+| `/sweetclaude:purge` | Delete all SweetClaude artifacts — recommends a backup branch, shows all files, requires "I understand". **Taking a branch snapshot before is highly recommended.** |
 | `/sweetclaude:update` | Fetch latest SweetClaude from GitHub and sync to all projects |
 | `/sweetclaude:fix-sweetclaude` | Audit and repair SweetClaude configuration |
 
@@ -83,21 +126,9 @@ Individual workflow skills (product, design, code, testing, corpus) are accessib
 
 → [All skills by category](docs/user-guide/skills-reference.md)
 
-## How It Works
 
-SweetClaude is a Claude Code plugin. After install, all skills are available as slash commands in every Claude Code session. You can also load it for a single session with `--plugin-dir` without a global install.
 
-**State tracking.** SweetClaude creates a `.sweetclaude/` directory in your project. The unified state file `.sweetclaude/sweetclaude.yaml` tracks phase, decisions, assumptions, scope changes, and feature activation. Commit it to git — it is project history, not cache. When you return, `/sweetclaude` reads state and re-orients without you re-explaining anything.
-
-**Enforcement.** TDD hooks physically block test file modification during implementation (hook-enforced, not advisory) and run tests automatically after every source edit. At higher TDD levels, test writer and implementer are separate AI agents in separate contexts — the implementer never sees the spec, only the failing tests.
-
-**Behavioral stability.** Not all behavioral properties are guaranteed equally. Hook-enforced properties are deterministic and version-stable. Protocol Guardian (`/sweetclaude:guardian-on`) upgrades instruction-guided properties to deterministic enforcement for a session. The 15-contract behavioral regression suite validates properties after model upgrades.
-
-**Deference levels.** Collaborative (stop after every sub-step), Guided (stop at major decisions), Autonomous (stop only at phase gates). Changeable mid-session.
-
-For a full explanation of the architecture and design decisions behind SweetClaude → [How It Works](docs/user-guide/how-it-works.md)
-
-## Upstream Dependencies
+## Dependencies
 
 SweetClaude orchestrates these plugins — it does not fork or modify them:
 
@@ -108,9 +139,15 @@ SweetClaude orchestrates these plugins — it does not fork or modify them:
 
 For dependency risk, failure modes, and contingency plans → [Platform Dependencies](docs/user-guide/platform-dependencies.md)
 
+
+
 ## License
 
 [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0-or-later) — free to use, modify, and distribute. No restrictions for personal or commercial tools you build. AGPL obligations activate only if you deploy SweetClaude as a network service offered to others — in that case, you must make your modified source available under the same license. See [LICENSE](LICENSE) for full terms.
+
+Contact the project owner with questions about licensing.
+
+
 
 ## Contribute
 
@@ -123,19 +160,30 @@ For skill improvements, documentation, walkthroughs, and examples — read [CONT
 <p>
   <img src="sweetclaude-workshop.png" alt="SweetClaude Workshop" width="600" align="left">
 </p>
-<br clear="all"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Support
 
 If you're getting value from SweetClaude, consider [buying me a coffee](https://ko-fi.com/carsonsweet). Which in reality means you're moving dollars from my coffee budget to [my dog Smushford's](http://instagram.com/smushford) treat budget. 
 
 Smushford thanks you.
-<br clear="all"/>
 <p>
   <img src="smushford.png" alt="Smushford Wellington DuBois III" width="400" align="left">
 </p>
-<br clear="all"/>
-
 
 
 
