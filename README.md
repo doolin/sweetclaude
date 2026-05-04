@@ -3,8 +3,6 @@
 # SweetClaude
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
-[![GitHub contributors](https://img.shields.io/github/contributors/carson-sweet/sweetclaude)](https://github.com/carson-sweet/sweetclaude/graphs/contributors)
-[![GitHub last commit](https://img.shields.io/github/last-commit/carson-sweet/sweetclaude)](https://github.com/carson-sweet/sweetclaude/commits/main)
 
 A Claude Code plugin based on the Skills 2.0 framework that implements full product / project lifecycle workflows, from concept to production maintenance.
 
@@ -161,12 +159,9 @@ Contributions welcome. SweetClaude is built by solo developers, for solo develop
 
 For skill improvements, documentation, walkthroughs, and examples — read [CONTRIBUTING.md](CONTRIBUTING.md) for where to start. Questions and ideas belong in [GitHub Discussions](https://github.com/carson-sweet/sweetclaude/discussions). Bugs and PRs go to Issues.
 
-<p>
-  <img src="sweetclaude-workshop.png" alt="SweetClaude Workshop" width="600" align="left">
+<p align="center">
+  <img src="sweetclaude-workshop.png" alt="SweetClaude Workshop" width="600">
 </p>
-
-
-
 
 
 
@@ -185,8 +180,8 @@ For skill improvements, documentation, walkthroughs, and examples — read [CONT
 If you're getting value from SweetClaude, consider [buying me a coffee](https://ko-fi.com/carsonsweet). Which in reality means you're moving dollars from my coffee budget to [my dog Smushford's](http://instagram.com/smushford) treat budget. 
 
 Smushford thanks you.
-<p>
-  <img src="smushford.png" alt="Smushford Wellington DuBois III" width="400" align="left">
+<p align="center">
+  <img src="smushford.png" alt="Smushford Wellington DuBois III" width="400">
 </p>
 
 
