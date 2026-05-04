@@ -159,7 +159,7 @@ Contributions welcome. SweetClaude is built by solo developers, for solo develop
 
 For skill improvements, documentation, walkthroughs, and examples — read [CONTRIBUTING.md](CONTRIBUTING.md) for where to start. Questions and ideas belong in [GitHub Discussions](https://github.com/carson-sweet/sweetclaude/discussions). Bugs and PRs go to Issues.
 
-<p align="center">
+<p>
   <img src="sweetclaude-workshop.png" alt="SweetClaude Workshop" width="600">
 </p>
 
@@ -180,7 +180,7 @@ For skill improvements, documentation, walkthroughs, and examples — read [CONT
 If you're getting value from SweetClaude, consider [buying me a coffee](https://ko-fi.com/carsonsweet). Which in reality means you're moving dollars from my coffee budget to [my dog Smushford's](http://instagram.com/smushford) treat budget. 
 
 Smushford thanks you.
-<p align="center">
+<p>
   <img src="smushford.png" alt="Smushford Wellington DuBois III" width="400">
 </p>
 
