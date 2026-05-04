@@ -65,6 +65,34 @@ PROJECT_DIR="$tmpdir" bash "$SCRIPT"
 grep -q "mode: flow" "$tmpdir/.sweetclaude/state/effective-gates.yaml" 2>/dev/null \
     && pass "flow: mode field correct" || fail "flow: mode field wrong"
 
+# --- kanban without wip_limit override (test mode default propagation) ---
+cat > "$tmpdir/.sweetclaude/state/sweetclaude.yaml" << 'YAML'
+schema_version: 2
+mode: kanban
+YAML
+
+PROJECT_DIR="$tmpdir" bash "$SCRIPT"
+
+grep -q "wip_limit: 3" "$tmpdir/.sweetclaude/state/effective-gates.yaml" 2>/dev/null \
+    && pass "kanban no-override: wip_limit defaults to 3" || fail "kanban no-override: wip_limit default not applied"
+
+# --- agile mode ---
+cat > "$tmpdir/.sweetclaude/state/sweetclaude.yaml" << 'YAML'
+schema_version: 2
+mode: agile
+YAML
+
+PROJECT_DIR="$tmpdir" bash "$SCRIPT"
+
+grep -q "mode: agile" "$tmpdir/.sweetclaude/state/effective-gates.yaml" 2>/dev/null \
+    && pass "agile: mode field correct" || fail "agile: mode field wrong"
+
+grep -q "default_tdd_level: 2" "$tmpdir/.sweetclaude/state/effective-gates.yaml" 2>/dev/null \
+    && pass "agile: default_tdd_level=2" || fail "agile: default_tdd_level wrong"
+
+grep -q "no_active_sprint" "$tmpdir/.sweetclaude/state/effective-gates.yaml" 2>/dev/null \
+    && pass "agile: no_active_sprint gate present" || fail "agile: no_active_sprint gate missing"
+
 echo ""
 echo "Results: $PASS passed, $FAIL failed"
 [ "$FAIL" -eq 0 ] || exit 1
