@@ -1,10 +1,8 @@
-<table border="0"><tr>
-<td><img src="sweetclaude.png" alt="SweetClaude" width="180"></td>
-<td valign="middle"><h1>SweetClaude</h1>
+<p><img src="sweetclaude.png" alt="SweetClaude" width="180"></p>
+
+# SweetClaude
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
-</td>
-</tr></table>
 
 A Claude Code plugin based on the Skills 2.0 framework that implements full product / project lifecycle workflows, from concept to production maintenance.
 
@@ -42,8 +40,8 @@ That's it. Install SweetClaude and use the single entry point followed by what y
 
 You can use SweetClaude to start a new effort from scratch, or have it adopt an existing project. Just point to any documents you might have — backlog, roadmaps, design, etc. — it will assess and migrate what you have and then help you fill in the gaps.
 
-→ [Full install options, updating, uninstalling](INSTALL.md)
-→ [First session walkthrough](QUICKSTART.md)
+→ [Full install options, updating, uninstalling](docs/user-guide/install.md)
+→ [First session walkthrough](docs/user-guide/quickstart.md)
 → [All skills by category](docs/user-guide/skills-reference.md)
 
 

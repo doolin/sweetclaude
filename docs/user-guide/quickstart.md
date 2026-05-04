@@ -77,7 +77,7 @@ Tell SweetClaude "I have a pile of documents I need to organize." Four-step corp
 
 ## What to Read Next
 
-- End-to-end scenario walkthroughs → [Walkthroughs](docs/user-guide/walkthroughs.md)
-- Full command reference → [COMMANDS.md](COMMANDS.md)
-- How SweetClaude's architecture works → [How It Works](docs/user-guide/how-it-works.md)
-- Honest answers to common questions → [FAQ](docs/user-guide/faq.md)
+- End-to-end scenario walkthroughs → [Walkthroughs](walkthroughs.md)
+- Full command reference → [Skills Reference](skills-reference.md)
+- How SweetClaude's architecture works → [How It Works](how-it-works.md)
+- Honest answers to common questions → [FAQ](faq.md)
