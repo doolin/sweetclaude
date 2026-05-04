@@ -54,6 +54,29 @@ fi
 # Versions
 python3 -c "import json; d=json.load(open('$HOME/.claude/plugins/installed_plugins.json')); e=[v[0] for k,v in d.get('plugins',{}).items() if 'sweetclaude' in k.lower() and v]; print(e[0].get('version','?') if e else '?')" 2>/dev/null
 python3 -c "import json; print(json.load(open('$HOME/dev/sweetclaude/package.json')).get('version','?'))" 2>/dev/null
+
+# Mode and WIP state
+cat .sweetclaude/state/effective-gates.yaml 2>/dev/null | python3 -c "
+import yaml,sys
+d=yaml.safe_load(sys.stdin) or {}
+print('MODE=' + d.get('mode','unset'))
+print('WIP_LIMIT=' + str(d.get('wip_limit','null')))
+print('TDD_DEFAULT=' + str(d.get('default_tdd_level','1')))
+" 2>/dev/null || echo -e "MODE=unset\nWIP_LIMIT=null\nTDD_DEFAULT=1"
+
+# In-progress issue count
+find .sweetclaude/artifacts/issues/ -name '*.yaml' 2>/dev/null \
+    | xargs -I{} python3 -c "
+import yaml; d=yaml.safe_load(open('{}')) or {}
+print('y' if d.get('status')=='in_progress' else '')
+" 2>/dev/null | grep -c y || echo 0
+
+# Active sprint count
+find .sweetclaude/artifacts/sprints/ -name '*.yaml' 2>/dev/null \
+    | xargs -I{} python3 -c "
+import yaml; d=yaml.safe_load(open('{}')) or {}
+print('y' if d.get('status')=='active' else '')
+" 2>/dev/null | grep -c y || echo 0
 ```
 
 Check: `.sweetclaude/state/project-sop.md` — exists? (yes/no only — do not read full contents)
@@ -81,6 +104,16 @@ ls .sweetclaude/state/corpus-pipeline.yaml 2>/dev/null || echo "corpus_MISSING"
 
 Collect each skill marked `active` where the corresponding artifact is `*_MISSING`. Store as `SKILLS_WARNINGS` list. If none: `SKILLS_WARNINGS = []`.
 
+## Step 2.5: Compute drift signal
+
+Using `mode`, `wip_limit`, `in_progress` count, `active_sprint_count`, and `phase` from Step 2 output:
+
+- If `mode=kanban` AND `in_progress >= wip_limit`: set `DRIFT = ⚠ WIP at limit ({in_progress}/{wip_limit})`
+- Else if `mode=agile` AND `active_sprint_count=0` AND `phase=IMPLEMENT`: set `DRIFT = ⚠ No active sprint`
+- Else if `mode=flow` AND `in_progress >= 5`: set `DRIFT = → Consider Kanban for WIP visibility ({in_progress} items in_progress)`
+- Else if `mode=shape_up` AND no active cycle artifact exists under `.sweetclaude/artifacts/cycles/`: set `DRIFT = → No active cycle — start with a pitch`
+- Otherwise: `DRIFT = ""`
+
 ## Step 3: Present status
 
 Use the data from Steps 1–2. No other reads or commands.
@@ -105,6 +138,7 @@ Work item:      [{id}] {title} [{type}]
 Phase:          {phase}  (step {N} of {M})
 Workflow:       {workflow line}
 Deference:      {deference_level}
+Mode:           {mode}  (TDD default: Level {default_tdd_level})  {DRIFT}
 
 Active milestones:
   {MILESTONES}
@@ -133,6 +167,7 @@ SweetClaude ACTIVE — {project name}
 Version stage:  {version_stage}
 Work item:      (none)
 Deference:      {deference_level}
+Mode:           {mode}  (TDD default: Level {default_tdd_level})  {DRIFT}
 
 Active milestones:
   {MILESTONES}
