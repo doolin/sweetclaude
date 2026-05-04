@@ -184,3 +184,185 @@ result = {
 
 print(yaml.dump(result, default_flow_style=False, sort_keys=False), end='')
 PYEOF
+
+# Render pre-flight status block → .sweetclaude/state/session-status.txt
+STATUS_OUTPUT="$PROJECT_DIR/.sweetclaude/state/session-status.txt"
+export STATUS_OUTPUT
+
+python3 - 2>/dev/null <<'PYEOF2'
+import yaml, os, glob, re, subprocess
+
+project_dir = os.environ.get('PROJECT_DIR', '')
+state_dir   = os.path.join(project_dir, '.sweetclaude', 'state')
+status_out  = os.environ.get('STATUS_OUTPUT', os.path.join(state_dir, 'session-status.txt'))
+
+try:
+    with open(os.path.join(state_dir, 'session-state.yaml')) as f:
+        ss = yaml.safe_load(f) or {}
+except Exception:
+    import sys; sys.exit(0)
+
+project_name     = ss.get('project_name') or 'Project'
+checkpoint_next  = ss.get('checkpoint_next')
+product_base     = ss.get('paths', {}).get('product_base', '.sweetclaude/product')
+reg_count        = ss.get('improvement_register_count', 0)
+product_base_abs = os.path.join(project_dir, product_base)
+
+def field(content, name):
+    m = re.search(rf'\*\*{name}:\*\*\s*(.+)', content)
+    return m.group(1).strip() if m else ''
+
+def title_from(content):
+    m = re.search(r'^# (.+)', content, re.MULTILINE)
+    return m.group(1).strip() if m else ''
+
+DONE = {'done', 'complete', 'achieved', 'closed', 'cancelled'}
+
+try:
+    r = subprocess.run(['git', 'status', '--short'],
+                       capture_output=True, text=True, cwd=project_dir)
+    uncommitted = len([l for l in r.stdout.strip().split('\n') if l.strip()])
+except Exception:
+    uncommitted = 0
+
+scratch_files = []
+scratch_dir = os.path.join(project_dir, 'scratch')
+if os.path.isdir(scratch_dir):
+    try:
+        scratch_files = [f for f in os.listdir(scratch_dir)
+                         if re.search(r'checkpoint|continue|resume|handoff', f, re.IGNORECASE)][:5]
+    except Exception:
+        pass
+
+roadmap, issues, backlog = [], [], []
+for f in sorted(glob.glob(os.path.join(product_base_abs, 'roadmap', 'RM-*.md'))):
+    try:
+        c = open(f).read()
+        roadmap.append({'id': os.path.basename(f).split('.')[0],
+                        'title': title_from(c), 'status': field(c, 'Status').lower()})
+    except Exception: pass
+
+for f in sorted(glob.glob(os.path.join(product_base_abs, 'issues', 'I-*.md'))):
+    try:
+        c = open(f).read()
+        s = field(c, 'Status').lower()
+        issues.append({'id': os.path.basename(f).split('.')[0], 'title': title_from(c),
+                       'status': s, 'roadmap': field(c, 'Roadmap Item'), 'open': s not in DONE})
+    except Exception: pass
+
+for f in sorted(glob.glob(os.path.join(product_base_abs, 'backlog', 'BL-*.md'))):
+    try:
+        c = open(f).read()
+        s = field(c, 'Status').lower()
+        p = field(c, 'Priority').upper()
+        if 'DONE' not in s.upper() and 'COMPLETE' not in s.upper():
+            backlog.append({'id': os.path.basename(f).split('.')[0],
+                            'title': title_from(c), 'priority': p, 'status': s})
+    except Exception: pass
+
+in_progress = [i for i in issues if i['open'] and i['status'] == 'in_progress']
+open_issues  = [i for i in issues if i['open']]
+rm_achieved  = [r for r in roadmap if r['status'] in {'complete', 'achieved'}]
+rm_active    = [r for r in roadmap if r['status'] in {'in_progress', 'active'}]
+rm_planned   = [r for r in roadmap if r['status'] not in {'complete','achieved','in_progress','active'}]
+bl_p0  = [b for b in backlog if b['priority'] == 'P0']
+bl_p1  = [b for b in backlog if b['priority'] == 'P1']
+bl_p2  = [b for b in backlog if b['priority'] == 'P2']
+bl_sp  = [b for b in backlog if b['priority'] == 'SPIKE']
+bl_oth = [b for b in backlog if b['priority'] not in {'P0','P1','P2','SPIKE'}]
+
+L = []
+L.append(project_name)
+L.append('═' * 36)
+L.append('')
+L.append('UNFINISHED WORK')
+L.append('─' * 15)
+uf = []
+if uncommitted > 0:
+    uf.append(f'· {uncommitted} uncommitted file(s) in working tree')
+if checkpoint_next:
+    uf.append(f'· Checkpoint: {checkpoint_next}')
+if scratch_files:
+    uf.append(f'· Scratch: {", ".join(scratch_files)}')
+if in_progress:
+    ids = ', '.join(i['id'] for i in in_progress)
+    uf.append(f'· {len(in_progress)} issue(s) in progress: {ids}')
+L.extend(uf if uf else ['· Nothing open.'])
+
+L.append('')
+L.append('ROADMAP')
+L.append('─' * 7)
+if not roadmap:
+    L.append('No roadmap configured. Ask me to build one.')
+else:
+    L.append(f'{len(roadmap)} items: {len(rm_achieved)} achieved · {len(rm_active)} active · {len(rm_planned)} planned')
+    if rm_active:
+        L.append('')
+        L.append('  Active:')
+        for r in rm_active:
+            L.append(f'    {r["id"]}: {r["title"]}')
+    elif rm_planned:
+        L.append('')
+        L.append('  Up next:')
+        for r in rm_planned[:3]:
+            L.append(f'    {r["id"]}: {r["title"]}')
+
+L.append('')
+L.append('EPICS')
+L.append('─' * 5)
+if not open_issues:
+    L.append('No open epics.')
+else:
+    rm_lookup = {r['id']: r['title'] for r in roadmap}
+    grouped, unlinked = {}, []
+    for issue in open_issues:
+        rm_id = (issue.get('roadmap') or '').strip()
+        if rm_id and rm_id not in {'(none)', 'none', ''}:
+            grouped.setdefault(rm_id, []).append(issue)
+        else:
+            unlinked.append(issue)
+    if grouped or unlinked:
+        for rm_id in sorted(grouped.keys()):
+            L.append(f'  {rm_id} — {rm_lookup.get(rm_id, rm_id)}:')
+            for issue in grouped[rm_id]:
+                L.append(f'    · {issue["id"]}: {issue["title"]} [{issue["status"]}]')
+        if unlinked:
+            L.append('  Unlinked:')
+            for issue in unlinked:
+                L.append(f'    · {issue["id"]}: {issue["title"]} [{issue["status"]}]')
+    else:
+        L.append('No open epics.')
+
+L.append('')
+L.append('BACKLOG')
+L.append('─' * 7)
+if not backlog:
+    L.append('Backlog is clear.')
+else:
+    total_bl = len(backlog)
+    L.append(f'{total_bl} open: {len(bl_p0)} P0 · {len(bl_p1)} P1 · {len(bl_p2)} P2 · {len(bl_sp)} spikes · {len(bl_oth)} other')
+    if bl_p0:
+        L.append('')
+        L.append('  Critical:')
+        for b in bl_p0:
+            L.append(f'    · {b["id"]}: {b["title"]}')
+    else:
+        up_next = (bl_p1 + bl_p2)[:3]
+        if up_next:
+            L.append('')
+            L.append('  Up next:')
+            for b in up_next:
+                L.append(f'    · {b["id"]}: {b["title"]} [{b["priority"]}]')
+    if total_bl > 10:
+        L.append(f"  ({total_bl} total — ask me to run a backlog triage if it’s getting unwieldy)")
+
+L.append('')
+if reg_count > 0:
+    noun = 'learnings' if reg_count != 1 else 'learning'
+    L.append(f'I absorbed {reg_count} new {noun} from previous sessions. Feel free to ask about them if you want.')
+    L.append('')
+L.append("Anything you want to look at more closely, or is there something above you’d like to work on — or something else entirely?")
+
+with open(status_out, 'w') as f:
+    f.write('\n'.join(L))
+PYEOF2

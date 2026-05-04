@@ -26,7 +26,7 @@ Check for `.sweetclaude/state/phase.yaml`:
 ls .sweetclaude/state/phase.yaml 2>/dev/null && echo "CONFIGURED" || echo "FRESH"
 ```
 If `CONFIGURED`: stop immediately.
-> "SweetClaude is already configured here. Run `/sweetclaude:status` to see progress, or `/sweetclaude:on` to re-run setup."
+> "SweetClaude is already configured here. Ask me for status to see progress, or ask me to re-run setup."
 
 Check for existing code (rule out empty projects):
 ```bash
@@ -395,7 +395,7 @@ Present final summary:
 > {If Critical items remain unaddressed}
 > **⚠ Critical items still open:** {list them}. Address these before making any code changes.
 >
-> **Next:** Run `/sweetclaude:find-skill` to start your first work item, or `/sweetclaude:status` to review the project state."
+> **Next:** Tell me what you'd like to work on first, or ask me for status to review the project state."
 
 ---
 

@@ -64,138 +64,183 @@ print('WIP_LIMIT=' + str(d.get('wip_limit','null')))
 print('TDD_DEFAULT=' + str(d.get('default_tdd_level','1')))
 " 2>/dev/null || echo -e "MODE=unset\nWIP_LIMIT=null\nTDD_DEFAULT=1"
 
-# In-progress issue count
-find .sweetclaude/artifacts/issues/ -name '*.yaml' 2>/dev/null \
-    | xargs -I{} python3 -c "
-import yaml; d=yaml.safe_load(open('{}')) or {}
-print('y' if d.get('status')=='in_progress' else '')
-" 2>/dev/null | grep -c y || echo 0
+# Roadmap, issues, and backlog details
+product_base=$(cat .sweetclaude/state/session-state.yaml 2>/dev/null | python3 -c "import yaml,sys; d=yaml.safe_load(sys.stdin); print(d.get('paths',{}).get('product_base','.sweetclaude/product'))" 2>/dev/null || echo ".sweetclaude/product")
 
-# Active sprint count
-find .sweetclaude/artifacts/sprints/ -name '*.yaml' 2>/dev/null \
-    | xargs -I{} python3 -c "
-import yaml; d=yaml.safe_load(open('{}')) or {}
-print('y' if d.get('status')=='active' else '')
-" 2>/dev/null | grep -c y || echo 0
+python3 - <<'PYEOF'
+import os, re, glob, json
+
+base = os.environ.get('product_base', '.sweetclaude/product')
+
+def field(content, name):
+    m = re.search(rf'\*\*{name}:\*\*\s*(.+)', content)
+    return m.group(1).strip() if m else ''
+
+def title(content):
+    m = re.search(r'^# (.+)', content, re.MULTILINE)
+    return m.group(1).strip() if m else ''
+
+DONE = {'done', 'complete', 'achieved', 'closed', 'complete'}
+
+# --- Roadmap ---
+roadmap = []
+for f in sorted(glob.glob(f'{base}/roadmap/RM-*.md')):
+    c = open(f).read()
+    roadmap.append({'id': os.path.basename(f).split('.')[0], 'title': title(c),
+                    'status': field(c, 'Status').lower(), 'type': field(c, 'Type')})
+print('ROADMAP_START')
+print(json.dumps(roadmap))
+print('ROADMAP_END')
+
+# --- Issues ---
+issues = []
+for f in sorted(glob.glob(f'{base}/issues/I-*.md')):
+    c = open(f).read()
+    s = field(c, 'Status').lower()
+    issues.append({'id': os.path.basename(f).split('.')[0], 'title': title(c),
+                   'status': s, 'roadmap': field(c, 'Roadmap Item'), 'epic': field(c, 'Epic'),
+                   'priority': field(c, 'Priority'), 'open': s not in DONE})
+print('ISSUES_START')
+print(json.dumps(issues))
+print('ISSUES_END')
+
+# --- Backlog ---
+backlog = []
+for f in sorted(glob.glob(f'{base}/backlog/BL-*.md')):
+    c = open(f).read()
+    s = field(c, 'Status').lower()
+    p = field(c, 'Priority').upper()
+    if 'DONE' not in s.upper() and 'COMPLETE' not in s.upper():
+        backlog.append({'id': os.path.basename(f).split('.')[0], 'title': title(c),
+                        'priority': p, 'status': s})
+print('BACKLOG_START')
+print(json.dumps(backlog))
+print('BACKLOG_END')
+PYEOF
 ```
-
-Check: `.sweetclaude/state/project-sop.md` — exists? (yes/no only — do not read full contents)
-
-**Skills state check (read-only — do not write):**
-
-```bash
-cat .sweetclaude/state/skills.yaml 2>/dev/null || echo "SKILLS_YAML_MISSING"
-```
-
-If `SKILLS_YAML_MISSING` or `schema_version` is absent: set `SKILLS_STATUS = "not initialized — run /sweetclaude:fix-sweetclaude"`.
-
-If `schema_version: 1`: set `SKILLS_STATUS = "schema v1 — run /sweetclaude:update to migrate"`.
-
-If `schema_version: 2`: for each skill with `status: active`, check whether its artifact exists:
-
-```bash
-product_base=$(cat .sweetclaude/state/session-state.yaml 2>/dev/null | python3 -c "import yaml,sys; d=yaml.safe_load(sys.stdin); print(d.get('paths',{}).get('product_base','.sweetclaude/product'))" 2>/dev/null || echo ".sweetclaude/artifacts/product")
-ls ${product_base}/milestones/MILESTONES-INDEX.md 2>/dev/null || echo "milestones_MISSING"
-ls ${product_base}/backlog/BACKLOG-INDEX.md 2>/dev/null || echo "backlog_MISSING"
-ls .sweetclaude/state/personas.yaml 2>/dev/null || echo "personas_MISSING"
-find ${product_base}/stories/ -name "US-*.md" 2>/dev/null | head -1 || echo "stories_MISSING"
-ls .sweetclaude/state/corpus-pipeline.yaml 2>/dev/null || echo "corpus_MISSING"
-```
-
-Collect each skill marked `active` where the corresponding artifact is `*_MISSING`. Store as `SKILLS_WARNINGS` list. If none: `SKILLS_WARNINGS = []`.
-
-## Step 2.5: Compute drift signal
-
-Using `mode`, `wip_limit`, `in_progress` count, `active_sprint_count`, and `phase` from Step 2 output:
-
-- If `mode=kanban` AND `in_progress >= wip_limit`: set `DRIFT = ⚠ WIP at limit ({in_progress}/{wip_limit})`
-- Else if `mode=agile` AND `active_sprint_count=0` AND `phase=IMPLEMENT`: set `DRIFT = ⚠ No active sprint`
-- Else if `mode=flow` AND `in_progress >= 5`: set `DRIFT = → Consider Kanban for WIP visibility ({in_progress} items in_progress)`
-- Else if `mode=shape_up` AND no active cycle artifact exists under `.sweetclaude/artifacts/cycles/`: set `DRIFT = → No active cycle — start with a pitch`
-- Otherwise: `DRIFT = ""`
 
 ## Step 3: Present status
 
-Use the data from Steps 1–2. No other reads or commands.
+Parse the JSON blocks from Step 2 output (between `*_START` / `*_END` markers). Use all data gathered. No further reads or commands.
 
-Compute:
-- **step_N / step_M** = 1-based position of active phase in workflow / total phases
-- **Workflow line** = phases joined by ` → `, current phase wrapped in `*asterisks*`
-- **SC_UPDATE** = if installed version ≠ latest version, append `→ v{latest} available — run /sweetclaude:update`
-- **RAG_STATUS** = if lancedb count > 0: `{canonical_count} canonical docs · indexed` / else if canonical_count > 0: `{canonical_count} canonical docs · not indexed` / else: `not configured`
-- **CHECKPOINT** = use `checkpoint_next` from pre-loaded state (or last `Next:` line from checkpoint.md). If scratch files found, list them.
-- **MILESTONES** = if `product_base` is `MANIFEST_MISSING`: show `not configured (run /sweetclaude:on)`. Otherwise: from the Status grep output: for each `active` milestone, show its filename slug and `active`. If none are active but milestone files exist, show `none active`. If no MS-*.md files exist, show `none`.
-- **SKILLS_LINE** = if `SKILLS_STATUS` is set: show it. If `SKILLS_WARNINGS` is non-empty: show `⚠ {N} skill(s) marked active but missing artifacts: {list} — run /sweetclaude:fix-sweetclaude`. If both empty: omit the line entirely.
+Compute derived values:
+- **UNCOMMITTED_COUNT** = number of lines in `git status --short` output
+- **OPEN_ISSUES** = issues where `open: true`
+- **IN_PROGRESS_ISSUES** = open issues where status = `in_progress`
+- **ROADMAP_ACHIEVED** = roadmap items where status ∈ {complete, achieved}
+- **ROADMAP_ACTIVE** = roadmap items where status ∈ {in_progress, active}
+- **ROADMAP_PLANNED** = all others (not achieved/complete)
+- **BACKLOG_P0** = backlog items where priority = P0
+- **BACKLOG_P1** = backlog items where priority = P1
+- **BACKLOG_P2** = backlog items where priority = P2
+- **BACKLOG_SPIKE** = backlog items where priority = SPIKE
+- **BACKLOG_OTHER** = backlog items with any other priority
 
-**If active work item exists:**
+Output exactly:
 
 ```
-SweetClaude ACTIVE — {project name}
+{project name}
 ════════════════════════════════════
 
-Version stage:  {version_stage}
-Work item:      [{id}] {title} [{type}]
-Phase:          {phase}  (step {N} of {M})
-Workflow:       {workflow line}
-Deference:      {deference_level}
-Mode:           {mode}  (TDD default: Level {default_tdd_level})  {DRIFT}
-
-Active milestones:
-  {MILESTONES}
-
-Last checkpoint:
-  {Next: line from checkpoint.md, or "none — run a skill to create one"}
-
-Scratch checkpoints:
-  {list of matching scratch files, or "none"}
-
-Recent activity:
-  {last 5 commits}
-
-Framework:
-  SweetClaude:    v{installed} {SC_UPDATE}
-  Doc Corpus RAG: {RAG_STATUS}
-  {SKILLS_LINE — omit line if empty}
+UNFINISHED WORK
+───────────────
 ```
 
-**If no active work item:**
+Then for each of the following, emit a `·` bullet if the condition is true. If none are true, emit `· Nothing open.`
+
+- UNCOMMITTED_COUNT > 0: `· {N} uncommitted file(s) in working tree`
+- checkpoint_next is set (non-null, non-empty): `· Checkpoint: {checkpoint_next}`
+- scratch files found: `· Scratch: {filenames}`
+- IN_PROGRESS_ISSUES non-empty: `· {N} issue(s) in progress: {comma-separated IDs}`
+
+Then:
 
 ```
-SweetClaude ACTIVE — {project name}
-════════════════════════════════════
 
-Version stage:  {version_stage}
-Work item:      (none)
-Deference:      {deference_level}
-Mode:           {mode}  (TDD default: Level {default_tdd_level})  {DRIFT}
-
-Active milestones:
-  {MILESTONES}
-
-Last checkpoint:
-  {Next: line from checkpoint.md, or "none"}
-
-Scratch checkpoints:
-  {list of matching scratch files, or "none"}
-
-Recent activity:
-  {last 5 commits}
-
-Framework:
-  SweetClaude:    v{installed} {SC_UPDATE}
-  Doc Corpus RAG: {RAG_STATUS}
-  {SKILLS_LINE — omit line if empty}
+ROADMAP
+───────
 ```
 
-## Step 4: Suggest action
+If no roadmap files exist:
+```
+No roadmap configured. Ask me to build one with `/sweetclaude:product-roadmap`.
+```
 
-If no active work item: "Run `/sweetclaude:go` to pick up the next item."
+Otherwise: `{total} items: {ROADMAP_ACHIEVED} achieved · {ROADMAP_ACTIVE} active · {ROADMAP_PLANNED} planned`
 
-If active work item: one concrete sentence on what to do next, derived from the checkpoint or phase. End with "Run `/sweetclaude:go` to continue."
+Then, if ROADMAP_ACTIVE > 0, list active items:
+```
 
-## Step 5: Improvement register
+  Active:
+    {id}: {title}
+    ...
+```
 
-If `improvement_register_count` in pre-loaded state is > 0, append:
-> "I have {N} learnings from previous sessions. Run `/sweetclaude:go` and I'll apply them."
+Else if ROADMAP_PLANNED > 0, list up to 3 planned items:
+```
 
-Do not list them here — keep status fast.
+  Up next:
+    {id}: {title}
+    ...
+```
+
+Then:
+
+```
+
+EPICS
+─────
+```
+
+Group OPEN_ISSUES by their `roadmap` field. For each active or planned roadmap item that has open issues, show:
+```
+  {roadmap-id} — {roadmap title}:
+    · {issue-id}: {title} [{status}]
+```
+
+After linked issues, if any open issues have `roadmap` = "(none)" or empty:
+```
+  Unlinked:
+    · {issue-id}: {title} [{status}]
+```
+
+If no open issues at all: `No open epics.`
+
+Then:
+
+```
+
+BACKLOG
+───────
+```
+
+If backlog is empty: `Backlog is clear.`
+
+Otherwise: `{total open} open: {BACKLOG_P0} P0 · {BACKLOG_P1} P1 · {BACKLOG_P2} P2 · {BACKLOG_SPIKE} spikes · {BACKLOG_OTHER} other`
+
+If BACKLOG_P0 > 0:
+```
+
+  Critical:
+    · {id}: {title}
+    (list all P0 items)
+```
+
+Else show up to 3 next items (P1 first, then P2, skip spikes):
+```
+
+  Up next:
+    · {id}: {title} [{priority}]
+```
+
+If total open backlog > 10, append: `  ({total} total — ask me to run a backlog triage if it's getting unwieldy)`
+
+## Step 4: Closing
+
+If `improvement_register_count` in pre-loaded state is > 0, output:
+> I absorbed {N} new learnings from previous sessions. Feel free to ask about them if you want.
+
+Then always output:
+> Anything you want to look at more closely, or is there something above you'd like to work on — or something else entirely?
+
+Output nothing after this. No framework health, no version notes, no skill warnings.

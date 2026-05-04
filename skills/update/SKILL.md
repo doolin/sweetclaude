@@ -188,6 +188,9 @@ Copy from SOURCE_DIR to installed locations. Use `rsync --delete` to remove file
 # Skills → plugin cache
 rsync -a --delete $SOURCE_DIR/skills/ {installPath}/skills/
 
+# Hooks → plugin cache (hooks.json uses ${CLAUDE_PLUGIN_ROOT}/hooks/ — must stay current)
+rsync -a --delete $SOURCE_DIR/hooks/ {installPath}/hooks/
+
 # Top-level files → plugin cache
 for f in CLAUDE.md package.json LICENSE; do
   [ -f "$SOURCE_DIR/$f" ] && cp "$SOURCE_DIR/$f" {installPath}/
@@ -525,7 +528,7 @@ active_work_item:
   entry_category: ~
 ```
 
-Report: "phase.yaml migrated to schema v2. Use `/sweetclaude:find-skill` to resume work."
+Report: "phase.yaml migrated to schema v2. Tell me what you'd like to work on to resume."
 
 ### 8f: Migrate skills.yaml v1 → v2
 

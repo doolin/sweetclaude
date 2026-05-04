@@ -206,7 +206,7 @@ Write to `acceptance-criteria-{group}.md` in the project root (or `docs/` if it 
 Tell the user:
 > "Graduated successfully. Acceptance criteria are ready at `acceptance-criteria-{group}.md`.
 >
-> These are ready to paste into user stories (`/sweetclaude:product-user-stories`) or use as TDD test specs (`/sweetclaude:code-tdd`)."
+> These are ready to paste into user stories (`/sweetclaude:product-user-stories`) or tell me to set up TDD tests from them."
 
 ---
 

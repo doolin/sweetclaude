@@ -94,9 +94,21 @@ ${PLATFORM_NOTE}"
 
 HOOKS WARNING: These required hooks are not registered in hooks.json:${HOOKS_WARNING}. Run /sweetclaude:fix-sweetclaude to diagnose."
       fi
-      CONTEXT="${CONTEXT}
+      STATUS_FILE="$PROJECT_DIR/.sweetclaude/state/session-status.txt"
+      if [ -f "$STATUS_FILE" ]; then
+        STATUS_BLOCK=$(cat "$STATUS_FILE")
+        CONTEXT="${CONTEXT}
+
+<sweetclaude-status>
+${STATUS_BLOCK}
+</sweetclaude-status>
+
+Present the content between the <sweetclaude-status> tags verbatim as your first response. Do not invoke any skills. Do not run any tools."
+      else
+        CONTEXT="${CONTEXT}
 
 Invoke sweetclaude:status now before responding to the user."
+      fi
       emit_json "$CONTEXT"
     else
       if [ -n "$PLATFORM_NOTE" ]; then

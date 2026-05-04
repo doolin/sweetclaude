@@ -38,12 +38,12 @@ If any are missing:
 - Legacy fallback: check `<project>-sweetclaude/state/phase.yaml` if `.sweetclaude/` does not exist
 
 If the project is not set up:
-> "This project is not configured for SweetClaude yet. `/sweetclaude:on` will set it up — detecting whether this is a new or existing project and walking you through initialization. Set it up now?"
+> "This project is not configured for SweetClaude yet. I can set it up — detecting whether this is a new or existing project and walking you through initialization. Set it up now?"
 
 **Step 3: Hard stop if user declines.**
 
 If the user declines setup at either step, SweetClaude does not operate. No partial mode, no workarounds, no "just this once." Respond:
-> "SweetClaude needs to be configured before it can run. Without it, phase tracking, TDD enforcement, and artifact management do not work. Run `/sweetclaude:on` when you are ready."
+> "SweetClaude needs to be configured before it can run. Without it, phase tracking, TDD enforcement, and artifact management do not work. Ask me to set it up when you are ready."
 
 Do not proceed with any SweetClaude skill, phase routing, or pipeline work. The user can still use Claude Code normally — SweetClaude simply stays out of the way until configured.
 
@@ -68,9 +68,9 @@ Runs after pre-flight passes.
    - **If `active_work_item` fields are set:** Summarize where things stand:
      > "We are in the [phase] phase, working on [work type]. Pending: [pending items]."
    - **If `active_work_item` is absent or all fields are `~`:** The project is initialized but no work item has been started. Say:
-     > "Ready to go. Run `/sweetclaude:find-skill` to start a work item."
+     > "Ready to go. Tell me what you'd like to work on to start."
 
-5. **If no project exists,** say: "No project found. Run `/sweetclaude:on` to set one up."
+5. **If no project exists,** say: "No project found. Ask me to set one up."
 
 ## Domain Buckets
 

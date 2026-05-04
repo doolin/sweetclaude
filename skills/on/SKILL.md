@@ -442,7 +442,7 @@ Run if the user wants it. Otherwise proceed.
 ### Step 6-N: Hand off
 
 Tell the user:
-> "The strategic foundation is set. Next: product definition (product brief, PRD), then design, then implementation. Run `/sweetclaude:go` to continue, or `/sweetclaude:help` to see what's possible."
+> "The strategic foundation is set. Next: product definition (product brief, PRD), then design, then implementation. Just say 'continue' to keep going, or run `/sweetclaude:help` to see what's possible."
 
 Do not auto-invoke anything. The user decides when to continue.
 
@@ -704,7 +704,7 @@ If the user mentioned a problem in Step 4-E, propose a first action:
 > "You mentioned {concern}. First step: {specific action with a specific command}. Start there?"
 
 If no specific concern:
-> "Setup complete. Run `/sweetclaude:go` to start working, `/sweetclaude:status` to see the full picture, or `/sweetclaude:help` to learn what's possible."
+> "Setup complete. Just say 'go' or 'continue' to start working, ask me for status to see the full picture, or run `/sweetclaude:help` to learn what's possible."
 
 **RAG offer (existing projects):** After the above, check doc volume: count files in `docs/`, `corpus/`, `strategy/`, and any `.md` files in the root. If total is 5 or more, offer:
 > "You have a meaningful amount of documentation. Want to index it into a searchable RAG corpus so I can find design decisions, specs, and research by concept rather than by text search? (`/sweetclaude:document-corpus`)"

@@ -174,10 +174,10 @@ sc_artifact_read <RM-NNN>
 
 | Type | Downstream action |
 |---|---|
-| `major_feature` | "This kicks off a full feature workflow: discovery → design → plan → implement → verify → ship. Run `/sweetclaude:find-skill` to start discovery, or create epics and issues directly if discovery is done." |
+| `major_feature` | "This kicks off a full feature workflow: discovery → design → plan → implement → verify → ship. Tell me to start discovery, or create epics and issues directly if discovery is done." |
 | `minor_feature` | "This is a smaller feature — design → plan → implement. Create issues directly or run `/sweetclaude:project-epics new` to group them." |
 | `enhancement` | "Enhancement workflow: scope the change, create issues, implement. Run `project-issues new` to start." |
-| `sunset` | "Sunset workflow: assess consumer impact, communicate deprecation, implement removal. Run `/sweetclaude:find-skill` for an API deprecation workflow." |
+| `sunset` | "Sunset workflow: assess consumer impact, communicate deprecation, implement removal. Ask me to start an API deprecation workflow." |
 
 Set status to `in_progress`:
 
