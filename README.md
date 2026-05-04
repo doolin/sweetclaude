@@ -1,4 +1,4 @@
-<table><tr>
+<table border="0"><tr>
 <td><img src="sweetclaude.png" alt="SweetClaude" width="180"></td>
 <td valign="middle"><h1>SweetClaude</h1>
 
