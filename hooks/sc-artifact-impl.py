@@ -37,6 +37,7 @@ PREFIX_TO_TYPE = {
     "REL":   "release",
     "MS":    "milestone",
     "PITCH": "pitch",
+    "CYC":   "cycle",
 }
 
 TYPE_TO_PREFIX = {v: k for k, v in PREFIX_TO_TYPE.items()}
@@ -49,6 +50,7 @@ TYPE_TO_DIR = {
     "release":      "roadmap/releases",
     "milestone":    "milestones",
     "pitch":        "pitches",
+    "cycle":        "cycles",
 }
 
 # Index fields stored per type (subset of all fields — used for fast queries)
@@ -61,6 +63,7 @@ INDEX_FIELDS = {
     "release":      ["id", "type", "title", "status", "version", "milestone_id", "updated_at"],
     "milestone":    ["id", "type", "title", "status", "updated_at"],
     "pitch":        ["id", "type", "title", "status", "appetite", "updated_at"],
+    "cycle":        ["id", "type", "title", "status", "updated_at"],
 }
 
 # Metadata key → field name mapping (handles **Key:** → key normalisation)
@@ -171,10 +174,21 @@ def _parse_metadata(content: str) -> dict:
     return result
 
 
+_INTEGER_FIELDS = {"story_points", "velocity", "duration_weeks"}
+
+
 def _parse_full(entity_id: str, content: str) -> dict:
     """Parse metadata + extract body sections as text fields."""
     data = _parse_metadata(content)
     data["id"] = entity_id
+
+    # Coerce known integer fields
+    for field_name in _INTEGER_FIELDS:
+        if field_name in data and data[field_name] is not None:
+            try:
+                data[field_name] = int(data[field_name])
+            except (TypeError, ValueError):
+                pass
 
     # Extract body sections (## Heading → snake_case field with _text suffix)
     for m in re.finditer(r"^## (.+?)\n(.*?)(?=^## |\Z)", content, re.MULTILINE | re.DOTALL):
@@ -288,6 +302,23 @@ def op_read(product_base: Path, state_base: Path, entity_id: str) -> None:
     print(json.dumps(data, indent=2))
 
 
+def _calculate_sprint_velocity(product_base: Path, sprint_id: str) -> int:
+    import glob as _glob
+    issues_dir = product_base / TYPE_TO_DIR["issue"]
+    if not issues_dir.exists():
+        return 0
+    total = 0
+    for fname in _glob.glob(str(issues_dir / "*.md")):
+        with open(fname, encoding="utf-8") as fh:
+            issue = _parse_metadata(fh.read())
+        if issue and issue.get("sprint") == sprint_id and issue.get("status") == "done":
+            try:
+                total += int(issue.get("story_points") or 0)
+            except (TypeError, ValueError):
+                pass
+    return total
+
+
 def op_write(product_base: Path, state_base: Path, entity_id: str, json_str: str) -> None:
     f = _find_file(product_base, entity_id)
     if not f:
@@ -295,13 +326,22 @@ def op_write(product_base: Path, state_base: Path, entity_id: str, json_str: str
         sys.exit(1)
 
     updates = json.loads(json_str)
+
+    prefix = _id_to_prefix(entity_id)
+    entity_type = PREFIX_TO_TYPE.get(prefix, "unknown")
+
+    if entity_type == "issue" and updates.get("status") == "done":
+        updates.setdefault("completed_at", TODAY)
+
+    if entity_type == "sprint" and updates.get("status") == "closed":
+        velocity = _calculate_sprint_velocity(product_base, entity_id)
+        updates["velocity"] = velocity
+
     content = f.read_text(encoding="utf-8")
     updated = _update_metadata_block(content, updates)
     f.write_text(updated, encoding="utf-8")
 
     # Refresh index entry
-    prefix = _id_to_prefix(entity_id)
-    entity_type = PREFIX_TO_TYPE.get(prefix, "unknown")
     data = _parse_metadata(updated)
     data["id"] = entity_id
     _update_index(state_base, entity_id, entity_type, data)
@@ -507,9 +547,11 @@ def _build_template(entity_id: str, entity_type: str, title: str, data: dict) ->
             f"**Epic:** {field('epic_id')}\n"
             f"**Sprint:** {field('sprint_id')}\n"
             f"**Roadmap Item:** {field('roadmap_item_id')}\n"
+            f"**Story points:** {field('story_points', '(none)')}\n"
             f"**Source:** {field('source', 'manual')}\n"
             f"**Evidence:** {field('evidence')}\n"
             f"**Sprint history:** {field('sprint_history')}\n"
+            f"**Completed at:** (none)\n"
             f"**mode_introduced:** {field('mode_introduced', 'agile')}\n"
             f"**Created:** {TODAY}\n"
             f"**Updated:** {TODAY}\n\n"
@@ -536,13 +578,14 @@ def _build_template(entity_id: str, entity_type: str, title: str, data: dict) ->
             f"**Status:** {field('status', 'planned')}\n"
             f"**Start:** {field('start_date', 'YYYY-MM-DD')}\n"
             f"**End:** {field('end_date', 'YYYY-MM-DD')}\n"
+            f"**Velocity:** (none)\n"
             f"**mode_introduced:** {field('mode_introduced', 'agile')}\n"
             f"**Created:** {TODAY}\n"
             f"**Updated:** {TODAY}\n\n"
             "## Goal\n\nWhen this sprint succeeds, [outcome statement].\n\n"
             "## Issues\n\nSee issues with `Sprint: " + entity_id + "` in their metadata.\n\n"
             "## Capacity notes\n\n(Optional: known interrupts, holidays, reduced availability.)\n\n"
-            "---\n\n## Retrospective\n\n(Filled post-sprint.)\n\n**Velocity:** (issue count completed)\n"
+            "---\n\n## Retrospective\n\n(Filled post-sprint.)\n"
         )
 
     if entity_type == "roadmap_item":
@@ -601,6 +644,21 @@ def _build_template(entity_id: str, entity_type: str, title: str, data: dict) ->
             "## Solution\n\n(The proposed approach.)\n\n"
             "## Rabbit holes\n\n- (Risk or scope trap to avoid)\n\n"
             "## No-gos\n\n- (Explicitly out of scope)\n"
+        )
+
+    if entity_type == "cycle":
+        return (
+            f"# {entity_id}: {title}\n\n"
+            f"**Status:** {field('status', 'planning')}\n"
+            f"**Goal:** {field('goal')}\n"
+            f"**Duration weeks:** {field('duration_weeks', '6')}\n"
+            f"**Started at:** (none)\n"
+            f"**Ended at:** (none)\n"
+            f"**mode_introduced:** {field('mode_introduced', 'shape_up')}\n"
+            f"**Created:** {TODAY}\n"
+            f"**Updated:** {TODAY}\n\n"
+            "## Shipped items\n\n(Filled when cycle ends.)\n\n"
+            "## Retro\n\n(Filled post-cycle.)\n"
         )
 
     # Generic fallback
