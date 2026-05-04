@@ -67,45 +67,56 @@ None of the above tiers have anything actionable.
 
 ### If Priority 1–4 found something:
 
-Output exactly this format — bold header, one-paragraph explanation, three options. Use markdown **bold** for `PROPOSED NEXT WORK`:
+Output the bold header followed by one prose paragraph explaining the proposal. Use markdown **bold** for `PROPOSED NEXT WORK`. Do NOT include a text line of options — the menu is presented via AskUserQuestion immediately after.
 
 ```
 **PROPOSED NEXT WORK**
 
 {One clear paragraph: what you're proposing to work on, why this item ranks first, and what specifically would happen if the user says proceed. Name the work item or backlog filename. Reference the priority tier reason: "You have unfinished work in progress" / "There's an open bug" / "Your active milestone has a pending work item" / "Top of your backlog is..." Be direct, not hedging.}
-
-Proceed · Review other items · Something else
 ```
 
-Then wait. Do not take any action until the user responds.
+Then immediately call AskUserQuestion with these three options:
+
+| Option label | Description |
+|---|---|
+| **Proceed** | Start the proposed work now |
+| **Review other items** | Show the next 2–3 candidates and pick one |
+| **Something else** | I have a different direction in mind |
+
+Use AskUserQuestion's `header` field to label the question (e.g. "Next work?"). Do not output any text alternative to the menu — the menu is the only prompt. Wait for the user's selection before doing anything.
 
 ---
 
 ### If Priority 5 — nothing queued:
 
-Output:
+Output the bold header and one prose paragraph:
 
 ```
 **PROPOSED NEXT WORK**
 
-There's nothing obviously queued. No active work item, no open bugs, no active milestone, no backlog items.
-
-I can help you plan what comes next: create milestones and epics, write user stories, or start a backlog. Want to do that now?
+There's nothing obviously queued. No active work item, no open bugs, no active milestone, no backlog items. I can help you plan what comes next: create milestones and epics, write user stories, or start a backlog.
 ```
 
-Then wait. If the user says yes to planning, invoke `sweetclaude:product-milestones` and explain you'll start there.
+Then call AskUserQuestion with two options:
+
+| Option label | Description |
+|---|---|
+| **Start planning** | Begin a planning session — milestones, epics, stories, backlog |
+| **Something else** | I have a different direction in mind |
+
+If the user picks Start planning, invoke `sweetclaude:product-milestones`. If Something else, follow Adaptive Flow.
 
 ---
 
-## Step 5: Handle the user's response
+## Step 5: Handle the user's selection
 
-**"proceed" (or "yes", "go", "do it", "let's go", any affirmative):**
+**Proceed:**
 Invoke the appropriate skill from the routing table below. Before invoking, one sentence explaining what you're doing.
 
-**"review other items" (or "what else", "show me more", "other options"):**
-List the next 2–3 candidates from the priority tiers, in order. For each: name it, say which tier it came from, and say which skill would handle it. Ask which one they want.
+**Review other items:**
+List the next 2–3 candidates from the priority tiers, in order. For each: name it, say which tier it came from, and say which skill would handle it. Then call AskUserQuestion again with one option per candidate plus a "None of these" escape.
 
-**"something else" (or any other input):**
+**Something else:**
 Follow the user's direction immediately per Adaptive Flow. Track the current proposal internally so you can offer to return to it when the detour completes.
 
 ---
@@ -159,6 +170,6 @@ Apply per mode:
 - **Propose, do not act.** Never invoke a skill in Step 4. Proposals only.
 - **Stop at the first thing.** Don't enumerate all issues — find the top item and propose it.
 - **One paragraph, not a list.** The proposal explanation is prose, not bullet points.
-- **Never ask "what do you want to do?"** when you have a proposal ready. Present it and offer the three options.
-- **Wait after proposing.** Do not continue until the user responds.
-- **If the user passes arguments** (e.g., `/sweetclaude:go I need to fix the auth bug`): skip Steps 1–3. Use the user's direction as the proposal, confirm it in the PROPOSED NEXT WORK format, and wait for proceed.
+- **Use AskUserQuestion, not text-imitation menus.** Never write a text line like "Proceed · Review · Something else" — that looks like a menu but isn't interactive. Always present choices via AskUserQuestion.
+- **Wait after proposing.** Do not continue until the user selects an option.
+- **If the user passes arguments** (e.g., `/sweetclaude:go I need to fix the auth bug`): skip Steps 1–3. Use the user's direction as the proposal, confirm it in the PROPOSED NEXT WORK format, and present the same AskUserQuestion menu before acting.
