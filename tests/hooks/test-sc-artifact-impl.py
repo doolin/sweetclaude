@@ -156,33 +156,17 @@ def test_create_done_issue_sets_completed_at(project_dir):
         f"completed_at should be set when issue created with status=done, got {out.get('completed_at')}"
 
 
-def test_velocity_counts_legacy_sprint_key(project_dir):
-    sprint = run_create(project_dir, 'sprint', {'title': 'Sprint Legacy', 'goal': 'Ship'})
+def test_velocity_counts_sprint_id_key(project_dir):
+    sprint = run_create(project_dir, 'sprint', {'title': 'Sprint Sprint-Id-Key', 'goal': 'Ship'})
     assert sprint.returncode == 0, sprint.stderr
     sprint_id = json.loads(sprint.stdout)['id']
 
-    issue = run_create(project_dir, 'issue', {
-        'title': 'Legacy issue', 'sprint_id': sprint_id,
-        'status': 'done', 'story_points': 1
-    })
+    issue = run_create(project_dir, 'issue', {'title': 'Sprint-id-key issue', 'story_points': 1})
     assert issue.returncode == 0, issue.stderr
     issue_id = json.loads(issue.stdout)['id']
 
-    # Find the issue file on disk and rewrite so the sprint field key is 'sprint'
-    # (not 'sprint_id'), simulating a legacy file written with the old **Sprint:** heading.
-    import glob as _glob
-    import re as _re
-    issues_dir = os.path.join(_product_base(project_dir), 'issues')
-    matches = _glob.glob(os.path.join(issues_dir, f'{issue_id}-*.md'))
-    assert matches, f"Issue file not found for {issue_id}"
-    issue_file = matches[0]
-    with open(issue_file, encoding='utf-8') as fh:
-        content = fh.read()
-    # Ensure the key is written as **Sprint:** (legacy bare key, parses to 'sprint')
-    # Replace any **Sprint Id:** or **Sprint_id:** variants with **Sprint:**
-    content = _re.sub(r'\*\*Sprint[_ ]?[Ii]d:\*\*', '**Sprint:**', content)
-    with open(issue_file, 'w', encoding='utf-8') as fh:
-        fh.write(content)
+    assign = run_write(project_dir, issue_id, {'sprint_id': sprint_id, 'status': 'done'})
+    assert assign.returncode == 0, assign.stderr
 
     close = run_write(project_dir, sprint_id, {'status': 'closed'})
     assert close.returncode == 0, close.stderr
