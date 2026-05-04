@@ -244,7 +244,7 @@ STATUS_FILE="$PROJECT_DIR/.sweetclaude/state/session-status.txt"
 if [ -f "$STATUS_FILE" ]; then
   STATUS_BLOCK=$(cat "$STATUS_FILE")
   CTX="${CTX}"$'\n\n'"<sweetclaude-status>"$'\n'"${STATUS_BLOCK}"$'\n'"</sweetclaude-status>"$'\n\n'"Present the content between the <sweetclaude-status> tags verbatim as your first response. Do not invoke any skills. Do not run any tools."
-  emit_ctx "$STATUS_BLOCK" "$CTX"
+  emit_ctx "SweetClaude is active." "$CTX"
 else
   emit_ctx "SweetClaude is active." "${CTX}"$'\n\n'"Invoke sweetclaude:status now before responding to the user."
 fi
