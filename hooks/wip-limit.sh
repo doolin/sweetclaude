@@ -10,7 +10,7 @@ EFFECTIVE_GATES="$PROJECT_DIR/.sweetclaude/state/effective-gates.yaml"
 PHASE_YAML="$PROJECT_DIR/.sweetclaude/state/phase.yaml"
 
 allow()  { echo '{"ok": true}'; exit 0; }
-block()  { printf '{"ok": false, "reason": "%s"}' "$1"; exit 0; }
+block() { python3 -c "import json,sys; print(json.dumps({'ok':False,'reason':sys.argv[1]}))" "$1"; exit 0; }
 
 [ -f "$EFFECTIVE_GATES" ] || allow
 
@@ -52,6 +52,6 @@ print(count)
 
 if [ "$in_progress" -ge "$wip_limit" ]; then
     block "WIP limit reached ($in_progress/$wip_limit items in_progress). Complete or move an item before starting new work."
+else
+    allow
 fi
-
-allow
