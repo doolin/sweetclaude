@@ -372,6 +372,9 @@ def op_create(product_base: Path, state_base: Path, entity_type: str, json_str: 
     data.setdefault("source", "manual")
     data.setdefault("mode_introduced", "agile")
 
+    if entity_type == "issue" and data.get("status") == "done":
+        data.setdefault("completed_at", TODAY)
+
     title = data.get("title", entity_id)
     slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:60]
     filename = f"{entity_id}-{slug}.md"
@@ -551,7 +554,7 @@ def _build_template(entity_id: str, entity_type: str, title: str, data: dict) ->
             f"**Source:** {field('source', 'manual')}\n"
             f"**Evidence:** {field('evidence')}\n"
             f"**Sprint history:** {field('sprint_history')}\n"
-            f"**Completed at:** (none)\n"
+            f"**Completed at:** {field('completed_at')}\n"
             f"**mode_introduced:** {field('mode_introduced', 'agile')}\n"
             f"**Created:** {TODAY}\n"
             f"**Updated:** {TODAY}\n\n"
