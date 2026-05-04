@@ -43,7 +43,7 @@ All SweetClaude slash commands organized by domain. The core and orchestration c
 | `/sweetclaude:project-sprints` | Plan, start, and close sprints. Sprint board grouped by status. Carry/descope/close on sprint closure. Velocity and retrospective on close. Enforces single active sprint. |
 | `/sweetclaude:project-backlog` | Backlog view grouped by priority bucket (NOW/SOONER/SOONISH/LATER/SOMEDAY). Promote issues to sprint. Surface inferred issues from Flow mode. |
 | `/sweetclaude:project-backlog-triage` | INVEST-based grooming session. Works through ungroomed issues one at a time — recommend priority + effort, accept/override/skip/split. Sets status to `ready` when groomed. |
-| `/sweetclaude:project-roadmap` | Priority-stacked roadmap. Create items, activate with workflow routing by type, defer, complete, cancel. Create and view releases. |
+| `/sweetclaude:product-roadmap` | Priority-stacked roadmap. Create items, activate with workflow routing by type, defer, complete, cancel. Create and view releases. |
 | `/sweetclaude:project-scope` | Define and maintain the project scope document. One statement, in-scope list, out-of-scope list (minimum 3). Cascade review on updates flags conflicting open items. |
 | `/sweetclaude:project-goals` | Binary business goals — achieved or not. Challenge vague criteria at creation. `achieved`, `missed` sub-commands. |
 | `/sweetclaude:project-mode` | Assess and shift project modes: flow → kanban → shape_up → agile → agile_enterprise. Snapshots state before every shift. Upshift/downshift signal detection. |

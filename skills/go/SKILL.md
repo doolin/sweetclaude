@@ -164,9 +164,9 @@ Ask exactly one question to resolve it. After the answer, re-assess and act. If 
 Read `blocked_skills` from `effective-gates.yaml`. Remove blocked skills from all suggestion lists.
 
 Apply per mode:
-- **flow:** surface project-issues, project-roadmap, product-milestones. Omit project-sprints from all suggestions.
-- **kanban:** surface project-issues, project-roadmap, product-milestones, project-backlog. Omit project-sprints.
-- **shape_up:** surface project-issues (pitch-source note), project-roadmap, product-milestones. Omit project-sprints, project-backlog.
+- **flow:** surface project-issues, product-roadmap, product-milestones. Omit project-sprints from all suggestions.
+- **kanban:** surface project-issues, product-roadmap, product-milestones, project-backlog. Omit project-sprints.
+- **shape_up:** surface project-issues (pitch-source note), product-roadmap, product-milestones. Omit project-sprints, project-backlog.
 - **agile:** surface all skills including project-sprints, project-epics.
 - **unset:** apply flow filtering.
 

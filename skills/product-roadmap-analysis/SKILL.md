@@ -39,7 +39,7 @@ RICE scoring and stack-rank analysis for roadmap items — surface misalignment,
 
 Use roadmap items and scope from shell block above.
 
-If no roadmap items exist: "No roadmap items to analyze. Run `project-roadmap new` to add items."
+If no roadmap items exist: "No roadmap items to analyze. Run `product-roadmap new` to add items."
 
 If `SCOPE_NOT_FOUND`: note that scope alignment checks will be skipped. Proceed with RICE only.
 

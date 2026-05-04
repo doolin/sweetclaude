@@ -129,7 +129,7 @@ Store the result as `{starting_phase}` — used in Step 7.
 | Sprint planning and execution | PLAN, IMPLEMENT | `sweetclaude:project-sprints` |
 | Backlog view and promotion | any | `sweetclaude:project-backlog` |
 | Backlog grooming / triage | any | `sweetclaude:project-backlog-triage` |
-| Roadmap management | any | `sweetclaude:project-roadmap` |
+| Roadmap management | any | `sweetclaude:product-roadmap` |
 | Roadmap prioritization / RICE analysis | any | `sweetclaude:product-roadmap-analysis` |
 | Scope definition and updates | DEFINE, any | `sweetclaude:project-scope` |
 | Goal tracking | any | `sweetclaude:project-goals` |
