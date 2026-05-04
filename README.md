@@ -4,9 +4,9 @@
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 
-<br style="clear:both;">
+<br>
 A Claude Code plugin based on the Skills 2.0 framework that implements full product / project lifecycle workflows, from concept to production maintenance.
-<br style="clear:both;">
+
 SweetClaude exists to take a project from idea through discovery, architecture, test-driven implementation, and shipped code as a single coherent workflow — with discipline enforced, not suggested. It was originally built as my own personal Claude Code toolchain. It quickly evolved to support early-stage founders, technical solopreneurs, and senior independent consultants who want structure — from strategy to deployment, with variable discipline levels depending on your project needs.
 
 SweetClaude has 70+ skills under the hood, mostly purpose-developed and refined. Some code-related skills leverage Jesse Vincent's excellent Superpowers project.  These skills are combined into workflows that operate in one of four modes:
