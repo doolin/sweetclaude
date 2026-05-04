@@ -12,6 +12,18 @@ source ~/.claude/hooks/sweetclaude/sc-artifact.sh
 
 # Project Epics
 
+## MODE CHECK
+
+Read `mode` from pre-loaded session state.
+
+- **Agile:** Epics are first-class. Proceed normally.
+- **Flow, Kanban, Level Up:** Epics are available but not surfaced by default. If the user explicitly invoked this skill, proceed with a note:
+  > "Epics are optional in **{mode}** mode — useful for grouping related issues, but not required."
+
+This skill is never blocked, only unsurfaced in non-Agile routing.
+
+---
+
 Epics are optional grouping containers. Not every project needs them — add them when a cluster of issues shares a clear outcome that's worth naming. Arguments: `$ARGUMENTS`
 
 ---
