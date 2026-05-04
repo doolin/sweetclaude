@@ -37,9 +37,10 @@ Conversational assistant. Describe what you want to do and it shows you how.
 
 Run `/sweetclaude` in an empty folder. SweetClaude will:
 1. Set up the project (git, directory structure, CLAUDE.md)
-2. Ask what you want to build
-3. Run product discovery — problem framing, personas, optional competitive landscape
-4. Hand off to the product definition pipeline (brief, PRD, architecture, implementation)
+2. Run a short mode-assessment interview (5 questions) to configure enforcement — Flow, Kanban, Level Up, or Agile
+3. Ask what you want to build
+4. Run product discovery — problem framing, personas, optional competitive landscape
+5. Hand off to the product definition pipeline (brief, PRD, architecture, implementation)
 
 ### "I have a codebase and want to start using SweetClaude"
 
@@ -47,9 +48,10 @@ Run `/sweetclaude` in your project folder. SweetClaude will:
 1. Detect the existing project
 2. Create a safety snapshot branch before touching anything
 3. Scan your code, tests, docs, and issues
-4. Interview you about current state and biggest concerns
-5. Determine where the project sits in its lifecycle
-6. Offer to address your immediate concerns first
+4. Run a short mode-assessment interview to configure enforcement for your workflow
+5. Interview you about current state and biggest concerns
+6. Determine where the project sits in its lifecycle
+7. Offer to address your immediate concerns first
 
 ### "I need to build a specific feature"
 
@@ -62,10 +64,10 @@ Run `/sweetclaude` and mention the issue number or paste the title. SweetClaude 
 ### "Production is broken"
 
 ```
-/sweetclaude:find-skill production is down
+/sweetclaude:something-broke
 ```
 
-Routes to the hotfix workflow: DIAGNOSE → IMPLEMENT → SHIP → POST-MORTEM. Skips ceremony, keeps discipline.
+Classifies severity, decides fix vs. rollback, and routes to the hotfix workflow: DIAGNOSE → IMPLEMENT → SHIP → POST-MORTEM. Skips ceremony, keeps discipline.
 
 ### "I have a pile of messy strategy files"
 

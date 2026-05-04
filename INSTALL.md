@@ -9,17 +9,19 @@
 | [GitHub CLI](https://cli.github.com/) | `gh --version` | `brew install gh` or [cli.github.com](https://cli.github.com/) |
 | Node.js (for RAG) | `node --version` | [nodejs.org](https://nodejs.org/) — optional, needed only for corpus management and semantic search |
 
-Claude Code requires an Anthropic subscription. [Superpowers](https://github.com/obra/superpowers) is required for code and TDD features; not required for strategy-skills-only installs.
+Claude Code requires an Anthropic subscription. [Superpowers](https://github.com/obra/superpowers) (minimum version 5.0.7) is required for code and TDD features; not required for strategy-skills-only installs.
 
 ---
 
 ## Full Install
 
 ```bash
-git clone https://github.com/carson-sweet/sweetclaude.git
-cd sweetclaude
+git clone https://github.com/carson-sweet/sweetclaude.git ~/dev/sweetclaude
+cd ~/dev/sweetclaude
 ./install.sh
 ```
+
+> **Note:** Clone to `~/dev/sweetclaude`. Some skills reference scripts at `~/dev/sweetclaude/scripts/` and require the repository to remain at that path after install.
 
 The installer:
 - Checks prerequisites (Claude Code, Git; Superpowers for full install)
@@ -29,7 +31,7 @@ The installer:
 - Wires TDD enforcement hooks into `settings.json`
 - Generates `uninstall.sh` and `restore-config.sh` for clean removal
 
-After install, all skills are available as `/sweetclaude:skill-name` in every Claude Code session.
+After install, all skills are available as `/sweetclaude:skill-name` in every Claude Code session. The first time you run `/sweetclaude` in a project, it will walk through setup and run a short mode-assessment interview to configure enforcement for your workflow (Flow, Kanban, Level Up, or Agile).
 
 ---
 
@@ -44,17 +46,6 @@ If you want product thinking, strategy, and corpus management — without code a
 Installs strategy, product, corpus, and orchestration skills. No TDD hooks, no subagents, no Superpowers required. Upgrade to the full install later by running `./install.sh`.
 
 ---
-
-## Try Without Global Install
-
-Load SweetClaude for a single session without modifying your global `~/.claude/` configuration:
-
-```bash
-git clone https://github.com/carson-sweet/sweetclaude.git
-claude --plugin-dir /path/to/sweetclaude
-```
-
-All skills are available for that session. TDD enforcement hooks and global configuration are not active — those require the full install.
 
 ---
 
@@ -94,10 +85,10 @@ Fetches the latest version from GitHub and syncs to all installed locations. Sho
 ## Uninstalling
 
 ```bash
-~/.claude/sweetclaude-uninstall.sh
+./uninstall.sh
 ```
 
-The installer wrote this script during install. It restores your pre-install `~/.claude/` configuration from the backup.
+Run from the repository directory (`~/dev/sweetclaude`). The installer generated this script during install. It restores your pre-install `~/.claude/` configuration from the backup.
 
 To suspend SweetClaude for one project without uninstalling globally:
 

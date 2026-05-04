@@ -1,7 +1,7 @@
 # How It Works
 
-**Version:** 1.0
-**Date:** 2026-05-01
+**Version:** 1.2
+**Date:** 2026-05-03
 
 This page is the mental model. It will not teach you any commands. It will explain why SweetClaude is shaped the way it is, so the rest of the docs make sense.
 
@@ -94,6 +94,25 @@ The work type determines the shape. You do not pick. When you describe the work 
 
 ---
 
+## Project Modes
+
+SweetClaude has four project modes that calibrate structure and enforcement to where your project is. You pick a mode at init; enforcement is immediate.
+
+| Mode | What it signals | TDD level | Key enforcement |
+|---|---|---|---|
+| **Flow** | Solo exploration, early stage, no ceremony needed | Level 1 | No WIP limits, all skills available |
+| **Kanban** | Continuous delivery, work organized as a flowing board | Level 1 | WIP limit (default 3 in-progress issues), sprint-planning skills blocked |
+| **Level Up** | 6-week cycles with a betting table | Level 2 | Sprint and backlog-triage skills blocked, betting table approval required before implementation |
+| **Agile** | Sprint-based, velocity tracked, retrospectives | Level 2 | Single active sprint enforced, retrospective required on close |
+
+Modes are not permanent. `/sweetclaude:project-mode` re-assesses or accepts a direct argument. Every shift snapshots state first.
+
+Enforcement happens at three layers: (1) `effective-gates.yaml`, compiled at mode selection time into `.sweetclaude/state/`, contains the full rule set for the active mode; (2) `wip-limit.sh`, a PreToolUse hook, blocks tool calls in Kanban mode when the WIP limit is reached; (3) MODE_CHECK blocks inside individual skills reject invocations that are disallowed by the active mode.
+
+Mode selection happens at project init via the `project-assess-shape` five-question interview, and on demand via `/sweetclaude:project-mode`.
+
+---
+
 ## TDD by Hook, Not by Prompt
 
 Most TDD documentation is advisory: "write the test first." SweetClaude does not believe in advisory TDD because advisory TDD fails. The implementer (human or AI) ends up touching the test to make it pass, or writes the test after the code so the test rationalizes the implementation rather than specifying behavior.
@@ -138,7 +157,7 @@ The structured state files in `.sweetclaude/state/` are the source of truth — 
 
 When you resume a session, `/sweetclaude` reads state and re-orients. You do not have to remember what you were doing.
 
-This is also why `.sweetclaude/` is committed to git. The state is project history, not scratch. If you switch machines or someone else picks up the work, the context travels with the repo.
+This is why `.sweetclaude/` should be committed to git. The state is project history, not scratch. If you switch machines or someone else picks up the work, the context travels with the repo.
 
 ---
 
@@ -155,6 +174,7 @@ This is also why `.sweetclaude/` is committed to git. The state is project histo
 your-project/.sweetclaude/          ← Per-project state
 ├── state/
 │   ├── sweetclaude.yaml            ← Unified state
+│   ├── effective-gates.yaml        ← Compiled mode enforcement rules
 │   ├── project.yaml                ← Language, framework, commands
 │   ├── decision-log.md
 │   ├── assumption-register.md
@@ -196,8 +216,9 @@ This distinction matters because deterministic properties are version-stable (a 
 
 | Property | Mechanism | What it guarantees |
 |---|---|---|
-| Test files cannot be edited during IMPLEMENT | `test-guardian.sh` (PreToolUse) | Edits to test directories are blocked at the tool call level |
-| Tests run after every source edit | `auto-test-runner.sh` (PostToolUse) | Test suite runs without requiring the user to trigger it |
+| Test files cannot be edited during IMPLEMENT | `test-guardian.sh` (PreToolUse) | Edits to test directories are blocked at the tool call level; the user can override via tool approval |
+| Tests run after every source edit | `auto-test-runner.sh` (PostToolUse) | Test suite runs automatically after source edits; the user can override via tool approval |
+| WIP limit enforced in Kanban mode | `wip-limit.sh` (PreToolUse) | Blocks tool calls that would create new in-progress work when the WIP limit is reached |
 | TDD Level 2-3 context isolation | Subagent architecture | Implementer agent never receives the spec or test writer's reasoning |
 | Phase advancement phrases removed from responses | `phase-dwelling-guard.sh` (Stop hook) | When Protocol Guardian is active, responses containing "ready to move on?" are blocked before reaching the user |
 

@@ -1,4 +1,4 @@
-# Skills Reference
+# SweetClaude Skills Reference
 
 **Version:** 1.4
 **Date:** 2026-05-03
@@ -36,7 +36,7 @@ Session navigation and automatic routing. Most of these fire without being invok
 
 ---
 
-## System (12 skills)
+## System (14 skills)
 
 Framework management — setup, teardown, updates, audits, and guards. Always available regardless of version stage.
 
@@ -49,7 +49,9 @@ Framework management — setup, teardown, updates, audits, and guards. Always av
 | **Update** | `/sweetclaude:update` | Fetch the latest version from GitHub and sync to all installed locations. Shows what changed. Migrates `phase.yaml`/`skills.yaml` from v2.x to `sweetclaude.yaml` format. |
 | **Fix SweetClaude** | `/sweetclaude:fix-sweetclaude` | Audit and repair configuration. Checks CLAUDE.md accuracy, phase state, file locations, `sweetclaude.yaml` consistency, empty registers, hook registrations. If `sweetclaude.yaml` is unparseable, offers repair options. Proposes fixes — does not change anything without asking. |
 | **Purge** | `/sweetclaude:purge` | Delete all SweetClaude artifacts. Recommends a backup branch first. Requires typed confirmation. |
+| **Assess Mode** | `/sweetclaude:project-assess-shape` | Five-question interview to recommend and configure a project mode (Flow, Kanban, Level Up, or Agile). Writes mode to `sweetclaude.yaml` and compiles `effective-gates.yaml`. Runs automatically at init; available on demand to re-assess. |
 | **Behavioral Regression** | `/sweetclaude:behavioral-regression` | Run the 15-contract behavioral test suite against the current model version. Tests phase dwelling, propose-not-ask, TDD enforcement claims, deference levels, detour recovery, improvement register triggers, and more. Run after any Claude model upgrade to detect silent behavioral drift. |
+| **Mode Regression** | `/sweetclaude:sweetclaude-behavioral-regression` | Validate that mode enforcement is working correctly across all four modes. Tests all three enforcement layers: `effective-gates.yaml`, `wip-limit.sh` hook, and MODE_CHECK blocks. Run after any change to the modes system. |
 | **Guardian On** | `/sweetclaude:guardian-on` | Enable Protocol Guardian. Enforces skill invocations, TDD discipline, and artifact saves for the rest of the session. |
 | **Guardian Off** | `/sweetclaude:guardian-off` | Disable Protocol Guardian. |
 | **Usage** | `/sweetclaude:usage` | View, enable, or disable local usage tracking. |
@@ -88,7 +90,7 @@ Strategy and product definition. Useful before any code is written and on existi
 
 ---
 
-## Design (12 skills)
+## Design (14 skills)
 
 Technical design. Every significant decision is recorded with context and rationale to `.sweetclaude/state/decision-log.md`.
 
@@ -99,7 +101,9 @@ Technical design. Every significant decision is recorded with context and ration
 | **Design Data Model** | `/sweetclaude:design-data-model` | Schema and entity design. Tables, relationships, indexes, migration path. |
 | **Design API Design** | `/sweetclaude:design-api-design` | Endpoint contracts. Routes, request/response shapes, error codes, versioning. |
 | **Design User Flows** | `/sweetclaude:design-user-flows` | Convert user stories into UX/UI flows — step-by-step paths through the interface. |
-| **Design UX** | `/sweetclaude:design-ux` | UX design and wireframes. |
+| **Design UX** | `/sweetclaude:design-ux` | Define the visual and interaction design of the product — look, feel, layout, and style. Produces a UX/UI design spec for handoff to AI mockup tools or a design team. For wireframe generation, use `design-wireframes`; for virtual UX review sessions, use `design-ux-review`. |
+| **Design Wireframes** | `/sweetclaude:design-wireframes` | Generate self-contained HTML/CSS wireframes from user flows. One file per flow, covering all key screen states. Reads visual style from `ux.yaml` if available; uses neutral defaults otherwise. |
+| **Design UX Review** | `/sweetclaude:design-ux-review` | Virtual UX review session. Spawns parallel subagents — one per persona — each walking through a flow or wireframe independently and returning structured feedback. Synthesizes findings into prioritized recommendations. All output labeled synthetic. |
 | **Design Solutioning Gate** | `/sweetclaude:design-solutioning-gate` | Required before implementation for high-risk work. Confirms the right solution is being built, an alternative was considered, and a rollback plan exists. |
 | **Design Change Impact Analysis** | `/sweetclaude:design-change-impact-analysis` | Trace blast radius before changes. Surfaces ripple effects across artifacts before they become bugs. |
 | **Design Manage Decisions** | `/sweetclaude:design-manage-decisions` | Record any decision with context, options considered, and rationale. Query later: "Why did we choose X?" |
@@ -155,7 +159,7 @@ Execution-layer tracking. These skills manage the work that delivers the product
 | **Project Roadmap** | `/sweetclaude:project-roadmap` | Priority-stacked roadmap with force-ranked items. Create, activate (routes to correct downstream workflow by type), defer, complete, cancel. Create and view releases. |
 | **Project Scope** | `/sweetclaude:project-scope` | Singleton scope document — one statement, in-scope list, minimum three out-of-scope items. Cascade review on update flags conflicting open roadmap items and issues. |
 | **Project Goals** | `/sweetclaude:project-goals` | Binary business goals — achieved or not. Criteria must be evaluable as true/false. `list`, `view`, `new`, `achieved`, `missed`. |
-| **Project Mode** | `/sweetclaude:project-mode` | Assess and shift project modes: flow → kanban → shape_up → agile → agile_enterprise. Snapshots state before every shift. Detects upshift/downshift signals from artifact counts. Hard block: agile_enterprise → flow requires `--force`. |
+| **Project Mode** | `/sweetclaude:project-mode` | Assess and shift project modes: flow → kanban → shape_up → agile. Snapshots state before every shift. Detects upshift/downshift signals from artifact counts. Each mode compiles `effective-gates.yaml` with its enforcement rules. |
 | **GitHub Import Issues** | `/sweetclaude:project-gh-import-issues` | Pull open GitHub Issues into the local issue store as I-NNN artifacts. Idempotent — issues already imported by GitHub number are skipped. Maps size/effort labels to effort field. |
 | **GitHub Sync Issues** | `/sweetclaude:project-gh-sync-issues` | Bidirectional status sync. Pass 1: GH closed → local done. Pass 2: local done → `gh issue close`. Reports counts for each direction. |
 
@@ -263,20 +267,12 @@ You rarely use one skill in isolation. The patterns below are the chains that sh
 → work item closed
 ```
 
-**Hotfix:**
-```
-/sweetclaude:find-skill "production is broken"
-→ hotfix workflow (compressed)
-→ DIAGNOSE → IMPLEMENT (test+fix) → SHIP → POST-MORTEM
-```
-
-**Production incident:**
+**Hotfix / production incident:**
 ```
 /sweetclaude:something-broke
 → severity classification (P0/P1/P2)
 → fix-vs-rollback decision
-→ :hotfix or :rollback-revert
-→ confirm resolution → mandatory post-mortem
+→ DIAGNOSE → IMPLEMENT (test+fix) → SHIP → POST-MORTEM
 ```
 
 **Document organization:**
@@ -287,7 +283,7 @@ You rarely use one skill in isolation. The patterns below are the chains that sh
 
 **Course correction mid-project:**
 ```
-/sweetclaude:find-skill "we need to pivot"
+/sweetclaude "we need to pivot"
 → DISCOVER (signal aggregation) → DEFINE (new direction) → TRIAGE (in-flight work) → SHIP (commit revised direction)
 ```
 

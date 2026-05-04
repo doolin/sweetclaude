@@ -77,7 +77,7 @@ Full test scenarios are in [`skills/behavioral-regression/SKILL.md`](../../skill
 | CONTRACT-11 | Asks for improvement feedback before every phase transition | Yes |
 | CONTRACT-12 | Surfaces analysis and proposed change after any correction | No |
 | CONTRACT-13 | Qualifies uncertain factual claims rather than stating confidently | No |
-| CONTRACT-14 | Writes code without comments unless behavior is non-obvious | No |
+| CONTRACT-14 | Writes code without comments unless explicitly requested | No |
 | CONTRACT-15 | Acknowledges improvement register entries at session start | No |
 
 *Load-bearing contracts are those where failure most directly undermines SweetClaude's value proposition.*

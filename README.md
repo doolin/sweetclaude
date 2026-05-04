@@ -78,7 +78,7 @@ Once SweetClaude is installed, here are some things to try. You'll quickly get o
 - **Skills under the hood** — Every capability is a skill with defined entry criteria, deference levels, and exit gates. Structured contracts replace freeform prompting. Skills are accessible directly if you know what you want.
 - **Hooks for enforcement** — TDD rules and session discipline are enforced by shell hooks (PreToolUse/PostToolUse), not instructions. Instructions can drift; hooks cannot.
 - **Agent isolation** — Test writer and implementer run in separate AI contexts with restricted tool sets (`tools:` frontmatter). The implementer never sees the spec — only failing tests.
-- **State as git history** — `.sweetclaude/sweetclaude.yaml` is committed, not gitignored. Phase progression, decisions, and assumptions are project history, not session memory.
+- **State as git history** — `.sweetclaude/sweetclaude.yaml` should be committed to git, not gitignored. Phase progression, decisions, and assumptions are project history, not session memory.
 - **Deference levels** — Collaborative (stop after every sub-step), Guided (stop at major decisions), Autonomous (stop only at phase gates). Set in state, changeable mid-session.
 
 
@@ -99,9 +99,9 @@ For a full explanation of the architecture and design decisions behind SweetClau
 
 
 
-## All Commands
+## Common Commands
 
-Even though the single entry point will support you completely, you can invoke most of the under-the-hood commands manually if you wish.
+Even though the single entry point will support you completely, you can invoke most of the under-the-hood commands manually if you wish. These are the most common. You can also refer to the [complete skills reference](docs/user-guide/skills-reference.md).
 
 ### Primary Entry Point
 | Command | What it does |

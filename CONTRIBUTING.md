@@ -67,7 +67,6 @@ The body is instruction text that Claude follows when the skill is invoked. No c
 
 ```bash
 rsync -a skills/ ~/.claude/skills/sweetclaude/
-rsync -a skills/ ~/.claude/plugins/sweetclaude@sweetclaude/skills/
 ```
 
 ---
@@ -80,7 +79,7 @@ These areas touch shared infrastructure and are higher-risk:
 |---|---|
 | `skills/update/SKILL.md` | Touches migration logic, all state files, installed plugin metadata |
 | `skills/on/SKILL.md` | Bootstraps the entire `.sweetclaude/` state directory |
-| `skills/master/SKILL.md` | Session entry point; pre-flight, routing, deference |
+| `skills/master/SKILL.md` | Internal session orchestrator; pre-flight, routing, deference (invoked by the `/sweetclaude` front door in `skills/sweetclaude/SKILL.md`) |
 | `hooks/*.sh` | Deterministic enforcement; bugs here affect every session |
 | `config/migration-registry.yaml` | Pre-declares migrations; wrong entries cause update failures |
 

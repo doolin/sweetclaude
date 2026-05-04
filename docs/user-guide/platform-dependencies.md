@@ -3,7 +3,7 @@
 **Version:** 1.0
 **Date:** 2026-05-01
 
-SweetClaude depends on three external systems. This document states what each dependency does, what fails if it goes away, whether a contingency plan exists, and what would trigger a reconsideration of the architecture.
+SweetClaude depends on two external plugins plus the Claude Code platform itself. This document states what each dependency does, what fails if it goes away, whether a contingency plan exists, and what would trigger a reconsideration of the architecture.
 
 This is transparency, not alarm. These are known and accepted tradeoffs — but a project that depends on commercial platforms owes its users a written answer to "what happens if the platform changes?"
 
@@ -23,9 +23,9 @@ This is transparency, not alarm. These are known and accepted tradeoffs — but 
 
 ---
 
-## Dependency 2: Superpowers (obra/superpowers)
+## Dependency 2: Superpowers ([obra/superpowers](https://github.com/obra/superpowers))
 
-**What it is:** Superpowers is a Claude Code plugin that provides implementation primitives: plans, git worktrees, parallel agent dispatch, systematic debugging. SweetClaude code skills (`code-feature`, `code-issue`, `code-debt`) call into Superpowers skills.
+**What it is:** Superpowers is a Claude Code plugin that provides implementation primitives: plans, git worktrees, parallel agent dispatch, systematic debugging. Some SweetClaude code skills invoke Superpowers skills — for example, `code-issue` calls `superpowers:verification-before-completion` for its verify step.
 
 **License:** MIT
 
