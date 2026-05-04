@@ -70,14 +70,16 @@ If `YAML_MISSING`, say: "Looks like the config file is missing entirely. Let me 
 
 ## Step 1: Check .sweetclaude/ state exists
 
-If `.sweetclaude/state/phase.yaml` does not exist:
-> "SweetClaude is not set up for this project. Run `/sweetclaude:on` first."
+If neither `.sweetclaude/state/phase.yaml` nor `.sweetclaude/state/sweetclaude.yaml` exists:
+> "SweetClaude is not set up for this project. Ask me to set it up."
 
 Stop. Do not proceed.
 
 ---
 
 ## Step 2: Audit phase state vs reality
+
+If `.sweetclaude/state/phase.yaml` does not exist (project is on the new `sweetclaude.yaml` schema), skip this step entirely.
 
 Read `.sweetclaude/state/phase.yaml`. Then assess the actual project state:
 
@@ -263,25 +265,161 @@ Populate as draft entries marked `[retroactive]` for user review.
 
 ## Step 7: Audit hook registrations
 
-Read `~/.claude/hooks/sweetclaude/hooks-manifest.json`. For each entry with `"required": true`, verify that its `file` is referenced in `~/.claude/hooks/sweetclaude/hooks.json`.
+Read `~/.claude/hooks/sweetclaude/hooks-manifest.json`.
+
+Determine the current project version:
+- If `.sweetclaude/state/sweetclaude.yaml` exists: v2
+- If `.sweetclaude/state/phase.yaml` exists: v1
+- Otherwise: unknown
+
+**7a: Check global hooks (all versions)**
+
+Filter manifest for entries where `required=true` and `scope="global"`. Verify each file is referenced in `~/.claude/settings.json`.
 
 ```bash
 python3 -c "
-import json
-manifest = json.load(open('$HOME/.claude/hooks/sweetclaude/hooks-manifest.json'))
-hooks_json = open('$HOME/.claude/hooks/sweetclaude/hooks.json').read()
-missing = [h['file'] for h in manifest['hooks'] if h.get('required') and h['file'] not in hooks_json]
-print('\n'.join(missing) if missing else 'OK')
-"
+import json, os
+manifest = json.load(open(os.path.expanduser('~/.claude/hooks/sweetclaude/hooks-manifest.json')))
+try:
+    settings = json.load(open(os.path.expanduser('~/.claude/settings.json')))
+except:
+    settings = {}
+all_cmds = ' '.join(
+    h.get('command', '')
+    for event_hooks in settings.get('hooks', {}).values()
+    for entry in event_hooks
+    for h in entry.get('hooks', [])
+)
+missing = [h for h in manifest['hooks']
+           if h.get('required') and h.get('scope') == 'global' and h.get('event') and h['file'] not in all_cmds]
+print('\n'.join(f\"{h['file']} ({h['event']})\" for h in missing) if missing else 'OK')
+" 2>/dev/null
 ```
 
-If any required hooks are missing:
-> "These required hooks are not registered in hooks.json: {list}. Add them?"
+If any required global hooks are missing:
+> "These required global hooks are not registered in ~/.claude/settings.json: {list}. Add them?"
 
-If user says yes, add the missing entries to `hooks.json` using the `event`, `matcher`, and `file` fields from the manifest. Write atomically (temp file → rename).
+If user says yes, add the missing entries to `~/.claude/settings.json` under `hooks.{event}`. For hooks with a non-empty `matcher` (other than `"startup"`), include the matcher field. Write atomically (temp file → rename). Do not remove or modify existing entries. Then say:
+> "Global hooks registered in ~/.claude/settings.json. **You need to start a new Claude Code session for these hooks to take effect.** Close this session and open a new one."
 
-Also check for hooks registered in `hooks.json` that have no corresponding entry in `hooks-manifest.json` (unrecognized hooks):
-> "hooks.json has entries not in the manifest: {list}. These may be from another plugin or manually added. Review?"
+```bash
+python3 - << 'PY'
+import json, os, tempfile
+settings_path = os.path.expanduser('~/.claude/settings.json')
+manifest_path = os.path.expanduser('~/.claude/hooks/sweetclaude/hooks-manifest.json')
+
+with open(settings_path) as f:
+    settings = json.load(f)
+with open(manifest_path) as f:
+    manifest = json.load(f)
+
+all_cmds = ' '.join(
+    h.get('command', '')
+    for event_hooks in settings.get('hooks', {}).values()
+    for entry in event_hooks
+    for h in entry.get('hooks', [])
+)
+
+hooks_section = settings.setdefault('hooks', {})
+for h in manifest['hooks']:
+    if not h.get('required') or h.get('scope') != 'global' or not h.get('event') or h['file'] in all_cmds:
+        continue
+    event = h['event']
+    cmd = f"~/.claude/hooks/sweetclaude/{h['file']}"
+    entry = {'hooks': [{'type': 'command', 'command': cmd}]}
+    matcher = h.get('matcher', '')
+    if matcher and matcher != 'startup':
+        entry['matcher'] = matcher
+    hooks_section.setdefault(event, []).append(entry)
+
+with tempfile.NamedTemporaryFile('w', dir=os.path.dirname(settings_path),
+                                  suffix='.tmp', delete=False) as tmp:
+    json.dump(settings, tmp, indent=2)
+    tmp_name = tmp.name
+os.replace(tmp_name, settings_path)
+print('OK')
+PY
+```
+
+**7b: Check project hooks (v2 only)**
+
+Skip entirely for v1 projects — per-project hook registration is a v2 concept.
+
+Filter manifest for entries where `required=true` and `scope="project"`. Verify each file is referenced in `.claude/settings.local.json` in the current project directory.
+
+```bash
+python3 -c "
+import json, os
+manifest = json.load(open(os.path.expanduser('~/.claude/hooks/sweetclaude/hooks-manifest.json')))
+project_settings_path = os.path.join(os.getcwd(), '.claude/settings.local.json')
+try:
+    settings = json.load(open(project_settings_path))
+except:
+    settings = {}
+all_cmds = ' '.join(
+    h.get('command', '')
+    for event_hooks in settings.get('hooks', {}).values()
+    for entry in event_hooks
+    for h in entry.get('hooks', [])
+)
+missing = [h for h in manifest['hooks']
+           if h.get('required') and h.get('scope') == 'project' and h.get('event') and h['file'] not in all_cmds]
+print('\n'.join(f\"{h['file']} ({h['event']})\" for h in missing) if missing else 'OK')
+" 2>/dev/null
+```
+
+If any required project hooks are missing:
+> "These required project hooks are not registered in .claude/settings.local.json: {list}. Add them?"
+
+If user says yes, add the missing entries to `.claude/settings.local.json` under `hooks.{event}`. Create the file if it does not exist. Write atomically (temp file → rename). Do not remove or modify existing entries.
+
+```bash
+python3 - << 'PY'
+import json, os, tempfile
+project_settings_path = os.path.join(os.getcwd(), '.claude/settings.local.json')
+manifest_path = os.path.expanduser('~/.claude/hooks/sweetclaude/hooks-manifest.json')
+
+os.makedirs(os.path.dirname(project_settings_path), exist_ok=True)
+try:
+    with open(project_settings_path) as f:
+        settings = json.load(f)
+except:
+    settings = {}
+with open(manifest_path) as f:
+    manifest = json.load(f)
+
+all_cmds = ' '.join(
+    h.get('command', '')
+    for event_hooks in settings.get('hooks', {}).values()
+    for entry in event_hooks
+    for h in entry.get('hooks', [])
+)
+
+hooks_section = settings.setdefault('hooks', {})
+for h in manifest['hooks']:
+    if not h.get('required') or h.get('scope') != 'project' or not h.get('event') or h['file'] in all_cmds:
+        continue
+    event = h['event']
+    cmd = f"~/.claude/hooks/sweetclaude/{h['file']}"
+    entry = {'hooks': [{'type': 'command', 'command': cmd}]}
+    matcher = h.get('matcher', '')
+    if matcher and matcher != 'startup':
+        entry['matcher'] = matcher
+    hooks_section.setdefault(event, []).append(entry)
+
+with tempfile.NamedTemporaryFile('w', dir=os.path.dirname(project_settings_path),
+                                  suffix='.tmp', delete=False) as tmp:
+    json.dump(settings, tmp, indent=2)
+    tmp_name = tmp.name
+os.replace(tmp_name, project_settings_path)
+print('OK')
+PY
+```
+
+> "Project hooks registered in .claude/settings.local.json. **You need to start a new Claude Code session for these hooks to take effect.** Close this session and open a new one."
+
+Also check for hooks referencing `~/.claude/hooks/sweetclaude/` in `~/.claude/settings.json` that have no corresponding entry in `hooks-manifest.json` (unrecognized hooks):
+> "settings.json has SweetClaude hook entries not in the manifest: {list}. These may be from a prior install or manually added. Review?"
 
 Only flag — do not remove.
 

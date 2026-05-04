@@ -1,19 +1,21 @@
 {
   "schema_version": 1,
-  "description": "Declares every hook script and whether it must be registered in hooks.json. Used by session-preflight.sh to detect missing or extra registrations.",
+  "description": "Declares every hook script and whether it must be registered in settings.json. Used by session-preflight.sh to detect missing or extra registrations. scope: global = registered in ~/.claude/settings.json; scope: project = registered in .claude/settings.local.json via sweetclaude:on.",
   "hooks": [
     {
       "file": "session-preflight.sh",
       "event": "SessionStart",
       "matcher": "startup",
       "required": true,
+      "scope": "global",
       "purpose": "Loads session state, validates hook registrations, generates session-state.yaml"
     },
     {
       "file": "preflight-guard.sh",
       "event": "PreToolUse",
-      "matcher": "",
+      "matcher": ".*",
       "required": true,
+      "scope": "project",
       "purpose": "Blocks tool calls when SweetClaude is disabled or phase.yaml is missing"
     },
     {
@@ -21,6 +23,7 @@
       "event": "PreToolUse",
       "matcher": "Write|Edit",
       "required": true,
+      "scope": "project",
       "purpose": "Prevents edits to test files during TDD implementation phase"
     },
     {
@@ -28,6 +31,7 @@
       "event": "PreToolUse",
       "matcher": "Write|Edit",
       "required": true,
+      "scope": "project",
       "purpose": "Warns when writing implementation code before tests exist"
     },
     {
@@ -35,6 +39,7 @@
       "event": "PreToolUse",
       "matcher": "Bash",
       "required": true,
+      "scope": "project",
       "purpose": "Blocks writes to artifact paths that bypass the sc-artifact adapter"
     },
     {
@@ -42,6 +47,7 @@
       "event": "PostToolUse",
       "matcher": "Write|Edit",
       "required": true,
+      "scope": "project",
       "purpose": "Runs the test suite after every source file edit during TDD IMPLEMENT phase"
     },
     {
@@ -49,6 +55,7 @@
       "event": "PostToolUse",
       "matcher": "Write|Edit",
       "required": true,
+      "scope": "project",
       "purpose": "Regenerates session-state.yaml when phase.yaml or skills.yaml changes"
     },
     {
@@ -56,6 +63,7 @@
       "event": "PostToolUse",
       "matcher": "Bash",
       "required": true,
+      "scope": "project",
       "purpose": "Bumps package.json patch version after successful skill file writes"
     },
     {
@@ -63,6 +71,7 @@
       "event": "PostToolUse",
       "matcher": "Skill",
       "required": true,
+      "scope": "project",
       "purpose": "Logs every skill invocation to .sweetclaude/state/skill-usage-log.md"
     },
     {

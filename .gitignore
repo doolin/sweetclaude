@@ -30,3 +30,7 @@ restore-config.sh
 
 # Generated script output
 scripts/migration-report.md
+
+# Python cache
+__pycache__/
+*.pyc
