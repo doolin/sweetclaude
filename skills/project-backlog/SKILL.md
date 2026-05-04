@@ -21,7 +21,7 @@ All other modes: proceed normally.
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query issue sprint_id= status=backlog
 ```
 
@@ -79,7 +79,7 @@ After the list, surface any of these conditions if present:
 - **No active sprint:**
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query sprint status=active
 ```
 
@@ -92,7 +92,7 @@ If no active sprint: "No active sprint. Run `/sweetclaude:project-sprints new` t
 Move issue `<ID>` into sprint `<SP-NNN>`.
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_read <ID>
 sc_artifact_read <SP-NNN>
 ```
@@ -104,7 +104,7 @@ Verify:
 If both valid:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <ID> '{"sprint_id": "<SP-NNN>", "status": "ready"}'
 ```
 
@@ -112,7 +112,7 @@ Then append to sprint_history. Read current sprint_history, add entry:
 `{sprint_id: <SP-NNN>, added_date: <today>, removed_date: null, outcome: null}`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <ID> '{"sprint_history": "<updated sprint_history string>"}'
 ```
 
@@ -125,7 +125,7 @@ Confirm: `Promoted I-NNN → SP-NNN`
 Set issue status to `deferred`. This hides it from the default backlog view without cancelling it.
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <ID> '{"status": "deferred"}'
 ```
 
@@ -138,7 +138,7 @@ Confirm: `Deferred <ID> — removed from active backlog`
 Load all inferred issues:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query issue source=inferred status=backlog
 ```
 

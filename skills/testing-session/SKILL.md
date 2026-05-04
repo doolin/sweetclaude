@@ -7,7 +7,7 @@ description: "Run a manual QA session. Charter-based or scripted. Pass/fail trac
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 
 # Active test plans
 ls .sweetclaude/testing/plans/TP-*.md 2>/dev/null | head -5
@@ -181,7 +181,7 @@ Prompt:
 4. "Severity?" — P0 (crash/data loss), P1 (broken feature), P2 (degraded UX), P3 (cosmetic)
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_create issue '{
   "title": "<bug title>",
   "type": "bug",

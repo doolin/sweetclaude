@@ -7,7 +7,7 @@ description: "Manage project goals — binary business goals. Create, view, mark
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_list milestone
 ```
 
@@ -48,7 +48,7 @@ If no goals: "No goals yet. Run `project-goals new` to define a business goal."
 ## View
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_read <MS-NNN>
 ```
 
@@ -71,7 +71,7 @@ Description
 Then load contributing roadmap items:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query roadmap_item status=in_progress,planned
 ```
 
@@ -92,14 +92,14 @@ Ask one question at a time:
 4. **Release** (optional) — "Is this goal triggered by a release?":
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_list release
 ```
 
 List releases. Accept a REL-NNN or "none."
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_create milestone '{
   "title": "<title>",
   "criteria": "<criteria>",
@@ -116,7 +116,7 @@ Confirm: `Created MS-NNN — {title}`
 ## Achieved
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_read <MS-NNN>
 ```
 
@@ -125,7 +125,7 @@ Confirm the criteria: "Criteria: '{criteria}' — confirmed met?"
 On confirmation:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <MS-NNN> '{"status": "achieved", "achieved_at": "<today>"}'
 ```
 
@@ -138,7 +138,7 @@ If any other goals are `pending`, surface them: "Next pending: {MS-NNN} — {tit
 ## Missed
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <MS-NNN> '{"status": "missed"}'
 ```
 

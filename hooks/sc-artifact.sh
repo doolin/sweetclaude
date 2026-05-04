@@ -4,7 +4,7 @@
 # Source this file in any skill to get sc_artifact_* functions.
 #
 # Usage in a skill:
-#   source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+#   _sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 #   result=$(sc_artifact_read I-025)
 #   sc_artifact_write I-025 '{"status":"in_progress"}'
 #
@@ -14,7 +14,7 @@ _sc_self="${BASH_SOURCE[0]:-}"
 if [[ -n "$_sc_self" && "$_sc_self" != "source" && -f "$(cd "$(dirname "$_sc_self")" 2>/dev/null && pwd)/sc-artifact-impl.py" ]]; then
     SC_ARTIFACT_DIR="$(cd "$(dirname "$_sc_self")" && pwd)"
 else
-    SC_ARTIFACT_DIR="${HOME}/.claude/hooks/sweetclaude"
+    SC_ARTIFACT_DIR="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; SC_ARTIFACT_DIR="${SC_ARTIFACT_DIR:-${HOME}/.claude/hooks/sweetclaude}"
 fi
 unset _sc_self
 SC_IMPL="${SC_ARTIFACT_DIR}/sc-artifact-impl.py"

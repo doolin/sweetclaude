@@ -7,12 +7,12 @@ description: "Manage project issues — list, view, create, update, and close. T
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 
 # Ensure index exists — reindex silently if missing
 INDEX="${SC_STATE_BASE}/project-index.json"
 if [ ! -f "$INDEX" ]; then
-  python3 ~/.claude/hooks/sweetclaude/sc-artifact-impl.py reindex \
+  python3 "${_sc_hooks}/sc-artifact-impl.py" reindex \
     "$SC_PROJECT_ROOT" "$SC_PRODUCT_BASE" "$SC_STATE_BASE" > /dev/null 2>&1
 fi
 ```
@@ -63,7 +63,7 @@ Parse the first word of `$ARGUMENTS` to determine the operation.
 ## List
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_list issue
 ```
 
@@ -86,7 +86,7 @@ After the table: `{N} issues  ({done} done, {backlog} backlog, {in_progress} in 
 ## Backlog
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query issue sprint_id= status=backlog
 ```
 
@@ -100,7 +100,7 @@ After table: suggest `project-sprints` to schedule issues into a sprint, or `pro
 ## View
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_read <ID>
 ```
 
@@ -148,7 +148,7 @@ Ask one question at a time. Do not present a form.
 Once all answers collected:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_create issue '{
   "title": "<title>",
   "type": "<type>",
@@ -169,7 +169,7 @@ Confirm: `Created <ID> — <title>`
 ## Update
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_read <ID>
 ```
 
@@ -186,7 +186,7 @@ Map the user's intent to fields:
 Then:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <ID> '<json of only changed fields>'
 ```
 
@@ -200,7 +200,7 @@ If the user moves an issue into a sprint, also append to `sprint_history`:
 ## Close
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <ID> '{"status": "done"}'
 ```
 
@@ -217,7 +217,7 @@ If the issue was the last open issue in an epic, surface:
 ## Reopen
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <ID> '{"status": "backlog", "sprint_id": null}'
 ```
 

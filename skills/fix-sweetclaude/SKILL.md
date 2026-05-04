@@ -265,7 +265,7 @@ Populate as draft entries marked `[retroactive]` for user review.
 
 ## Step 7: Audit hook registrations
 
-Read `~/.claude/hooks/sweetclaude/hooks-manifest.json`.
+Read the hooks manifest. Resolve path: `${CLAUDE_PLUGIN_ROOT}/hooks/hooks-manifest.json` if `CLAUDE_PLUGIN_ROOT` is set, otherwise the legacy install location at `$HOME/.claude/hooks/sweetclaude/hooks-manifest.json`.
 
 Determine the current project version:
 - If `.sweetclaude/state/sweetclaude.yaml` exists: v2
@@ -279,7 +279,10 @@ Filter manifest for entries where `required=true` and `scope="global"`. Verify e
 ```bash
 python3 -c "
 import json, os
-manifest = json.load(open(os.path.expanduser('~/.claude/hooks/sweetclaude/hooks-manifest.json')))
+_sc_root = os.environ.get('CLAUDE_PLUGIN_ROOT','')
+manifest_path = (os.path.join(_sc_root, 'hooks', 'hooks-manifest.json') if _sc_root
+                 else os.path.join(os.path.expanduser('~'), '.claude', 'hooks', 'sweetclaude', 'hooks-manifest.json'))
+manifest = json.load(open(manifest_path))
 try:
     settings = json.load(open(os.path.expanduser('~/.claude/settings.json')))
 except:
@@ -306,7 +309,9 @@ If user says yes, add the missing entries to `~/.claude/settings.json` under `ho
 python3 - << 'PY'
 import json, os, tempfile
 settings_path = os.path.expanduser('~/.claude/settings.json')
-manifest_path = os.path.expanduser('~/.claude/hooks/sweetclaude/hooks-manifest.json')
+_sc_root = os.environ.get('CLAUDE_PLUGIN_ROOT','')
+manifest_path = (os.path.join(_sc_root, 'hooks', 'hooks-manifest.json') if _sc_root
+                 else os.path.join(os.path.expanduser('~'), '.claude', 'hooks', 'sweetclaude', 'hooks-manifest.json'))
 
 with open(settings_path) as f:
     settings = json.load(f)
@@ -325,7 +330,7 @@ for h in manifest['hooks']:
     if not h.get('required') or h.get('scope') != 'global' or not h.get('event') or h['file'] in all_cmds:
         continue
     event = h['event']
-    cmd = f"~/.claude/hooks/sweetclaude/{h['file']}"
+    cmd = h.get('command_path') or os.path.join(os.path.expanduser('~'), '.claude', 'hooks', 'sweetclaude', h['file'])
     entry = {'hooks': [{'type': 'command', 'command': cmd}]}
     matcher = h.get('matcher', '')
     if matcher and matcher != 'startup':
@@ -350,7 +355,10 @@ Filter manifest for entries where `required=true` and `scope="project"`. Verify 
 ```bash
 python3 -c "
 import json, os
-manifest = json.load(open(os.path.expanduser('~/.claude/hooks/sweetclaude/hooks-manifest.json')))
+_sc_root = os.environ.get('CLAUDE_PLUGIN_ROOT','')
+manifest_path = (os.path.join(_sc_root, 'hooks', 'hooks-manifest.json') if _sc_root
+                 else os.path.join(os.path.expanduser('~'), '.claude', 'hooks', 'sweetclaude', 'hooks-manifest.json'))
+manifest = json.load(open(manifest_path))
 project_settings_path = os.path.join(os.getcwd(), '.claude/settings.local.json')
 try:
     settings = json.load(open(project_settings_path))
@@ -377,7 +385,9 @@ If user says yes, add the missing entries to `.claude/settings.local.json` under
 python3 - << 'PY'
 import json, os, tempfile
 project_settings_path = os.path.join(os.getcwd(), '.claude/settings.local.json')
-manifest_path = os.path.expanduser('~/.claude/hooks/sweetclaude/hooks-manifest.json')
+_sc_root = os.environ.get('CLAUDE_PLUGIN_ROOT','')
+manifest_path = (os.path.join(_sc_root, 'hooks', 'hooks-manifest.json') if _sc_root
+                 else os.path.join(os.path.expanduser('~'), '.claude', 'hooks', 'sweetclaude', 'hooks-manifest.json'))
 
 os.makedirs(os.path.dirname(project_settings_path), exist_ok=True)
 try:
@@ -400,7 +410,7 @@ for h in manifest['hooks']:
     if not h.get('required') or h.get('scope') != 'project' or not h.get('event') or h['file'] in all_cmds:
         continue
     event = h['event']
-    cmd = f"~/.claude/hooks/sweetclaude/{h['file']}"
+    cmd = h.get('command_path') or os.path.join(os.path.expanduser('~'), '.claude', 'hooks', 'sweetclaude', h['file'])
     entry = {'hooks': [{'type': 'command', 'command': cmd}]}
     matcher = h.get('matcher', '')
     if matcher and matcher != 'startup':
@@ -418,7 +428,7 @@ PY
 
 > "Project hooks registered in .claude/settings.local.json. **You need to start a new Claude Code session for these hooks to take effect.** Close this session and open a new one."
 
-Also check for hooks referencing `~/.claude/hooks/sweetclaude/` in `~/.claude/settings.json` that have no corresponding entry in `hooks-manifest.json` (unrecognized hooks):
+Also check for hooks referencing SweetClaude scripts (paths containing `hooks/sweetclaude/` or `${CLAUDE_PLUGIN_ROOT}/hooks/`) in `~/.claude/settings.json` that have no corresponding `file` entry in `hooks-manifest.json` (unrecognized hooks):
 > "settings.json has SweetClaude hook entries not in the manifest: {list}. These may be from a prior install or manually added. Review?"
 
 Only flag — do not remove.

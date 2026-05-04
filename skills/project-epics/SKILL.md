@@ -7,7 +7,7 @@ description: "Manage epics — optional planning containers for 4–12 related i
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 ```
 
 # Project Epics
@@ -43,7 +43,7 @@ Epics are optional grouping containers. Not every project needs them — add the
 ## List
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_list epic
 sc_artifact_list issue
 ```
@@ -65,7 +65,7 @@ If no epics: "No epics. Run `project-epics new` to create one, or skip epics ent
 ## View
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_read <EP-NNN>
 sc_artifact_query issue epic_id=<EP-NNN>
 ```
@@ -102,7 +102,7 @@ Ask one question at a time:
 3. **Roadmap item** (optional) — Load roadmap items first:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_list roadmap_item
 ```
 
@@ -111,7 +111,7 @@ sc_artifact_list roadmap_item
 4. **Issues** — "Which existing issues should be grouped under this epic?" Load backlog and in-progress issues without an epic:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query issue epic_id=
 ```
 
@@ -120,7 +120,7 @@ Present them. Accept a list of IDs or "none" to start empty.
 Create the epic:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_create epic '{
   "title": "<title>",
   "goal": "<goal>",
@@ -132,7 +132,7 @@ sc_artifact_create epic '{
 For each issue the user assigned, update it:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <issue_id> '{"epic_id": "<new_epic_id>"}'
 ```
 
@@ -143,7 +143,7 @@ Confirm: `Created EP-NNN — {N} issues assigned`
 ## Close
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_read <EP-NNN>
 sc_artifact_query issue epic_id=<EP-NNN>
 ```
@@ -154,7 +154,7 @@ Check for incomplete issues (status not `done` or `cancelled`). If any:
 Wait for confirmation, then:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <EP-NNN> '{"status": "complete"}'
 ```
 
@@ -165,7 +165,7 @@ Confirm: `EP-NNN closed — {title}`
 ## Cancel
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <EP-NNN> '{"status": "cancelled"}'
 ```
 
@@ -176,7 +176,7 @@ Confirm: `EP-NNN cancelled — {N} issues returned to backlog (epic_id cleared)`
 Update all issues that had this epic:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query issue epic_id=<EP-NNN>
 ```
 

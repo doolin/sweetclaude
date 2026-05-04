@@ -7,7 +7,7 @@ description: "Structured security review. Threat modeling (STRIDE), OWASP Top 10
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 
 # Open security findings (issues tagged security)
 sc_artifact_query issue status=backlog,ready,in_progress type=bug 2>/dev/null | \
@@ -173,7 +173,7 @@ Findings
 For each P0 and P1 finding, ask: "File this as an issue now?" On yes:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_create issue '{
   "title": "<finding title>",
   "type": "bug",
@@ -213,7 +213,7 @@ Present each with date and finding counts.
 Load open issues tagged `security`:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query issue status=backlog,ready,in_progress
 ```
 

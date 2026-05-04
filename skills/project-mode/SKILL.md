@@ -7,7 +7,7 @@ description: "Assess and shift project modes. Flow → Kanban → Shape Up → A
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 
 CURRENT_MODE=$(python3 -c "
 import yaml
@@ -19,17 +19,17 @@ except:
 " 2>/dev/null || echo "flow")
 
 # Artifact counts for assess output
-python3 ~/.claude/hooks/sweetclaude/sc-artifact-impl.py \
+python3 "${_sc_hooks}/sc-artifact-impl.py" \
   query "$SC_PROJECT_ROOT" "$SC_PRODUCT_BASE" "$SC_STATE_BASE" \
   issue sprint_id= status=backlog 2>/dev/null | \
   python3 -c "import json,sys; items=json.load(sys.stdin); print(f'BACKLOG_COUNT={len(items)}')" 2>/dev/null
 
-python3 ~/.claude/hooks/sweetclaude/sc-artifact-impl.py \
+python3 "${_sc_hooks}/sc-artifact-impl.py" \
   list "$SC_PROJECT_ROOT" "$SC_PRODUCT_BASE" "$SC_STATE_BASE" \
   issue 2>/dev/null | \
   python3 -c "import json,sys; items=json.load(sys.stdin); print(f'TOTAL_ISSUES={len(items)}')" 2>/dev/null
 
-python3 ~/.claude/hooks/sweetclaude/sc-artifact-impl.py \
+python3 "${_sc_hooks}/sc-artifact-impl.py" \
   query "$SC_PROJECT_ROOT" "$SC_PRODUCT_BASE" "$SC_STATE_BASE" \
   sprint status=active 2>/dev/null | \
   python3 -c "import json,sys; items=json.load(sys.stdin); print(f'ACTIVE_SPRINTS={len(items)}')" 2>/dev/null
@@ -200,7 +200,7 @@ If shifting away from `agile` or `agile_enterprise`:
 - Move their issues back to backlog (sprint_id=null, status=backlog)
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query sprint status=planned
 ```
 

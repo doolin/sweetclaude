@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "description": "Declares every hook script and whether it must be registered in settings.json. Used by session-preflight.sh to detect missing or extra registrations. scope: global = registered in ~/.claude/settings.json; scope: project = registered in .claude/settings.local.json via sweetclaude:on.",
+  "schema_version": 2,
+  "description": "Declares every hook script and whether it must be registered in settings.json. Used by session-preflight.sh to detect missing or extra registrations. scope: global = registered in ~/.claude/settings.json; scope: project = registered in .claude/settings.local.json via sweetclaude:on. command_path: the ${CLAUDE_PLUGIN_ROOT}-rooted path used when registering this hook in settings.json.",
   "hooks": [
     {
       "file": "session-preflight.sh",
@@ -8,7 +8,8 @@
       "matcher": "startup",
       "required": true,
       "scope": "global",
-      "purpose": "Loads session state, validates hook registrations, generates session-state.yaml"
+      "purpose": "Loads session state, validates hook registrations, generates session-state.yaml",
+      "command_path": "${CLAUDE_PLUGIN_ROOT}/hooks/session-preflight.sh"
     },
     {
       "file": "preflight-guard.sh",
@@ -16,7 +17,8 @@
       "matcher": ".*",
       "required": true,
       "scope": "project",
-      "purpose": "Blocks tool calls when SweetClaude is disabled or phase.yaml is missing"
+      "purpose": "Blocks tool calls when SweetClaude is disabled or phase.yaml is missing",
+      "command_path": "${CLAUDE_PLUGIN_ROOT}/hooks/preflight-guard.sh"
     },
     {
       "file": "test-guardian.sh",
@@ -24,7 +26,8 @@
       "matcher": "Write|Edit",
       "required": true,
       "scope": "project",
-      "purpose": "Prevents edits to test files during TDD implementation phase"
+      "purpose": "Prevents edits to test files during TDD implementation phase",
+      "command_path": "${CLAUDE_PLUGIN_ROOT}/hooks/test-guardian.sh"
     },
     {
       "file": "tdd-prewrite-guardian.sh",
@@ -32,7 +35,8 @@
       "matcher": "Write|Edit",
       "required": true,
       "scope": "project",
-      "purpose": "Warns when writing implementation code before tests exist"
+      "purpose": "Warns when writing implementation code before tests exist",
+      "command_path": "${CLAUDE_PLUGIN_ROOT}/hooks/tdd-prewrite-guardian.sh"
     },
     {
       "file": "artifact-guardian.sh",
@@ -40,7 +44,8 @@
       "matcher": "Bash",
       "required": true,
       "scope": "project",
-      "purpose": "Blocks writes to artifact paths that bypass the sc-artifact adapter"
+      "purpose": "Blocks writes to artifact paths that bypass the sc-artifact adapter",
+      "command_path": "${CLAUDE_PLUGIN_ROOT}/hooks/artifact-guardian.sh"
     },
     {
       "file": "auto-test-runner.sh",
@@ -48,7 +53,8 @@
       "matcher": "Write|Edit",
       "required": true,
       "scope": "project",
-      "purpose": "Runs the test suite after every source file edit during TDD IMPLEMENT phase"
+      "purpose": "Runs the test suite after every source file edit during TDD IMPLEMENT phase",
+      "command_path": "${CLAUDE_PLUGIN_ROOT}/hooks/auto-test-runner.sh"
     },
     {
       "file": "state-regenerator.sh",
@@ -56,7 +62,8 @@
       "matcher": "Write|Edit",
       "required": true,
       "scope": "project",
-      "purpose": "Regenerates session-state.yaml when phase.yaml or skills.yaml changes"
+      "purpose": "Regenerates session-state.yaml when phase.yaml or skills.yaml changes",
+      "command_path": "${CLAUDE_PLUGIN_ROOT}/hooks/state-regenerator.sh"
     },
     {
       "file": "version-bump.sh",
@@ -64,7 +71,8 @@
       "matcher": "Bash",
       "required": true,
       "scope": "project",
-      "purpose": "Bumps package.json patch version after successful skill file writes"
+      "purpose": "Bumps package.json patch version after successful skill file writes",
+      "command_path": "${CLAUDE_PLUGIN_ROOT}/hooks/version-bump.sh"
     },
     {
       "file": "skill-tracker.sh",
@@ -72,42 +80,48 @@
       "matcher": "Skill",
       "required": true,
       "scope": "project",
-      "purpose": "Logs every skill invocation to .sweetclaude/state/skill-usage-log.md"
+      "purpose": "Logs every skill invocation to .sweetclaude/state/skill-usage-log.md",
+      "command_path": "${CLAUDE_PLUGIN_ROOT}/hooks/skill-tracker.sh"
     },
     {
       "file": "git-checkpoint.sh",
       "event": null,
       "matcher": null,
       "required": false,
-      "purpose": "Utility called explicitly by skills (e.g. code-tdd) to commit a git checkpoint. NOT an event hook — takes a $MESSAGE argument."
+      "purpose": "Utility called explicitly by skills (e.g. code-tdd) to commit a git checkpoint. NOT an event hook \u2014 takes a $MESSAGE argument.",
+      "command_path": null
     },
     {
       "file": "phase-dwelling-guard.sh",
       "event": null,
       "matcher": null,
       "required": false,
-      "purpose": "Protocol guardian only — registered by guardian-on skill, not in baseline hooks.json. Blocks phase-advancing language."
+      "purpose": "Protocol guardian only \u2014 registered by guardian-on skill, not in baseline hooks.json. Blocks phase-advancing language.",
+      "command_path": null
     },
     {
       "file": "auto-reindex.sh",
       "event": null,
       "matcher": null,
       "required": false,
-      "purpose": "RAG corpus indexing — registered only when document-corpus skill is active. Not a baseline hook."
+      "purpose": "RAG corpus indexing \u2014 registered only when document-corpus skill is active. Not a baseline hook.",
+      "command_path": null
     },
     {
       "file": "generate-session-state.sh",
       "event": null,
       "matcher": null,
       "required": false,
-      "purpose": "Called by session-preflight.sh to produce session-state.yaml. Not a standalone event hook."
+      "purpose": "Called by session-preflight.sh to produce session-state.yaml. Not a standalone event hook.",
+      "command_path": null
     },
     {
       "file": "sc-artifact.sh",
       "event": null,
       "matcher": null,
       "required": false,
-      "purpose": "Shell library (source'd by skills). Not an event hook."
+      "purpose": "Shell library (source'd by skills). Not an event hook.",
+      "command_path": null
     }
   ]
 }

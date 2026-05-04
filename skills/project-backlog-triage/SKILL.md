@@ -7,10 +7,10 @@ description: "Structured backlog grooming session. Applies INVEST criteria and s
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 
 # Load ungroomed issues: missing priority or effort
-ALL_BACKLOG=$(python3 ~/.claude/hooks/sweetclaude/sc-artifact-impl.py \
+ALL_BACKLOG=$(python3 "${_sc_hooks}/sc-artifact-impl.py" \
   query "$SC_PROJECT_ROOT" "$SC_PRODUCT_BASE" "$SC_STATE_BASE" \
   issue sprint_id= status=backlog 2>/dev/null)
 
@@ -118,19 +118,19 @@ Accept:
 On `y` or field overrides:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <ID> '{"priority": "<priority>", "effort": "<effort>", "status": "ready"}'
 ```
 
 On `cancel`:
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_delete <ID>
 ```
 
 On `done`:
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <ID> '{"status": "done"}'
 ```
 
@@ -141,7 +141,7 @@ If the user says `split`:
 Ask: "What are the two parts? Give me two titles."
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_create issue '{"title": "<part 1>", "type": "<type>", "status": "backlog", "epic_id": "<epic or null>"}'
 sc_artifact_create issue '{"title": "<part 2>", "type": "<type>", "status": "backlog", "epic_id": "<epic or null>"}'
 sc_artifact_delete <original_id>

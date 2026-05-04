@@ -7,7 +7,7 @@ description: "WCAG 2.1 Level AA audit. Automated scan guidance + manual keyboard
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 
 ls .sweetclaude/testing/accessibility/A11Y-*.md 2>/dev/null | wc -l | xargs -I{} echo "AUDIT_COUNT={}"
 ls .sweetclaude/testing/accessibility/A11Y-*.md 2>/dev/null | tail -3
@@ -194,7 +194,7 @@ Findings ({N} total)
 For each Critical and Serious finding, ask: "File as issue?" On yes:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_create issue '{
   "title": "A11y: <finding title>",
   "type": "bug",
@@ -238,7 +238,7 @@ Filed:     {N} issues
 Load open issues tagged `accessibility` or `a11y`:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query issue status=backlog,ready,in_progress
 ```
 

@@ -7,7 +7,7 @@ description: "Import open GitHub Issues into the local issue store as I-NNN arti
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 ```
 
 # GitHub Issues — Import
@@ -40,7 +40,7 @@ For each GitHub issue:
 
 1. Check whether a local issue already has `github_issue_number` matching:
    ```bash
-   source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+   _sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
    sc_artifact_query issue github_issue_number=<number>
    ```
 

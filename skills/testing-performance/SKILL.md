@@ -240,7 +240,7 @@ If a regression is detected: "Regression detected in {scenario}: {metric} increa
 On yes:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_create issue '{
   "title": "Performance regression: <scenario> — <metric> +<delta>",
   "type": "bug",

@@ -10,7 +10,7 @@ description: "Define and maintain a test strategy for a feature or release. Cove
 ls .sweetclaude/testing/plans/TP-*.md 2>/dev/null | wc -l | xargs -I{} echo "PLAN_COUNT={}"
 ls .sweetclaude/testing/plans/TP-*.md 2>/dev/null | head -10
 
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query roadmap_item status=in_progress 2>/dev/null
 sc_artifact_list release 2>/dev/null
 ```

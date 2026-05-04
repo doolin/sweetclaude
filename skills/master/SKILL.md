@@ -27,7 +27,7 @@ If the user says yes, invoke `sweetclaude:on`. Otherwise stop — do not proceed
 - `~/.claude/skills/sweetclaude/SKILL.md` exists
 - `~/.claude/config/sweetclaude/phase-skills.yaml` exists
 - `~/.claude/rules/sweetclaude/interaction-model.md` exists
-- `~/.claude/hooks/sweetclaude/test-guardian.sh` exists
+- `${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/hooks/sweetclaude}/test-guardian.sh` exists
 
 If any are missing:
 > "SweetClaude is not fully installed. Missing: [list]. Run `install.sh` from the SweetClaude repo to fix this."

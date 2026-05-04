@@ -108,7 +108,7 @@ Then diff against installed:
 diff -rq $SOURCE_DIR/skills/ {installPath}/skills/ 2>/dev/null
 diff -rq $SOURCE_DIR/skills/ ~/.claude/skills/sweetclaude/ 2>/dev/null
 diff -rq $SOURCE_DIR/rules/ ~/.claude/rules/sweetclaude/ 2>/dev/null
-diff -rq $SOURCE_DIR/hooks/ ~/.claude/hooks/sweetclaude/ 2>/dev/null
+diff -rq $SOURCE_DIR/hooks/ "${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/hooks/sweetclaude}/" 2>/dev/null
 diff -rq $SOURCE_DIR/config/ ~/.claude/config/sweetclaude/ 2>/dev/null
 diff -rq $SOURCE_DIR/agents/ ~/.claude/agents/sweetclaude/ 2>/dev/null
 diff -rq $SOURCE_DIR/scripts/ {installPath}/scripts/ 2>/dev/null
@@ -211,12 +211,12 @@ fi
 
 # Framework dirs → ~/.claude/
 rsync -a --delete $SOURCE_DIR/rules/ ~/.claude/rules/sweetclaude/
-rsync -a --delete $SOURCE_DIR/hooks/ ~/.claude/hooks/sweetclaude/
+rsync -a --delete $SOURCE_DIR/hooks/ "${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/hooks/sweetclaude}/"
 rsync -a --delete $SOURCE_DIR/config/ ~/.claude/config/sweetclaude/
 rsync -a --delete $SOURCE_DIR/agents/ ~/.claude/agents/sweetclaude/
 
 # Ensure hooks are executable
-chmod +x ~/.claude/hooks/sweetclaude/*.sh 2>/dev/null || true
+chmod +x "${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/hooks/sweetclaude}/"*.sh 2>/dev/null || true
 
 # Verify registry file synced correctly
 ls ~/.claude/config/sweetclaude/skills-registry.yaml 2>/dev/null || echo "WARNING: skills-registry.yaml not found after sync"
@@ -275,7 +275,7 @@ SweetClaude updated.
 
 Compare the installed hooks and config files (before sync) against the new version. Identify:
 
-1. **New hooks** — files in `$SOURCE_DIR/hooks/` that did not exist in the previously installed `~/.claude/hooks/sweetclaude/`
+1. **New hooks** — files in `$SOURCE_DIR/hooks/` that did not exist in the previously installed hooks directory (`${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/hooks/sweetclaude}/`)
 2. **New skills** — skill directories in `$SOURCE_DIR/skills/` that did not exist in the previously installed `{installPath}/skills/`
 3. **New config templates** — files in `$SOURCE_DIR/config/templates/` that are new
 

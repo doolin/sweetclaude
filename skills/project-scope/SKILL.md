@@ -140,7 +140,7 @@ PYEOF
 **Cascade review:** After any scope change, load open roadmap items and backlog issues and surface those that may conflict with the new scope:
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_query roadmap_item status=planned,in_progress
 sc_artifact_query issue status=backlog,ready,in_progress
 ```

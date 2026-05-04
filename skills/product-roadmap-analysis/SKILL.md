@@ -7,7 +7,7 @@ description: "RICE scoring and stack-rank analysis for roadmap items. Alignment 
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 
 sc_artifact_list roadmap_item
 sc_artifact_list milestone
@@ -175,7 +175,7 @@ Offer: "Apply this stack-rank? Say `yes` to update priorities, `adjust` to chang
 On user confirmation (`yes`):
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_write <RM-NNN> '{"priority": <N>}'
 ```
 
@@ -211,7 +211,7 @@ End with: "Run `product-roadmap-analysis` for full RICE scoring."
 Arguments: `item <RM-NNN>`
 
 ```bash
-source ~/.claude/hooks/sweetclaude/sc-artifact.sh
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
 sc_artifact_read <RM-NNN>
 sc_artifact_query epic roadmap_item_id=<RM-NNN>
 sc_artifact_query issue roadmap_item_id=<RM-NNN> epic_id=
