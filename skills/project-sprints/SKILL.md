@@ -27,6 +27,23 @@ Manage sprints: plan, activate, track, and close. Arguments: `$ARGUMENTS`
 
 ---
 
+## MODE CHECK
+
+Read `mode` from pre-loaded session state (or `cat .sweetclaude/state/effective-gates.yaml 2>/dev/null | grep "^mode:"`)
+
+If `mode` is `flow`, `kanban`, or `shape_up`, output and stop:
+
+> "This skill is not active in **{mode}** mode.
+>
+> - **Flow and Kanban** use continuous delivery without sprint cadence. Track work with `/sweetclaude:project-issues`.
+> - **Level Up** uses fixed-time cycles with pitches, not sprints. Create issues from a pitch with `/sweetclaude:project-issues`.
+>
+> To use sprint tracking, shift to Agile mode: `/sweetclaude:project-mode shift agile`"
+
+Proceed only if `mode` is `agile` (or unset).
+
+---
+
 ## Routing
 
 | Arguments | Operation |
