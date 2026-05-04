@@ -20,19 +20,23 @@ _esc() {
   s="${s//$'\n'/\\n}"
   s="${s//$'\r'/\\r}"
   s="${s//$'\t'/\\t}"
+  s="${s//$'\033'/\\u001b}"
   printf '%s' "$s"
 }
 
 _IDE_NOTE="Note: systemMessage may not be visible in IDE environments (VS Code extension). If the user has not acknowledged the above message, surface it as your first response before taking any other action."
 
 # emit_heal reason [details]
-# Directs Claude to say the reason message and invoke sweetclaude:fix-sweetclaude.
-# Does NOT include continue: false — session proceeds, Claude takes over.
+# Surfaces a message asking the user to type 'fix sweetclaude' to approve the fix.
+# Does NOT include continue: false — session proceeds, Claude waits for user input.
 emit_heal() {
   local reason="$1"
   local details="${2:-}"
-  local msg="I need to check on the SweetClaude system before beginning — ${reason}."
-  local ctx="SweetClaude health check detected: ${reason}. Say exactly: \"${msg}\" Then immediately invoke sweetclaude:fix-sweetclaude."
+  local _RED=$'\033[0;31m'
+  local _BLUE=$'\033[1;34m'
+  local _RESET=$'\033[0m'
+  local msg="${_RED}I need to fix the SweetClaude configuration,${_RESET}"$'\n'"${_RED}continuing without it could lead to problems.${_RESET}"$'\n'"${_RED}Type ${_BLUE}'fix sweetclaude'${_RED} to approve my going ahead with the fix.${_RESET}"
+  local ctx="SweetClaude health check detected: ${reason}. Display this message to the user exactly: \"${msg}\" Then wait. When the user types 'fix sweetclaude' (or words to that effect), immediately invoke sweetclaude:fix-sweetclaude."
   [ -n "$details" ] && ctx="${ctx} Details for fix-sweetclaude: ${details}"
   ctx="${ctx} ${_IDE_NOTE}"
   printf '{"systemMessage":"%s","hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"%s"}}\n' \
