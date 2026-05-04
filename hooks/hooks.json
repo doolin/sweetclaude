@@ -47,6 +47,15 @@
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/artifact-guardian.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/wip-limit.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
