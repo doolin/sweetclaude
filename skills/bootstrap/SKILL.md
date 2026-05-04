@@ -1,8 +1,8 @@
 ---
 spdx-license: AGPL-3.0-or-later
-name: sweetclaude
-user-invocable: true
-description: "Your SweetClaude entry point. Describe what you want to do in plain English, or press enter to see where things stand."
+name: sweetclaude:bootstrap
+user-invocable: false
+description: "Session startup skill — pre-flight checks, drift/update offers, and initial routing. Invoked automatically at session start. Not user-callable."
 ---
 
 !`cat .sweetclaude/state/sweetclaude.yaml 2>/dev/null || echo "SC_YAML_NOT_FOUND"`
