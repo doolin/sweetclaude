@@ -233,6 +233,24 @@ Tell the user: "I've created `.sweetclaude/state/project-sop.md` to track this p
 
 ---
 
+### Step 2.2-N: Mode assessment
+
+Check if `mode` is already set in the newly created sweetclaude.yaml. If not set:
+
+> "One more thing — let's pick your project management style. I'll ask 5 quick questions."
+
+Invoke `/sweetclaude:project-assess-shape`.
+
+The assessment writes `mode` to sweetclaude.yaml and compiles effective-gates.yaml. Wait for completion before declaring init done.
+
+If user skips (`/project-assess-shape skip` or explicit refusal):
+```bash
+echo "mode: flow" >> .sweetclaude/state/sweetclaude.yaml
+bash $HOME/dev/sweetclaude/scripts/generate-effective-gates.sh
+```
+
+---
+
 ### Step 2.5-N: Artifact privacy setup
 
 Determine where SweetClaude stores planning artifacts. **Assess the environment first. Do not ask questions before looking.**
