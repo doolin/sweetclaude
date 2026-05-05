@@ -52,6 +52,18 @@ After these questions, produce:
 
 Present this and ask if it's accurate. Adjust until confirmed.
 
+**Segments (mandatory at L1):**
+
+Ask: "I want to capture your users more specifically. Can you name one or two distinct groups within your target audience — people who have this problem in different ways or for different reasons? Give each a short label and a one-sentence rationale."
+
+Record each as a segment: `name`, `description`, `rationale`. Minimum one segment required to exit L1.
+
+**Scenarios (mandatory at L1):**
+
+Ask: "Give me a concrete scenario — a specific person at a specific moment. Not abstract: who are they, what's happening right now, what's their pain point, and what do they do today to cope?"
+
+Record as one scenario: `persona_seed`, `moment`, `context`, `pain_point`, `current_workaround`. Minimum one scenario required to exit L1.
+
 If the user chose L1, go to [Exit]. Otherwise continue to L2.
 
 ## L2 — Problem and Success
@@ -69,6 +81,18 @@ Do not re-ask anything captured in L1.
    Do not accept the first framing without scrutiny.
 
 After discussion, produce an updated concept statement incorporating L2 additions. Present and confirm.
+
+**Attitudinal axis (mandatory at L2):**
+
+Ask: "Who in your target audience would push back on this framing — someone who'd say 'this isn't for me'? Describe the spectrum: on one end is your core user, and on the other end is someone you're not building for. What's the axis that separates them?"
+
+Record as one attitudinal axis: `name`, `poles.low`, `poles.high`, `rationale`. Minimum one axis required to exit L2.
+
+**JTBD candidates (encouraged at L2):**
+
+Offer: "Would you like to capture a jobs-to-be-done statement? Format: 'When I [situation], I want to [motivation], so I can [outcome].' This becomes a testable hypothesis for your personas."
+
+If yes, capture it with `confidence` (high/medium/low) and rationale. If no, skip — JTBD is optional at L2.
 
 If the user chose L2, go to [Exit]. Otherwise continue to L3.
 
@@ -108,6 +132,16 @@ Present the rubric and explain: "The goal before committing to a wedge is to mov
 17. "What is the narrowest, most painful slice of this problem that a buyer or user would want solved on its own — before seeing anything else?" (wedge)
 
 Apply the **checkbook test**: "If you described only this capability in a meeting, would they write a check or sign up?" Discuss until the wedge is clear.
+
+**L3 exit criteria check — enforce minimums before producing the pain thesis:**
+
+Before writing the final pain thesis, verify:
+- Segments: at least 2 named segments. If fewer, ask: "L3 discovery needs at least 2 named user segments. Can you describe a second distinct group?"
+- Attitudinal axes: at least 1. If missing, ask the attitudinal axis question from L2.
+- JTBD candidates: at least 2. If fewer, ask: "One more jobs-to-be-done statement? 'When I [situation], I want to [motivation], so I can [outcome].' Think of a different moment or a different user segment."
+- Scenarios: at least 2. If only one captured, ask: "One more concrete scenario — different person, different moment. Who are they and what's happening?"
+
+Accept each addition, then continue.
 
 Produce the complete pain thesis. Present and confirm.
 
@@ -191,7 +225,39 @@ not_scope:
   - {item}
 pain_thesis_present: true | false
 validation_rubric_run: true | false
+
+# Structured persona-precursor fields (populated per depth level)
+segments:
+  - id: seg-1
+    name: {}
+    description: {}
+    rationale: {}
+
+attitudinal_axes:        # populated at L2+; [] if L1
+  - id: axis-1
+    name: {}
+    poles:
+      low: {}
+      high: {}
+    rationale: {}
+
+jtbd_candidates:         # populated at L2+ (optional L2, mandatory L3 2+)
+  - id: jtbd-1
+    when: {}
+    i_want_to: {}
+    so_that: {}
+    confidence: high | medium | low
+
+scenarios:               # one minimum at all depths; two minimum at L3
+  - id: scn-1
+    persona_seed: {}
+    moment: {}
+    context: {}
+    pain_point: {}
+    current_workaround: {}
 ```
+
+**Backward compatibility:** This schema is additive. Existing `discovery.yaml` files without `segments`, `attitudinal_axes`, `jtbd_candidates`, or `scenarios` remain valid. Downstream skills (e.g. `user-personas`) must handle absent fields with lazy migration rather than blocking entry.
 
 Append to `.sweetclaude/log.md`:
 

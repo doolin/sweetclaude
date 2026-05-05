@@ -36,7 +36,8 @@ Hard gates are marked ⚠️ and cannot be soft-bypassed at GA+.
 
 **DISCOVER**
 - At least one persona defined: role, primary tasks, success criteria per task
-- At least one concrete real-world scenario per persona
+- At least one named user segment with rationale captured in `discovery.yaml`
+- At least one concrete real-world scenario captured in `discovery.yaml` (at L2+: one attitudinal axis; at L3: 2 segments, 1 axis, 2 JTBD candidates, 2 scenarios)
 - Core feature set established
 - At least one thing explicitly out of scope
 - At least one assumption challenged or alternative framing raised
