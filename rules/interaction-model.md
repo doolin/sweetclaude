@@ -29,7 +29,16 @@ Include your reasoning so the user can evaluate your thinking, not just your con
 
 Whenever a skill or response presents the user with a bounded set of choices — TDD level, deference level, mode selection, "proceed / review / something else", "fix it / show me the file / restore from archive", "this milestone / that milestone", any time the answer set is enumerable — present it via the AskUserQuestion tool. Never write a text imitation of a menu (a line like "Option A · Option B · Option C") — those look like menus but are not interactive, so the user has to type the option name back, which defeats the purpose.
 
-**"Something else" must always be one of the options.** Bounded decisions that look complete on the screen are never actually complete — the user often has a direction the framework didn't anticipate. The escape hatch is mandatory. If the user picks Something else, follow Adaptive Flow: drop the menu, follow their direction, track the original proposal so you can offer to return to it later.
+**Recommendation + alternative = menu.** When proposing an approach and offering an alternative ("My recommendation is X, or we could do Y instead"), always use AskUserQuestion with the recommended option listed first (labeled "Recommended") and the alternative second. Never write this as a prose question expecting a typed answer. Example:
+
+```
+Options:
+  · Separate skill (sweetclaude:product-milestone-planning) — Recommended
+  · Integrate into existing sweetclaude:product-milestones
+  · Something else
+```
+
+**"Something else" is always required — no exceptions.** Bounded decisions that look complete on the screen are never actually complete — the user often has a direction the framework didn't anticipate. The escape hatch is mandatory. If the user picks Something else, follow Adaptive Flow: drop the menu, follow their direction, track the original proposal so you can offer to return to it later.
 
 This applies across all skills, all phases, all deference levels. The only exceptions are open-ended questions where there is no enumerable answer set (e.g. "describe the feature in one sentence") — those stay as plain text prompts.
 

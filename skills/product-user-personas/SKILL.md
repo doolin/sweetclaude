@@ -280,7 +280,13 @@ For each persona, repeat until the user says the persona is done:
 
 1. "What's a task this person needs to accomplish with your product?"
 
-2. Offer to build the workflow: "I can draft the workflow details for you to review, or you can walk me through it. Which would you prefer?"
+2. Call AskUserQuestion to choose how to build the workflow:
+
+   | Option label | Description |
+   |---|---|
+   | **I'll draft it for you** | Recommended — Claude produces a draft workflow to review and adjust |
+   | **Walk me through it** | You provide each element in turn |
+   | **Something else** | Different approach |
 
    If Claude drafts: produce draft workflow with steps, inputs, success criteria, and failure modes. Ask for review and adjustment.
    If user provides: ask for each element in turn.

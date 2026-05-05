@@ -165,8 +165,13 @@ Set up SweetClaude state for this project:
 
 **2e. Existing strategy files:** Ask: "Do you have strategy documents to bring in — positioning docs, research, notes?" If yes, get the path and copy into `corpus/raw/inbox/`. Tell them to run `/sweetclaude:document-corpus` to organize them.
 
-**2f. RAG offer:** After 2e, offer:
-> "Once your docs are in place, I can index them into a searchable RAG corpus — lets you find design decisions, feature specs, and research by concept rather than by grep. Want to set that up now, or should I explain what it gives you?"
+**2f. RAG offer:** After 2e, call AskUserQuestion:
+
+| Option label | Description |
+|---|---|
+| **Set up RAG corpus now** | Recommended — index docs for concept search; find design decisions and specs by meaning rather than grep |
+| **Explain what it gives me** | Tell me more before deciding |
+| **Skip for now** | Continue without RAG |
 
 If the user says yes: create corpus directory structure and write integrity protection file, then invoke `/sweetclaude:document-corpus`:
 ```bash

@@ -61,7 +61,13 @@ Proposed outline:
 
 Wait for confirmation or adjustments.
 
-**Step 2 — Style:** "Would you prefer a bullets-style brief (faster to read, easier to update) or a narrative-style brief (better for external audiences and investors)?"
+**Step 2 — Style:** Call AskUserQuestion:
+
+| Option label | Description |
+|---|---|
+| **Bullets-style** | Recommended — faster to read, easier to update |
+| **Narrative-style** | Better for external audiences and investors |
+| **Something else** | Different format |
 
 **Step 3 — Audience:** "Who is the primary audience? Internal team, investors, potential customers, or a hybrid?"
 

@@ -32,7 +32,13 @@ Check for `.sweetclaude/` directory. If not found, tell the user to run `/sweetc
 Check for `.sweetclaude/log.md`. If not found, create it.
 
 Read `.sweetclaude/state/stories.yaml` — required for story list. If missing:
-> "User flows require user stories. I recommend running `product-user-stories` first. Want to do that now, or continue without it?"
+Call AskUserQuestion:
+
+| Option label | Description |
+|---|---|
+| **Run product-user-stories first** | Recommended — generates the stories this skill needs |
+| **Continue without user stories** | Work with what's available |
+| **Something else** | Different direction |
 
 Read `.sweetclaude/state/personas.yaml` if available (for user context).
 
