@@ -1,7 +1,7 @@
 # TDD Levels
 
-**Version:** 1.0
-**Date:** 2026-05-01
+**Version:** 1.1
+**Date:** 2026-05-05
 
 SweetClaude does not believe in advisory TDD. Advisory TDD fails. The implementer touches the test to make it pass, or writes the test after the code so the test rationalizes the implementation rather than specifying behavior.
 
@@ -71,6 +71,7 @@ The right level depends on the work, not your preference. The framework picks ba
 
 **The discipline**:
 
+0. A story branch is created (`{ID}/{slug}`, e.g. `BL-046/git-branch-discipline`) to isolate the work from main.
 1. Test writer agent writes failing tests in an isolated context.
 2. Tests are committed to git.
 3. Test-guardian hook activates — test files become immutable.
@@ -89,6 +90,7 @@ The right level depends on the work, not your preference. The framework picks ba
 
 **The discipline**: maximum isolation, full pipeline.
 
+0. A story branch is created (`{ID}/{slug}`) before any test or implementation work begins.
 1. **Gherkin specs** — user stories converted to `.feature` files with Given/When/Then scenarios.
 2. **Test writer agent** — reads Gherkin in an isolated context, writes failing test code, has no knowledge of planned implementation.
 3. **QA Caucus** — three specialist agents review the test plan in parallel:

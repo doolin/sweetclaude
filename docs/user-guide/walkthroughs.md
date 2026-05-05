@@ -1,7 +1,7 @@
 # Walkthroughs
 
-**Version:** 1.0
-**Date:** 2026-05-01
+**Version:** 1.1
+**Date:** 2026-05-05
 
 Six concrete scenarios end-to-end. Each one shows what you run, what comes back, and what you have when you are done. The interactions are simulated but representative — actual prompts vary slightly with the model and your project state.
 
@@ -59,6 +59,7 @@ You also run `/sweetclaude:design-data-model` for the schema and `/sweetclaude:d
 
 SweetClaude finds the Gherkin specs for that feature. It runs **TDD Level 3**:
 
+0. A story branch (`{ID}/{slug}`) is created. All work for this feature lands there.
 1. The test-writer agent (separate context, no knowledge of planned implementation) writes failing tests.
 2. The QA Caucus — three specialist agents — reviews the test plan from three angles: service/API, component/UI, integration/cross-cutting.
 3. You see the QA findings and approve the test plan.
@@ -240,6 +241,10 @@ You have a planned feature. Specs exist. You want to run the rigorous version en
 SweetClaude looks for existing specs in this order: Gherkin `.feature` files, user stories in `.sweetclaude/stories/`, PRD in `docs/`. It finds Gherkin files for "thread reply" and skips the spec-writing step.
 
 Now the **TDD Level 3** pipeline:
+
+### Step 0 — Story branch
+
+`code-feature` creates a story branch before any test or implementation work begins: `{ID}/{slug}` — e.g. `US-042/thread-reply-feature`. All commits for this feature land on that branch. Main is untouched until you open a PR.
 
 ### Step 1 — Test writer agent
 

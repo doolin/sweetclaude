@@ -1,7 +1,7 @@
 # How It Works
 
-**Version:** 1.2
-**Date:** 2026-05-03
+**Version:** 1.3
+**Date:** 2026-05-05
 
 This page is the mental model. It will not teach you any commands. It will explain why SweetClaude is shaped the way it is, so the rest of the docs make sense.
 
@@ -106,6 +106,8 @@ SweetClaude has four project modes that calibrate structure and enforcement to w
 | **Agile** | Sprint-based, velocity tracked, retrospectives | Level 2 | Single active sprint enforced, retrospective required on close |
 
 Modes are not permanent. `/sweetclaude:project-mode` re-assesses or accepts a direct argument. Every shift snapshots state first.
+
+Within the execution layer, the work hierarchy is **Milestone → Sprint → Story** — three levels, that is all. Epics and themes are classification attributes on stories (a `epic_id` and `theme_id` field), not nodes that stories flow through. A sprint in Agile mode anchors to a milestone via `milestone_id`; stories are pulled into it regardless of which epic or theme they belong to. This is the Linear model, not the Jira model — epics are goal lenses and progress metrics, not delivery containers.
 
 Enforcement happens at three layers: (1) `effective-gates.yaml`, compiled at mode selection time into `.sweetclaude/state/`, contains the full rule set for the active mode; (2) `wip-limit.sh`, a PreToolUse hook, blocks tool calls in Kanban mode when the WIP limit is reached; (3) MODE_CHECK blocks inside individual skills reject invocations that are disallowed by the active mode.
 

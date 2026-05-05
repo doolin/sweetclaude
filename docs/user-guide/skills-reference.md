@@ -1,7 +1,7 @@
 # SweetClaude Skills Reference
 
-**Version:** 1.4
-**Date:** 2026-05-03
+**Version:** 1.5
+**Date:** 2026-05-05
 
 All skills, organized by domain. This page is reference — for narrative explanations of how skills fit together, read [Walkthroughs](walkthroughs.md) and [How It Works](how-it-works.md).
 
@@ -153,8 +153,10 @@ Execution-layer tracking. These skills manage the work that delivers the product
 | Skill | Invocation | What it does |
 |---|---|---|
 | **Project Issues** | `/sweetclaude:project-issues` | Create, view, update, and close issues. Maintains sprint history per issue. Warns on adrift issues (carried over 2+ sprints). Supports `list`, `backlog`, `view`, `new`, `update`, `close`, `reopen`. |
-| **Project Epics** | `/sweetclaude:project-epics` | Group issues into epics with progress tracking. Cancel an epic and its issues return to backlog. Warns if an epic exceeds 12 issues. |
-| **Project Sprints** | `/sweetclaude:project-sprints` | Full sprint lifecycle: plan, start, board, update, close, retrospective. Velocity calculated on close. Sprint history maintained per issue. Enforces single active sprint. |
+| **Project Epics** | `/sweetclaude:project-epics` | Optional goal lens that groups stories by functional area. A classification attribute — tracks progress toward a named goal across multiple sprints, not a delivery container. Cancel an epic and its stories return to the backlog. Warns if an epic exceeds 20 stories. |
+| **Epic Design** | `/sweetclaude:epic-design [EP-NNN\|new <title>]` | Produce a complete, ordered story list for an epic. Design-first sequence: no implementation stories are written until design stories are complete and their outputs are on disk. Accepts an existing epic or creates a new one. |
+| **Project Sprints** | `/sweetclaude:project-sprints` | Full sprint lifecycle: plan, start, board, update, close, retrospective. Each sprint anchors to a milestone (`milestone_id`). Velocity calculated on close. Sprint history maintained per issue. Enforces single active sprint. |
+| **Project Themes** | `/sweetclaude:project-themes` | Optional domain-grouping labels on stories — classification attributes, not delivery containers. For large multi-service projects (50+ stories) where epics alone leave the inventory unnavigable. Tag stories with a theme; themes carry no delivery commitment and have no definition of done. |
 | **Project Backlog** | `/sweetclaude:project-backlog` | Backlog view grouped by priority bucket (NOW/SOONER/SOONISH/LATER/SOMEDAY/UNESTIMATED). Promote issues to a sprint. Surface inferred issues from Flow mode inference. |
 | **Project Backlog Triage** | `/sweetclaude:project-backlog-triage` | Structured grooming session. Works through ungroomed issues one at a time using INVEST criteria. Recommend priority + effort, accept/override/skip/split/cancel. Sets status to `ready` when groomed. |
 | **Product Roadmap** | `/sweetclaude:product-roadmap` | Priority-stacked roadmap with force-ranked items. Create, activate (routes to correct downstream workflow by type), defer, complete, cancel. Create and view releases. |
@@ -304,8 +306,6 @@ These run inside skills. You do not invoke them directly. They appear in tool ex
 | `sweetclaude:code-reviewer` | Adversarial code review post-implementation. Logic errors, edge cases, regressions, performance. |
 | `sweetclaude:security-reviewer` | Security review. Auth issues, injection, secrets, OWASP Top 10. |
 | `sweetclaude:workflow-guardian` | GitHub Actions security review. SHA pinning, least-privilege tokens, safe triggers. |
-
----
 
 ---
 
