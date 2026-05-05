@@ -1,7 +1,7 @@
 ---
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:project-epics
-description: "Manage epics — optional planning containers for 4–12 related issues. Create, view, list, and close."
+description: "Manage epics — optional goal lenses that group stories by functional area. A classification attribute, not a delivery container. Create, view, list, and close."
 ---
 
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
@@ -24,7 +24,7 @@ This skill is never blocked, only unsurfaced in non-Agile routing.
 
 ---
 
-Epics are optional grouping containers. Not every project needs them — add them when a cluster of issues shares a clear outcome that's worth naming. Arguments: `$ARGUMENTS`
+Epics are optional goal lenses — classification attributes, not delivery containers. An epic tracks progress toward a named goal that may span multiple sprints. Stories don't "pass through" an epic; they carry an `epic_id` as metadata. The work hierarchy is Milestone → Sprint → Story; epics are an orthogonal view on that data. Arguments: `$ARGUMENTS`
 
 ---
 
@@ -98,7 +98,7 @@ If all issues are done but epic is still `active`: "All issues complete. Run `pr
 Ask one question at a time:
 
 1. **Title** — "What's the epic? One line."
-2. **Goal** — "Complete this sentence: 'When this ships, [user outcome] becomes possible.'"
+2. **Goal** — "Complete this sentence: 'When these stories are complete, [user outcome] becomes possible.'"
 3. **Roadmap item** (optional) — Load roadmap items first:
 
 ```bash
@@ -187,7 +187,7 @@ For each: `sc_artifact_write <issue_id> '{"epic_id": null}'`
 ## Rules
 
 - Epics are optional. Never require them. If a user asks to skip epics, that's valid.
-- Maximum meaningful size is 4–12 issues. If a user tries to create an epic with 13+ issues, surface: "That's a large epic ({N} issues). Consider splitting it into two focused epics."
+- Very large epics (20+ issues, 4+ sprints) often lose coherence as a goal lens. If an epic grows past 20 stories, surface: "EP-NNN has {N} stories across multiple milestones. Consider whether this is one goal or several."
 - Issue membership is exclusive — one issue, one epic. If assigning an issue already in another epic, say: "I-NNN is in EP-NNN. Remove it from there first?"
 - Closing an epic does not close its issues.
 - Cancelling an epic does not cancel its issues.

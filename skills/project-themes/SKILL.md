@@ -2,7 +2,7 @@
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:project-themes
 user-invocable: true
-description: "Manage themes — lightweight optional grouping labels between epic and story. For large multi-service projects with 50+ issues where epics alone leave the inventory unnavigable."
+description: "Manage themes — optional domain-grouping labels on stories. Classification attributes, not hierarchy nodes. For large multi-service projects with 50+ issues where epics alone leave the inventory unnavigable."
 ---
 
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
@@ -13,7 +13,7 @@ _sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc
 
 # Project Themes
 
-Themes are optional domain-grouping labels. They sit between epic and story in the hierarchy, carry no delivery commitment, and are orthogonal to sprints. An issue can belong to both an epic and a theme simultaneously. Arguments: `$ARGUMENTS`
+Themes are optional domain-grouping labels — classification attributes on stories, not hierarchy nodes. The work hierarchy is Milestone → Sprint → Story; themes are an orthogonal navigation lens on that data, carrying no delivery commitment. A story can carry both an `epic_id` and a `theme_id` simultaneously. Arguments: `$ARGUMENTS`
 
 **When to use themes:** When your project has 50+ issues, multiple services or major components, and the story inventory has become hard to navigate by epics alone.
 
@@ -28,7 +28,7 @@ Themes are optional domain-grouping labels. They sit between epic and story in t
 | (empty) or `list` | → **List** all themes grouped by category |
 | `view <TH-NNN>` | → **View** theme with its full issue list |
 | `new` | → **Create** a new theme |
-| `assign <TH-NNN>` | → **Assign** issues to a theme |
+| `tag <TH-NNN>` | → **Tag** stories with a theme |
 | `close <TH-NNN>` | → **Close** theme (status → complete) |
 
 ---
@@ -57,7 +57,7 @@ Infrastructure
   TH-010  active    0/3 done  Audit Logging
 ```
 
-After list: `{N} themes  ({active} active, {complete} complete)  ·  {total_issues} issues assigned`
+After list: `{N} themes  ({active} active, {complete} complete)  ·  {total_issues} stories tagged`
 
 If no themes: "No themes yet. Run `project-themes new` to create one, or skip themes entirely — they're optional and most useful on projects with 50+ issues."
 
@@ -89,7 +89,7 @@ Issues (4)
 Progress: 0 / 4 done
 ```
 
-If the theme has no issues: "No issues assigned to TH-NNN yet. Run `project-themes assign TH-NNN` to add some."
+If the theme has no stories: "No stories tagged with TH-NNN yet. Run `project-themes tag TH-NNN` to add some."
 
 ---
 
@@ -107,7 +107,7 @@ Ask one question at a time:
 
 3. **Service** (optional) — "Which service does this theme belong to? Enter the service name, or leave blank for cross-cutting themes."
 
-4. **Issues** (optional) — "Which existing issues should start in this theme?" Load issues without a theme:
+4. **Stories** (optional) — "Which existing stories should be tagged with this theme?" Load stories without a theme:
 
 ```bash
 _sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
@@ -135,13 +135,13 @@ _sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc
 sc_artifact_write <issue_id> '{"theme_id": "<new_theme_id>"}'
 ```
 
-Confirm: `Created TH-NNN — {N} issues assigned`
+Confirm: `Created TH-NNN — {N} stories tagged`
 
 ---
 
-## Assign
+## Tag
 
-Load the theme and current issues:
+Load the theme and currently untagged stories:
 
 ```bash
 _sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
@@ -149,17 +149,17 @@ sc_artifact_read <TH-NNN>
 sc_artifact_query issue theme_id=
 ```
 
-Present unassigned issues. If the theme has a `service` field, filter to show same-service issues first, then others.
+Present stories without a theme. If the theme has a `service` field, filter to show same-service stories first, then others.
 
-Accept a list of issue IDs to assign. For each:
+Accept a list of story IDs to tag. For each:
 
 ```bash
 sc_artifact_write <issue_id> '{"theme_id": "<TH-NNN>"}'
 ```
 
-Confirm: `{N} issues assigned to TH-NNN`
+Confirm: `{N} stories tagged with TH-NNN`
 
-Note: unlike epics, an issue can belong to both a theme and an epic simultaneously. Assigning to a theme does not affect `epic_id`.
+Note: a story can carry both a theme and an epic simultaneously. Tagging with a theme does not affect `epic_id`.
 
 ---
 
@@ -190,4 +190,4 @@ Confirm: `TH-NNN closed — {title}`
 - A theme has no "definition of done" — it is a label, not a delivery commitment.
 - No maximum size. Themes can hold 1 issue or 30. They're navigation aids, not sprint containers.
 - Closing a theme does not close its issues.
-- If the user tries to assign an issue already in another theme, note it: "I-NNN is currently in TH-NNN. Reassign it here?" and wait for confirmation.
+- If the user tries to tag a story already tagged with another theme, note it: "I-NNN is currently tagged with TH-NNN. Retag it here?" and wait for confirmation.

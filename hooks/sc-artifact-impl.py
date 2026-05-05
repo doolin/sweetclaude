@@ -61,7 +61,7 @@ INDEX_FIELDS = {
                      "epic_id", "theme_id", "sprint_id", "roadmap_item_id", "source", "updated_at"],
     "epic":         ["id", "type", "title", "status", "roadmap_item_id", "updated_at"],
     "theme":        ["id", "type", "title", "status", "service", "category", "updated_at"],
-    "sprint":       ["id", "type", "title", "status", "start_date", "end_date", "updated_at"],
+    "sprint":       ["id", "type", "title", "status", "start_date", "end_date", "milestone_id", "updated_at"],
     "roadmap_item": ["id", "type", "title", "status", "priority", "release_id", "updated_at"],
     "release":      ["id", "type", "title", "status", "version", "milestone_id", "updated_at"],
     "milestone":    ["id", "type", "title", "status", "updated_at"],
@@ -596,6 +596,7 @@ def _build_template(entity_id: str, entity_type: str, title: str, data: dict) ->
         return (
             f"# {entity_id}: {title}\n\n"
             f"**Status:** {field('status', 'planned')}\n"
+            f"**Milestone:** {field('milestone_id')}\n"
             f"**Start:** {field('start_date', 'YYYY-MM-DD')}\n"
             f"**End:** {field('end_date', 'YYYY-MM-DD')}\n"
             f"**Velocity:** (none)\n"

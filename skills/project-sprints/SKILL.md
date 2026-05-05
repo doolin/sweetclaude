@@ -85,11 +85,11 @@ sc_artifact_list sprint
 Present as table, newest first:
 
 ```
-ID      Title         Status    Start       End         Velocity
-──────────────────────────────────────────────────────────────────
-SP-003  Sprint 3      active    2026-05-06  2026-05-20  —
-SP-002  Sprint 2      complete  2026-04-22  2026-05-06  8
-SP-001  Sprint 1      complete  2026-04-08  2026-04-22  5
+ID      Title         Status    Milestone  Start       End         Velocity
+─────────────────────────────────────────────────────────────────────────────
+SP-003  Sprint 3      active    MS-001     2026-05-06  2026-05-20  —
+SP-002  Sprint 2      complete  MS-001     2026-04-22  2026-05-06  8
+SP-001  Sprint 1      complete  (none)     2026-04-08  2026-04-22  5
 ```
 
 ---
@@ -108,10 +108,19 @@ If one exists: "Sprint {ID} is already active. Close it before planning a new on
 Ask, one question at a time:
 
 1. **Title** — "What's this sprint called? (e.g. 'Sprint 4' or 'Sprint 2026-05-20')"
-2. **Start date** — "Start date? (YYYY-MM-DD)"
-3. **End date** — "End date? (YYYY-MM-DD)"
-4. **Goal** — "What's the sprint goal — the one sentence that describes what's true when this sprint succeeds?"
-5. **Capacity notes** — "Any known interruptions or reduced availability? (or press enter to skip)"
+2. **Milestone** — Load milestones first:
+
+```bash
+_sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc_hooks:-$HOME/.claude/hooks/sweetclaude}"; source "${_sc_hooks}/sc-artifact.sh"
+sc_artifact_list milestone
+```
+
+"Which milestone is this sprint building toward? (e.g. MS-001, or press enter to skip)"
+
+3. **Start date** — "Start date? (YYYY-MM-DD)"
+4. **End date** — "End date? (YYYY-MM-DD)"
+5. **Goal** — "What's the sprint goal — the one sentence that describes what's true when this sprint succeeds?"
+6. **Capacity notes** — "Any known interruptions or reduced availability? (or press enter to skip)"
 
 Then load the backlog to suggest issues:
 
@@ -129,6 +138,7 @@ _sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc
 sc_artifact_create sprint '{
   "title": "<title>",
   "status": "planned",
+  "milestone_id": "<MS-NNN or null>",
   "start_date": "<start>",
   "end_date": "<end>",
   "goal": "<goal>",
@@ -197,7 +207,7 @@ Present the sprint board, grouped by status:
 
 ```
 SP-NNN — Sprint title                          {start} → {end}
-Goal: {goal}
+Milestone: {milestone_id or "(none)"}   Goal: {goal}
 ────────────────────────────────────────────────────────────────
 
 READY ({n})
