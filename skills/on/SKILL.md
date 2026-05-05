@@ -407,6 +407,16 @@ Check whether any confirmed public path appears to be gitignored. If so:
 
 ---
 
+### Step 2.6-N: Claude config audit
+
+Now that CLAUDE.md has been created, scan it for conflicts with SweetClaude:
+
+Invoke `sweetclaude:claude-config-audit` via the Skill tool.
+
+If no conflicts are found, proceed immediately. If conflicts are found, resolve them before continuing — a FATAL conflict will prevent SweetClaude from functioning.
+
+---
+
 ### Step 3-N: Product discovery
 
 Run `/sweetclaude:product-discovery` using the idea from Step 1-N as starting input.
@@ -644,6 +654,16 @@ For each public category in a repo that is/will be public, confirm:
 
 Check whether any confirmed public path appears to be gitignored. If so:
 > "The path `{path}` appears to be gitignored. Documents there won't be tracked until you add a gitignore exception. Want me to add one now?"
+
+---
+
+### Step 2.6-E: Claude config audit
+
+With CLAUDE.md in place, scan for conflicts with SweetClaude:
+
+Invoke `sweetclaude:claude-config-audit` via the Skill tool.
+
+If no conflicts are found, proceed immediately. If conflicts are found, resolve them before continuing — a FATAL conflict will prevent SweetClaude from functioning.
 
 ---
 

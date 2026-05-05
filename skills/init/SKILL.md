@@ -247,6 +247,18 @@ If no git: "No git repository found. Consider running `git init` to get version 
 
 ---
 
+## Step 7b: Claude config audit (existing projects only)
+
+Skip for new projects (no CLAUDE.md to scan yet).
+
+For existing projects, scan for instructions in the existing CLAUDE.md that conflict with SweetClaude, before SweetClaude starts relying on those files:
+
+Invoke `sweetclaude:claude-config-audit` via the Skill tool.
+
+If no conflicts are found, proceed immediately. If FATAL conflicts are found, resolve them before proceeding to Step 8 — a FATAL conflict will prevent SweetClaude hooks from functioning.
+
+---
+
 ## Step 8: Run generate-session-state
 
 ```bash

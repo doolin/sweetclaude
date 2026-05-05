@@ -128,18 +128,20 @@ For each issue found, propose a specific fix:
 
 ## Step 4: Audit file locations
 
+Use paths from pre-loaded session state: `paths.product_base`, `paths.strategy_base`, `paths.technical_base`, `paths.design_base`. If session state is unavailable, fall back to `.sweetclaude/product`, `.sweetclaude/strategy`, `.sweetclaude/technical`, `.sweetclaude/design`.
+
 Check that artifacts are where SweetClaude expects them:
 
 | Expected Location | Check |
 |---|---|
 | `.sweetclaude/state/` | phase.yaml, project.yaml, skills.yaml, decision-log, assumption-register, improvement-register, scope-changes |
-| `docs/` | product-brief, prd, architecture, tech-spec, data-model, api-design, workflows (if they exist anywhere in the project) |
-| `.sweetclaude/stories/` | user stories and .feature files (if they exist) |
-| `.sweetclaude/backlog/` | BACKLOG-INDEX.md and item detail files (if product-parking-lot has been used) |
-| `.sweetclaude/milestones/` | milestone detail files (if product-milestones has been used) |
-| `.sweetclaude/sprints/` | sprint files (if product-sprint-plan has been used) |
+| `docs/` or `{technical_base}/` | product-brief, prd, architecture, tech-spec, data-model, api-design, workflows (if they exist anywhere in the project) |
+| `{product_base}/stories/` | user stories and .feature files (if they exist) |
+| `{product_base}/backlog/` | BACKLOG-INDEX.md and item detail files (if product-parking-lot has been used) |
+| `{product_base}/milestones/` | milestone detail files (if product-milestones has been used) |
+| `{product_base}/sprints/` | sprint files (if product-sprint-plan has been used) |
+| `{strategy_base}/` | concept, pain-thesis, ICP, competitive, etc. |
 | `.sweetclaude/traceability/` | requirements-map, ripple-map |
-| `strategy/` | concept, pain-thesis, ICP, competitive, etc. (at project root, NOT inside .sweetclaude/) |
 
 If artifacts exist but in the wrong location (e.g., specs at `.sweetclaude/specs/` instead of `docs/`):
 
@@ -149,6 +151,50 @@ Use AskUserQuestion with these options:
 - "Leave it" — update SweetClaude's reference to look at {actual location}
 
 Do not assume. The user may have good reasons for the current location.
+
+---
+
+## Step 4b: Audit session-state.yaml
+
+Check that the session-state file is present and valid:
+
+| Check | Pass | Fail action |
+|---|---|---|
+| `session-state.yaml` exists | ✓ | "session-state.yaml missing — regenerate?" (run `hooks/generate-session-state.sh`) |
+| ETHOS block present in session-state | ✓ | "ETHOS block missing from session-state.yaml — regenerate?" |
+| `schema_version: 2` in phase.yaml | ✓ | "phase.yaml is schema v1 — migrate?" (already handled in Step 2 but confirm here) |
+| `generate-session-state.sh` hook wired in settings.json or settings.local.json | ✓ | "Session state hook missing — add it?" |
+
+To check session-state existence and ETHOS block:
+```bash
+[ -f .sweetclaude/state/session-state.yaml ] && echo "SESSION_STATE_EXISTS" || echo "SESSION_STATE_MISSING"
+grep -q "ethos:" .sweetclaude/state/session-state.yaml 2>/dev/null && echo "ETHOS_PRESENT" || echo "ETHOS_MISSING"
+python3 -c "
+import json, os
+settings_files = [
+    os.path.expanduser('~/.claude/settings.json'),
+    os.path.join(os.getcwd(), '.claude/settings.local.json')
+]
+found = False
+for f in settings_files:
+    try:
+        d = json.load(open(f))
+        all_cmds = ' '.join(
+            h.get('command','')
+            for ev in d.get('hooks',{}).values()
+            for entry in ev
+            for h in entry.get('hooks',[])
+        )
+        if 'generate-session-state' in all_cmds:
+            found = True
+            break
+    except:
+        pass
+print('SESSION_HOOK_WIRED' if found else 'SESSION_HOOK_MISSING')
+" 2>/dev/null
+```
+
+Propose a fix for each issue. Do not auto-apply.
 
 ---
 
@@ -162,16 +208,20 @@ Read `.sweetclaude/artifact-privacy.yaml` → `categories.product.base_path`. If
 
 Read `.sweetclaude/state/skills.yaml` if it exists.
 
-For each of the six data-owning skills, check whether it is present in `skills.yaml`. Use the following signals to infer state for any missing entry:
+For each data-owning skill, check whether it is present in `skills.yaml`. Use the following signals to infer state for any missing entry:
 
 | Skill | Artifact signal (file exists → was in use) |
 |---|---|
-| `product-milestones` | `{base_path}/milestones/MILESTONES-INDEX.md` |
-| `product-parking-lot` | `{base_path}/backlog/BACKLOG-INDEX.md` |
-| `product-sprint-plan` | *(no inference — write `enabled: false` if absent)* |
+| `product-milestones` | `{product_base}/milestones/MILESTONES-INDEX.md` |
+| `product-parking-lot` | `{product_base}/backlog/BACKLOG-INDEX.md` |
+| `product-sprint-plan` | any file under `{product_base}/sprints/` |
 | `product-user-personas` | `.sweetclaude/state/personas.yaml` |
-| `product-user-stories` | any `US-*.md` under `{base_path}/stories/` |
+| `product-user-stories` | any `US-*.md` under `{product_base}/stories/` |
 | `document-corpus` | `.sweetclaude/state/corpus-pipeline.yaml` |
+| `deploy-ship` | `.sweetclaude/state/deploy-config.yaml` |
+| `retro` | any `RETRO-*.md` under `{product_base}/retros/` |
+| `something-broke` | any `INC-*.md` under `{product_base}/incidents/` |
+| `adopt` | *(no inference — write `enabled: false` if absent)* |
 
 If `skills.yaml` is missing entirely: propose creating it (schema v2) with entries inferred from the above.
 If entries are missing from an existing `skills.yaml`: propose adding them with the inferred state.
@@ -211,6 +261,10 @@ If any exist, ask:
 | `personas` | `product-user-personas` |
 | `stories` | `product-user-stories` |
 | `corpus` | `document-corpus` |
+| `deploy` | `deploy-ship` |
+| `retro` | `retro` |
+| `incidents` | `something-broke` |
+| `adopt` | `adopt` |
 
 For each skill the user enables, invoke it with argument `onboard`. Complete each onboard before starting the next.
 
@@ -446,7 +500,15 @@ Run `git status` on the project. Check if `.sweetclaude/` and `strategy/` have u
 
 ---
 
-## Step 9: Report
+## Step 9: Claude config audit
+
+Invoke `sweetclaude:claude-config-audit` via the Skill tool. This scans CLAUDE.md, settings.json, and `~/.claude/rules/` for instructions that conflict with SweetClaude.
+
+If `.sweetclaude/state/known-conflicts.md` already exists and has entries, note how many were previously logged so the report can show whether any new conflicts were found.
+
+---
+
+## Step 10: Report
 
 Present a summary:
 
@@ -454,13 +516,15 @@ Present a summary:
 SweetClaude Config Audit — {project}
 ═════════════════════════════════════
 
-Phase state:    {✓ correct | ⚠ stale → recommended fix}
-CLAUDE.md:      {✓ accurate | ⚠ {N} issues found}
-File locations: {✓ correct | ⚠ {N} misplaced artifacts}
+Phase state:      {✓ correct | ⚠ stale → recommended fix}
+Session state:    {✓ present and valid | ⚠ {N} issues}
+CLAUDE.md:        {✓ accurate | ⚠ {N} issues found}
+File locations:   {✓ correct | ⚠ {N} misplaced artifacts}
 Skills / onboard: {✓ in sync | ⚠ {N} mismatches}
-Registers:      {✓ populated | ⚠ empty on active project}
-Hooks:          {✓ all registered | ⚠ {N} missing | hooks-manifest.json missing}
-Git tracking:   {✓ clean | ⚠ {N} untracked files}
+Registers:        {✓ populated | ⚠ empty on active project}
+Hooks:            {✓ all registered | ⚠ {N} missing | hooks-manifest.json missing}
+Git tracking:     {✓ clean | ⚠ {N} untracked files}
+Config conflicts: {✓ none | ⚠ {N} known (see .sweetclaude/state/known-conflicts.md)}
 
 → Proposed fixes: {N}
 ```

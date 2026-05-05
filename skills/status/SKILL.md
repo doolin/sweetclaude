@@ -64,6 +64,18 @@ print('WIP_LIMIT=' + str(d.get('wip_limit','null')))
 print('TDD_DEFAULT=' + str(d.get('default_tdd_level','1')))
 " 2>/dev/null || echo -e "MODE=unset\nWIP_LIMIT=null\nTDD_DEFAULT=1"
 
+# Known config conflicts
+python3 -c "
+import re, os
+path = '.sweetclaude/state/known-conflicts.md'
+if os.path.exists(path):
+    content = open(path).read()
+    count = len(re.findall(r'^## Known Conflict', content, re.MULTILINE))
+    print(f'KNOWN_CONFLICTS={count}')
+else:
+    print('KNOWN_CONFLICTS=0')
+" 2>/dev/null || echo "KNOWN_CONFLICTS=0"
+
 # Roadmap, issues, and backlog details
 product_base=$(cat .sweetclaude/state/session-state.yaml 2>/dev/null | python3 -c "import yaml,sys; d=yaml.safe_load(sys.stdin); print(d.get('paths',{}).get('product_base','.sweetclaude/product'))" 2>/dev/null || echo ".sweetclaude/product")
 
@@ -236,6 +248,9 @@ Else show up to 3 next items (P1 first, then P2, skip spikes):
 If total open backlog > 10, append: `  ({total} total — ask me to run a backlog triage if it's getting unwieldy)`
 
 ## Step 4: Closing
+
+If `KNOWN_CONFLICTS` from Step 2 is > 0, output:
+> Config conflicts: {N} known — run `/sweetclaude:claude-config-audit` to review or resolve.
 
 If `improvement_register_count` in pre-loaded state is > 0, output:
 > I absorbed {N} new learnings from previous sessions. Feel free to ask about them if you want.
