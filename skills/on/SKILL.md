@@ -466,6 +466,33 @@ SweetClaude — New Project Setup Complete
 
 > "The strategic foundation is set. Next: product definition (product brief, PRD), then design, then implementation. Just say 'continue' to keep going, or run `/sweetclaude:help` to see what's possible."
 
+**Claude Code environment setup (optional):**
+
+```
+════════════════════════════════════
+Claude Code Environment Setup
+════════════════════════════════════
+```
+
+Check whether the user's Claude Code statusline is configured:
+```bash
+python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); print('statusBarItems' in d)" 2>/dev/null || echo "false"
+```
+
+If statusline is not configured (result is `false`), offer:
+
+Call AskUserQuestion:
+
+| Option label | Description |
+|---|---|
+| **Set up statusline** (Recommended) | Configure Claude Code statusline via `/statusline-setup` — shows phase, model, and session info in the terminal |
+| **Skip** | I'll configure the environment manually |
+| **Something else** | Different direction |
+
+If user picks **Set up statusline**: invoke the `statusline-setup` skill via the Skill tool.
+
+If statusline is already configured, skip this offer entirely.
+
 Do not auto-invoke anything. The user decides when to continue.
 
 ---
@@ -749,6 +776,31 @@ SweetClaude — Existing Project Setup Complete
 > "You have a meaningful amount of documentation. Want to index it into a searchable RAG corpus so I can find design decisions, specs, and research by concept rather than by text search? (`/sweetclaude:document-corpus`)"
 
 Do not offer if doc count is below 5 — not worth it yet.
+
+**Claude Code environment setup (optional):**
+
+```
+════════════════════════════════════
+Claude Code Environment Setup
+════════════════════════════════════
+```
+
+Check whether the user's Claude Code statusline is configured:
+```bash
+python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); print('statusBarItems' in d)" 2>/dev/null || echo "false"
+```
+
+If statusline is not configured, offer via AskUserQuestion:
+
+| Option label | Description |
+|---|---|
+| **Set up statusline** (Recommended) | Configure Claude Code statusline — shows phase, model, and session info |
+| **Skip** | I'll configure manually |
+| **Something else** | Different direction |
+
+If user picks **Set up statusline**: invoke the `statusline-setup` skill via the Skill tool.
+
+If statusline is already configured, skip this offer.
 
 **MCP discovery + project SOP (existing projects):** Step 2-E runs 2b–2g from the New Project path. For existing projects, 2g is especially important — existing projects often have MCPs, RAG indexes, or corpus infrastructure that was set up before SweetClaude. The discovery step surfaces all of it and records it in `project-sop.md` so SweetClaude isn't working blind.
 

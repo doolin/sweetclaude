@@ -12,6 +12,7 @@ always_loaded:
     - sweetclaude:hibernate
     - sweetclaude:product-milestones
     - sweetclaude:user-personas
+    - sweetclaude:recap
     - sweetclaude:usage
     - hibernate-project
   rules:

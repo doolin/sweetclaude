@@ -70,6 +70,14 @@ When the user redirects (stops you, changes topic, edits files directly, asks a 
 
 Preserve the previous work state so you can resume if the user wants to come back.
 
+## Recap
+
+`/sweetclaude:recap` produces a one-screen orientation: current phase, active work item, last 3 commits, and checkpoint state. Users should run it after a break or context switch.
+
+**Auto-trigger:** At session start, if `checkpoint_next` is set in session state, surface the checkpoint before anything else: "Last session ended mid-task: {checkpoint_next}. Pick up here?" Do not run the full recap — just the checkpoint line.
+
+**Detour check-in:** After a detour of 5+ turns resolves, produce one sentence: "We were on {X} — {brief summary}. Ready to pick back up?" This is not a menu — it is a natural continuation offer.
+
 ## Context Continuity — Detour Management
 
 When conversation branches away from the current work:
