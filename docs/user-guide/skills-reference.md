@@ -70,6 +70,7 @@ Strategy and product definition. Useful before any code is written and on existi
 | **Product Research** | `/sweetclaude:product-research` | Market and solution research. Feeds the competitive seed list. |
 | **Product Competition** | `/sweetclaude:product-competition` | Three depth levels: survey (who's in the space), matrix (structured comparison), feature-deep (capability analysis). |
 | **User Personas** | `/sweetclaude:user-personas` | Define users — who they are, what tasks they need to do, what success looks like. Includes triggers and deal-breakers. Always loaded (cross-cuts all domains). State-tracked: first invocation prompts for a first user type; subsequent invocations proceed immediately. Use `pause` to suspend without deleting data, `onboard` for the full setup ceremony. |
+| **Product User Focus Group** | `/sweetclaude:product-user-focus-group [mode]` | Synthetic panel research using persona archetypes as parallel subagent respondents. Three modes: `ask` (open qualitative), `concept-test` (ranked preference), `message-test` (variant resonance). **Hard gate:** requires validated personas in `state/personas.yaml` before entry. All outputs mandatorily labeled synthetic — findings are hypotheses, not validated user research. |
 | **Product Positioning Statement** | `/sweetclaude:product-positioning-statement` | For/who/that/unlike framework. |
 
 ### Definition layer

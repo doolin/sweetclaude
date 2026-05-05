@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Response schema for product-user-focus-group ask mode. Each synthetic instance returns this object.",
+  "type": "object",
+  "required": ["instance_id", "archetype_id", "response", "themes", "verbatim"],
+  "additionalProperties": false,
+  "properties": {
+    "instance_id": {
+      "type": "string",
+      "description": "Format: {archetype_id}-{instance_number}, e.g. 'founder-2'"
+    },
+    "archetype_id": {
+      "type": "string",
+      "description": "The persona ID from personas.yaml"
+    },
+    "response": {
+      "type": "string",
+      "description": "Full narrative response to the research question, written in first person as the persona"
+    },
+    "themes": {
+      "type": "array",
+      "description": "1–5 short theme labels extracted from the response (e.g. 'trust through transparency', 'fear of lock-in')",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "maxItems": 5
+    },
+    "verbatim": {
+      "type": "string",
+      "description": "A single representative quote (1–2 sentences) that best captures this instance's perspective"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Self-assessed confidence: high if the persona archetype has strong prior context for this question, low if speculative"
+    }
+  }
+}

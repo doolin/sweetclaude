@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Response schema for product-user-focus-group concept-test mode. Each synthetic instance returns this object.",
+  "type": "object",
+  "required": ["instance_id", "archetype_id", "preferred_concept", "preference_reason", "purchase_intent", "improvement", "dealbreaker"],
+  "additionalProperties": false,
+  "properties": {
+    "instance_id": {
+      "type": "string",
+      "description": "Format: {archetype_id}-{instance_number}"
+    },
+    "archetype_id": {
+      "type": "string",
+      "description": "The persona ID from personas.yaml"
+    },
+    "preferred_concept": {
+      "type": "string",
+      "description": "Name of the concept this instance prefers"
+    },
+    "preference_reason": {
+      "type": "string",
+      "description": "Why this concept resonates — 2–4 sentences in first person"
+    },
+    "purchase_intent": {
+      "type": "object",
+      "description": "Per-concept purchase/adoption likelihood score",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 5
+      }
+    },
+    "improvement": {
+      "type": "string",
+      "description": "One thing that would make the preferred concept better"
+    },
+    "dealbreaker": {
+      "type": "string",
+      "description": "One thing that would make this persona walk away from the entire category"
+    },
+    "verbatim": {
+      "type": "string",
+      "description": "A single representative quote capturing the core preference or concern"
+    }
+  }
+}

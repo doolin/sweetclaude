@@ -59,6 +59,7 @@ Store the result as `{starting_phase}` — used in Step 7.
 | Concept articulation / framing | DISCOVER, DEFINE, SHIP | `sweetclaude:product-discovery` *(fallback — `sweetclaude:concept-framing` planned, see BL-008)* |
 | Pain analysis | DISCOVER, DEFINE, SHIP | `sweetclaude:product-discovery` |
 | Customer profiling | DISCOVER, DEFINE, SHIP | `sweetclaude:user-personas` |
+| Synthetic panel research / concept testing | DISCOVER, DEFINE | `sweetclaude:product-user-focus-group` *(requires validated personas — gate enforced)* |
 | Competitive landscape | DISCOVER, DEFINE, SHIP | `sweetclaude:product-competition` |
 | Research / deep research | DISCOVER, DEFINE, SHIP | `sweetclaude:documents-academic-research` |
 | Meeting preparation | DEFINE | `sweetclaude:misc-meeting-prep` |

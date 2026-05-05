@@ -659,3 +659,29 @@ Hard gates are marked ⚠️ and cannot be soft-bypassed at GA+.
 - Action items defined: what changes to prevent recurrence
 - Action items added to backlog with priority
 - Follow-on tech debt item created if the hotfix was a workaround rather than a real fix
+
+---
+
+## Skill entry gates
+
+### product-user-focus-group ENTRY ⚠️ HARD GATE
+
+Cannot be soft-bypassed. Override requires explicit risk acceptance logged to decision log.
+
+**Required state:**
+- `.sweetclaude/state/personas.yaml` exists and is non-empty
+- At least one persona has all four required fields:
+  - Real-world scenario populated (a specific triggering situation, not a category)
+  - Observable success criteria (binary, measurable — includes a number, step count, time limit, or concrete outcome)
+  - Deal-breakers populated (at least one)
+  - Anti-profile defined (at least a brief statement of who is not a target user)
+
+**On failure:**
+- Skill refuses entry
+- Routes user to `/sweetclaude:user-personas` with the specific missing fields explained
+
+**Override:**
+- User must explicitly state: "I understand synthetic findings are not validated user research"
+- Override logged to `.sweetclaude/state/decision-log.md` with study ID, missing fields, and risk acceptance
+- Output is still mandatorily labeled "synthetic" — override does not change labeling
+- `find-skill` also enforces this gate before suggesting the skill

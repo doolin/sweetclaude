@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Response schema for product-user-focus-group message-test mode. Each synthetic instance returns this object.",
+  "type": "object",
+  "required": ["instance_id", "archetype_id", "resonates_most", "resonance_reason", "likely_to_click", "rejection"],
+  "additionalProperties": false,
+  "properties": {
+    "instance_id": {
+      "type": "string",
+      "description": "Format: {archetype_id}-{instance_number}"
+    },
+    "archetype_id": {
+      "type": "string",
+      "description": "The persona ID from personas.yaml"
+    },
+    "resonates_most": {
+      "type": "string",
+      "description": "Label of the message variant (A, B, C, D) that resonates most"
+    },
+    "resonance_reason": {
+      "type": "string",
+      "description": "Why this message lands — 2–3 sentences in first person"
+    },
+    "likely_to_click": {
+      "type": "string",
+      "description": "Label of the variant most likely to prompt a click or action (may differ from resonates_most)"
+    },
+    "rejection": {
+      "type": "object",
+      "description": "Any message variants that feel off, misleading, or wrong — keyed by variant label",
+      "additionalProperties": {
+        "type": "string",
+        "description": "Reason this variant is rejected or feels wrong"
+      }
+    },
+    "verbatim": {
+      "type": "string",
+      "description": "A single representative quote capturing the strongest signal from this instance"
+    }
+  }
+}

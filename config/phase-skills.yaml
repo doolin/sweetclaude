@@ -34,7 +34,7 @@ product:
     - sweetclaude:product/discovery
     - sweetclaude:product/research
     - sweetclaude:product/competition
-
+    - sweetclaude:product/user-focus-group
     - sweetclaude:product/positioning-statement
     - sweetclaude:product/brief
     - sweetclaude:product/prd
