@@ -28,13 +28,15 @@ product_base=$(cat .sweetclaude/state/session-state.yaml 2>/dev/null | python3 -
 if [ "$product_base" != "MANIFEST_MISSING" ]; then
   ls ${product_base}/milestones/MS-*.md 2>/dev/null | head -10
   grep -rh "\*\*Status:\*\*" ${product_base}/milestones/ 2>/dev/null | head -10
-  ls ${product_base}/backlog/*.md 2>/dev/null | head -20
+  ls ${product_base}/backlog/*.md 2>/dev/null | head -40
+  echo "--- DONE ITEMS (exclude from proposals) ---"
+  grep -rl "^\*\*Status:\*\* Done\|^status: [Dd]one\|^Status: [Dd]one" ${product_base}/backlog/BL-*.md 2>/dev/null | sed 's|.*/||' | sort
 else
   echo "ARTIFACT_PRIVACY_NOT_CONFIGURED — milestone and backlog paths unknown"
 fi
 ```
 
-Do not call `gh`. Do not read backlog file contents — filenames are enough for routing. If state is `STATE_NOT_FOUND`, note it but continue.
+Do not call `gh`. Do not read backlog file contents for routing — filenames plus the DONE ITEMS list above are enough. **Skip any file whose basename appears in the DONE ITEMS list when evaluating Priority 4.** If state is `STATE_NOT_FOUND`, note it but continue.
 
 ## Step 2: Apply improvement register
 
