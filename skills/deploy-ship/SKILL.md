@@ -147,6 +147,13 @@ active_work_item:
 And update `last_work_item_id` to the completed item's ID.
 
 Tell the user:
+
+```
+════════════════════════════════════
+Shipped
+════════════════════════════════════
+```
+
 > "Shipped. {work item id} — {title} — is live.
 >
 > **Rollback plan:** {what the user said in the checklist}

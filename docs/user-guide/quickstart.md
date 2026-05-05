@@ -75,6 +75,22 @@ Tell SweetClaude "I have a pile of documents I need to organize." Four-step corp
 
 ---
 
+## Terminal Tips
+
+**Copying commands to your clipboard:**
+
+After SweetClaude outputs a command you want to run, use `/copy` to copy the last response to your clipboard. For a persistent shortcut, add this rule to your project's `CLAUDE.md`:
+
+```
+When I say "copy that", pipe the command to my system clipboard: pbcopy (macOS), xclip -selection clipboard (Linux), or clip (Windows).
+```
+
+Then you can say "copy that" after any command output.
+
+**Fenced code blocks render in Claude Code's terminal** — commands wrapped in ` ``` ` blocks are easier to select cleanly than inline backtick code. SweetClaude uses this consistently for runnable commands.
+
+---
+
 ## What to Read Next
 
 - End-to-end scenario walkthroughs → [Walkthroughs](walkthroughs.md)

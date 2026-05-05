@@ -273,6 +273,12 @@ echo "SESSION_STATE_SKIPPED"
 
 Report:
 
+```
+════════════════════════════════════
+SweetClaude Initialized
+════════════════════════════════════
+```
+
 > "SweetClaude initialized.
 >
 > Created:

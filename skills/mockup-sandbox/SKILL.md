@@ -215,7 +215,11 @@ Tell the user the preview URLs:
 > "Mockups are ready. View them at:
 > {list of preview URLs, one per line}
 >
-> Make sure the sandbox dev server is running: `cd artifacts/mockup-sandbox && npm run dev`"
+> If the previews aren't loading, make sure the sandbox dev server is running:"
+
+```bash
+cd artifacts/mockup-sandbox && npm run dev
+```
 
 If multiple variants: suggest opening them in separate tabs for comparison.
 

@@ -163,7 +163,12 @@ git branch --show-current 2>/dev/null
 ```
 
 If no git:
-> "No git repository found. The safety snapshot is required before I modify anything — it gives you a rollback point. Run `git init && git add -A && git commit -m 'initial commit'` then run `/sweetclaude:adopt` again."
+> "No git repository found. The safety snapshot is required before I modify anything — it gives you a rollback point. Run the following, then run `/sweetclaude:adopt` again:"
+
+```bash
+git init && git add -A && git commit -m 'initial commit'
+```
+
 Stop.
 
 If git present, check for existing snapshot:
@@ -379,6 +384,12 @@ source: sweetclaude:adopt health assessment
 ```
 
 Present final summary:
+
+```
+════════════════════════════════════
+SweetClaude Adoption Complete
+════════════════════════════════════
+```
 
 > "SweetClaude adoption complete.
 >
