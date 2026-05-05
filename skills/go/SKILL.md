@@ -30,7 +30,7 @@ if [ "$product_base" != "MANIFEST_MISSING" ]; then
   grep -rh "\*\*Status:\*\*" ${product_base}/milestones/ 2>/dev/null | head -10
   ls ${product_base}/backlog/*.md 2>/dev/null | head -40
   echo "--- DONE ITEMS (exclude from proposals) ---"
-  grep -rl "^\*\*Status:\*\* Done\|^status: [Dd]one\|^Status: [Dd]one\|^status: done\|^completed:" ${product_base}/backlog/BL-*.md 2>/dev/null | sed 's|.*/||' | sort
+  grep -irl "\*\*Status:\*\*.*done\|^status:.*done\|^completed:" ${product_base}/backlog/BL-*.md 2>/dev/null | sed 's|.*/||' | sort
   echo "--- RECENT COMMITS (cross-check item IDs) ---"
   git log --oneline -20 2>/dev/null | grep -iE "BL-[0-9]+"
 else
