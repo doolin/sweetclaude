@@ -28,7 +28,7 @@ product_base=$(cat .sweetclaude/state/session-state.yaml 2>/dev/null | python3 -
 if [ "$product_base" != "MANIFEST_MISSING" ]; then
   ls ${product_base}/milestones/MS-*.md 2>/dev/null | head -10
   grep -rh "\*\*Status:\*\*" ${product_base}/milestones/ 2>/dev/null | head -10
-  ls ${product_base}/backlog/*.md 2>/dev/null | head -40
+  ls ${product_base}/backlog/*.md 2>/dev/null | head -60
   echo "--- DONE ITEMS (exclude from proposals) ---"
   grep -irl "\*\*Status:\*\*.*done\|\*\*Status:\*\*.*deferred\|^status:.*done\|^status:.*deferred\|^completed:" ${product_base}/backlog/BL-*.md 2>/dev/null | sed 's|.*/||' | sort
   echo "--- RECENT COMMITS (cross-check item IDs) ---"
