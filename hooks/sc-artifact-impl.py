@@ -38,6 +38,7 @@ PREFIX_TO_TYPE = {
     "MS":    "milestone",
     "PITCH": "pitch",
     "CYC":   "cycle",
+    "TH":    "theme",
 }
 
 TYPE_TO_PREFIX = {v: k for k, v in PREFIX_TO_TYPE.items()}
@@ -51,13 +52,15 @@ TYPE_TO_DIR = {
     "milestone":    "milestones",
     "pitch":        "pitches",
     "cycle":        "cycles",
+    "theme":        "themes",
 }
 
 # Index fields stored per type (subset of all fields — used for fast queries)
 INDEX_FIELDS = {
     "issue":        ["id", "type", "title", "status", "priority", "effort",
-                     "epic_id", "sprint_id", "roadmap_item_id", "source", "updated_at"],
+                     "epic_id", "theme_id", "sprint_id", "roadmap_item_id", "source", "updated_at"],
     "epic":         ["id", "type", "title", "status", "roadmap_item_id", "updated_at"],
+    "theme":        ["id", "type", "title", "status", "service", "category", "updated_at"],
     "sprint":       ["id", "type", "title", "status", "start_date", "end_date", "updated_at"],
     "roadmap_item": ["id", "type", "title", "status", "priority", "release_id", "updated_at"],
     "release":      ["id", "type", "title", "status", "version", "milestone_id", "updated_at"],
@@ -548,6 +551,7 @@ def _build_template(entity_id: str, entity_type: str, title: str, data: dict) ->
             f"**Priority:** {field('priority', 'soonish')}\n"
             f"**Effort:** {field('effort', 'm')}\n"
             f"**Epic:** {field('epic_id')}\n"
+            f"**Theme:** {field('theme_id')}\n"
             f"**Sprint:** {field('sprint_id')}\n"
             f"**Roadmap Item:** {field('roadmap_item_id')}\n"
             f"**Story points:** {field('story_points', '(none)')}\n"
@@ -573,6 +577,19 @@ def _build_template(entity_id: str, entity_type: str, title: str, data: dict) ->
             "## Description\n\n(What this epic covers and why it is grouped together.)\n\n"
             "## Issues\n\nSee issues with `Epic: " + entity_id + "` in their metadata.\n\n"
             "## Definition of done\n\n(Clear statement of what \"complete\" looks like.)\n"
+        )
+
+    if entity_type == "theme":
+        return (
+            f"# {entity_id}: {title}\n\n"
+            f"**Status:** {field('status', 'active')}\n"
+            f"**Category:** {field('category', 'feature-area')}\n"
+            f"**Service:** {field('service')}\n"
+            f"**Created:** {TODAY}\n"
+            f"**Updated:** {TODAY}\n\n"
+            "## Description\n\n(What domain context these issues share — the common implementation surface, "
+            "shared state, or conceptual grouping that makes them a theme.)\n\n"
+            "## Issues\n\nSee issues with `Theme: " + entity_id + "` in their metadata.\n"
         )
 
     if entity_type == "sprint":
