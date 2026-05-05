@@ -307,6 +307,18 @@ These run inside skills. You do not invoke them directly. They appear in tool ex
 
 ---
 
+---
+
+## Bringing Your Own Context Skills
+
+SweetClaude's skills are **behavioral contracts** — they enforce how you build software (phase gates, TDD discipline, caucus review) regardless of what framework or library you're using. They do not document framework APIs or codebase conventions.
+
+If your project uses a specialized framework, internal API, or proprietary tooling that Claude doesn't know well, you'll want **context skills** alongside SweetClaude's process skills. Tools like [Skill Seekers](https://github.com/yusufkaraaslan/Skill_Seekers) can generate reference skills from your documentation sites, GitHub repos, PDFs, or OpenAPI specs in 15–45 minutes. These pair cleanly with SweetClaude: Skill Seekers provides the context ("here is how our internal auth API works"), SweetClaude provides the process ("here is how to build the feature that uses it correctly").
+
+You do not need to choose between them. Install both in `~/.claude/skills/` and they coexist without conflict.
+
+---
+
 ## What to Read Next
 
 - How these skills chain in real scenarios → [Walkthroughs](walkthroughs.md)
