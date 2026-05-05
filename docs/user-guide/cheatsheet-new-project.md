@@ -42,7 +42,7 @@ SweetClaude runs `/sweetclaude:product-discovery` to establish what is being bui
 - **Standard** — pain and audience with structured prompts
 - **Full pain thesis** — 11-section structured analysis, research-backed
 
-At any depth, SweetClaude can analyze competitors via `/sweetclaude:product-competition` and define user personas via `/sweetclaude:product-user-personas`.
+At any depth, SweetClaude can analyze competitors via `/sweetclaude:product-competition` and define user personas via `/sweetclaude:user-personas`.
 
 **Output:** Discovery artifacts in `strategy/` — depth depends on level chosen
 

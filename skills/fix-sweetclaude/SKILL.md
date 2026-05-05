@@ -215,7 +215,7 @@ For each data-owning skill, check whether it is present in `skills.yaml`. Use th
 | `product-milestones` | `{product_base}/milestones/MILESTONES-INDEX.md` |
 | `product-parking-lot` | `{product_base}/backlog/BACKLOG-INDEX.md` |
 | `product-sprint-plan` | any file under `{product_base}/sprints/` |
-| `product-user-personas` | `.sweetclaude/state/personas.yaml` |
+| `user-personas` | `.sweetclaude/state/personas.yaml` |
 | `product-user-stories` | any `US-*.md` under `{product_base}/stories/` |
 | `document-corpus` | `.sweetclaude/state/corpus-pipeline.yaml` |
 | `deploy-ship` | `.sweetclaude/state/deploy-config.yaml` |
@@ -258,7 +258,7 @@ If any exist, ask:
 | `milestones` | `product-milestones` |
 | `backlog` | `product-parking-lot` |
 | `sprint` | `product-sprint-plan` |
-| `personas` | `product-user-personas` |
+| `personas` | `user-personas` |
 | `stories` | `product-user-stories` |
 | `corpus` | `document-corpus` |
 | `deploy` | `deploy-ship` |
@@ -279,7 +279,7 @@ Use `base_path` from session-state (`paths.product_base`) or fall back to `.swee
 | `product-milestones` | `{base_path}/milestones/MILESTONES-INDEX.md` |
 | `product-parking-lot` or `product-backlog` | `{base_path}/backlog/BACKLOG-INDEX.md` |
 | `product-sprint-plan` | `{base_path}/sprints/` (any files) |
-| `product-user-personas` | `.sweetclaude/state/personas.yaml` |
+| `user-personas` | `.sweetclaude/state/personas.yaml` |
 | `product-user-stories` | `{base_path}/stories/US-*.md` (any files) |
 | `document-corpus` | `.sweetclaude/state/corpus-pipeline.yaml` |
 

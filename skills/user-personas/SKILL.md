@@ -1,13 +1,12 @@
 ---
 spdx-license: AGPL-3.0-or-later
-name: sweetclaude:product-user-personas
+name: sweetclaude:user-personas
 description: Define product users — who they are, what they need to do, and exactly what completing each task looks and feels like. Includes triggers, deal-breakers, and optional research-backed workflow expansion.
-category: product
 ---
 
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
 
-# Product User Personas
+# User Personas
 
 Define the users of your product or tool — who they are, what they need to accomplish, and precisely what success and failure look like for each task.
 
@@ -36,15 +35,15 @@ Read `.sweetclaude/state/skills.yaml`.
 Drop `onboarded_at`/`offboarded_at`. Set `schema_version: 2`. Write atomically (see write protocol below).
 
 **Dependency check:**
-Read `~/.claude/config/sweetclaude/skills-registry.yaml`. Find `skills.product-user-personas.dependencies`. This skill has no dependencies — skip.
+Read `~/.claude/config/sweetclaude/skills-registry.yaml`. Find `skills.user-personas.dependencies`. This skill has no dependencies — skip.
 
-**If `skills.yaml` does not exist, OR exists but has no entry for `skills.product-user-personas`:**
+**If `skills.yaml` does not exist, OR exists but has no entry for `skills.user-personas`:**
 - Check whether `.sweetclaude/state/personas.yaml` exists
 - If yes: write entry with `status: active`, `last_changed_at: {today}`, `last_changed_by: migrated`
 - If no: write entry with `status: uninitialized`, `last_changed_at: ~`, `last_changed_by: ~`
 - Use write protocol below.
 
-**If `skills.yaml` exists and has an entry for `skills.product-user-personas`:**
+**If `skills.yaml` exists and has an entry for `skills.user-personas`:**
 - `status: active` → proceed normally
 - `status: paused` AND `$ARGUMENTS` not in `[onboard, offboard, pause]`:
   > "Personas are currently paused. Resume? [yes/no]"
@@ -79,11 +78,11 @@ Invoked with argument `pause`.
 Sets personas to `paused` status. Your persona data is untouched and you can resume at any time.
 
 Write atomically (using write protocol):
-- `skills.product-user-personas.status: paused`
-- `skills.product-user-personas.last_changed_at: {today ISO date}`
-- `skills.product-user-personas.last_changed_by: pause`
+- `skills.user-personas.status: paused`
+- `skills.user-personas.last_changed_at: {today ISO date}`
+- `skills.user-personas.last_changed_by: pause`
 
-Say: "Paused. Your persona data is safe — nothing was deleted. Resume anytime by running `/sweetclaude:product-user-personas`."
+Say: "Paused. Your persona data is safe — nothing was deleted. Resume anytime by running `/sweetclaude:user-personas`."
 
 ---
 
@@ -198,7 +197,7 @@ If existing docs found:
 > Want me to extract persona candidates from these now?
 >   yes    — I'll read them and draft persona candidates for your review
 >   fresh  — start from scratch instead
->   cancel — set up later with `/sweetclaude:product-user-personas`"
+>   cancel — set up later with `/sweetclaude:user-personas`"
 
 If nothing found:
 > "No existing persona documents found. Ready to define personas from scratch. Proceed? (yes/cancel)"
@@ -207,7 +206,7 @@ If nothing found:
 
 4. **If fresh / yes (nothing found):** Proceed to the **Persona Loop** below.
 
-5. **If cancel:** "OK. Run `/sweetclaude:product-user-personas` when ready."
+5. **If cancel:** "OK. Run `/sweetclaude:user-personas` when ready."
 
 ---
 
@@ -217,7 +216,30 @@ Check for `.sweetclaude/` directory. If not found, tell the user to run `/sweetc
 
 Check for `.sweetclaude/log.md`. If not found, create it.
 
-Read `.sweetclaude/state/discovery.yaml` if it exists — use `target_user_summary` as a starting point. Read `.sweetclaude/state/research.yaml` if it exists — use for optional workflow expansion.
+**Discovery contract:** Read `.sweetclaude/state/discovery.yaml`.
+
+- If it exists: use `target_user_summary` as a starting point for persona seeds. Note which fields are pre-populated from discovery context.
+- If it does not exist: surface this gap before proceeding.
+
+  Present:
+  > "No discovery context found. Personas built without discovery context tend to be more speculative — you may need to revise them once you've done discovery work.
+  >
+  > Recommended: run `/sweetclaude:product-discovery` first to ground personas in real user research.
+  >
+  > Or continue here and we'll build the best personas we can from what you know now."
+
+  Then call AskUserQuestion:
+
+  | Option label | Description |
+  |---|---|
+  | **Run product-discovery first** | Recommended — ground personas in real research before defining them |
+  | **Continue without discovery** | Build personas from what you know now; revise after discovery |
+  | **Something else** | Different direction |
+
+  If **Run product-discovery first**: invoke `sweetclaude:product-discovery`. Return here after it completes.
+  If **Continue without discovery**: proceed with a note that these personas should be treated as provisional.
+
+Read `.sweetclaude/state/research.yaml` if it exists — use for optional workflow expansion.
 
 ## Path Selection
 
@@ -320,6 +342,21 @@ After all personas are complete, offer:
 
 If yes: "Who would misuse this, churn immediately, or demand features that would dilute the core value for your real users?"
 
+## Diversity Verification
+
+After all personas (and anti-profile, if defined) are complete, review the full persona set for coverage gaps:
+
+Silently check:
+- Are all personas the same seniority level (e.g., all managers, all beginners)?
+- Are all personas from the same industry or company type?
+- Are all personas the same technical skill level?
+- Do any two personas have nearly identical triggers and deal-breakers?
+
+If any gap is present, surface it:
+> "Looking at the personas we've defined — {observation about the gap}. Is this intentional, or is there a user type we haven't covered?"
+
+Do not manufacture personas. Only flag the gap and let the user decide whether to add more.
+
 ## Frustration and Skip Handling
 
 If the user seems frustrated at any point:
@@ -352,7 +389,7 @@ anti_profile: {} | null
 Append to `.sweetclaude/log.md`:
 
 ```markdown
-## {ISO datetime} — product-user-personas (n/a)
+## {ISO datetime} — user-personas (n/a)
 
 **Status:** completed | skipped | degraded
 **Produced:** {filename}

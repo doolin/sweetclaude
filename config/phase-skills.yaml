@@ -11,6 +11,7 @@ always_loaded:
     - sweetclaude:find-skill
     - sweetclaude:hibernate
     - sweetclaude:product-milestones
+    - sweetclaude:user-personas
     - sweetclaude:usage
     - hibernate-project
   rules:
@@ -33,7 +34,7 @@ product:
     - sweetclaude:product/discovery
     - sweetclaude:product/research
     - sweetclaude:product/competition
-    - sweetclaude:product/user-personas
+
     - sweetclaude:product/positioning-statement
     - sweetclaude:product/brief
     - sweetclaude:product/prd

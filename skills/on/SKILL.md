@@ -143,7 +143,7 @@ Set up SweetClaude state for this project:
       status: uninitialized
       last_changed_at: ~
       last_changed_by: ~
-    product-user-personas:
+    user-personas:
       status: uninitialized
       last_changed_at: ~
       last_changed_by: ~
@@ -439,7 +439,7 @@ Wait for the user to be satisfied before proceeding.
 
 ### Step 4-N: User personas
 
-Run `/sweetclaude:product-user-personas`.
+Run `/sweetclaude:user-personas`.
 
 Wait for completion.
 
@@ -501,7 +501,7 @@ For CLAUDE.md generation: scan the project for language, framework, package mana
 | `product-milestones` | `{base_path}/milestones/MILESTONES-INDEX.md` exists |
 | `product-parking-lot` | `{base_path}/backlog/BACKLOG-INDEX.md` exists |
 | `product-sprint-plan` | *(no signal — always `uninitialized`)* |
-| `product-user-personas` | `.sweetclaude/state/personas.yaml` exists |
+| `user-personas` | `.sweetclaude/state/personas.yaml` exists |
 | `product-user-stories` | any `US-*.md` under `{base_path}/stories/` |
 | `document-corpus` | `.sweetclaude/state/corpus-pipeline.yaml` exists |
 

@@ -36,9 +36,9 @@ Read `.sweetclaude/state/skills.yaml`.
 Drop `onboarded_at`/`offboarded_at`. Set `schema_version: 2`. Write atomically (see write protocol below).
 
 **Dependency check (soft — warn, do not block):**
-Read `~/.claude/config/sweetclaude/skills-registry.yaml`. Find `skills.product-user-stories.dependencies`: `[product-user-personas]`.
-Read `skills.product-user-personas.status` from `skills.yaml`. If it is not `active`:
-> "Note: personas aren't set up yet — stories will be written without persona context. Run `/sweetclaude:product-user-personas` first for better results. Continue anyway? [yes/no]"
+Read `~/.claude/config/sweetclaude/skills-registry.yaml`. Find `skills.product-user-stories.dependencies`: `[user-personas]`.
+Read `skills.user-personas.status` from `skills.yaml`. If it is not `active`:
+> "Note: personas aren't set up yet — stories will be written without persona context. Run `/sweetclaude:user-personas` first for better results. Continue anyway? [yes/no]"
 If no: stop. If yes: proceed.
 
 **If `skills.yaml` does not exist, OR exists but has no entry for `skills.product-user-stories`:**
@@ -225,7 +225,7 @@ If existing stories found:
 >   cancel  — set up later with `/sweetclaude:product-user-stories`"
 
 If nothing found:
-> "No existing user stories found. Ready to write stories from scratch. This works best after personas are defined — have you run `/sweetclaude:product-user-personas`? (yes/no, we can proceed either way)"
+> "No existing user stories found. Ready to write stories from scratch. This works best after personas are defined — have you run `/sweetclaude:user-personas`? (yes/no, we can proceed either way)"
 
 3. **If import:** Read the source files/issues. For each story found, create a `US-XXX` file in `{base_path}/stories/`. Preserve the original acceptance criteria. Present a summary.
 
@@ -242,7 +242,7 @@ Check for `.sweetclaude/` directory. If not found, tell the user to run `/sweetc
 Check for `.sweetclaude/log.md`. If not found, create it.
 
 Read `.sweetclaude/state/personas.yaml` — required for task definitions. If missing:
-> "User stories require persona and task definitions. I recommend running `product-user-personas` first. Want to do that now, or continue without it?"
+> "User stories require persona and task definitions. I recommend running `user-personas` first. Want to do that now, or continue without it?"
 Accept if user declines. Log degraded status.
 
 Read `.sweetclaude/state/prd.yaml` and `.sweetclaude/state/brief.yaml` if available.

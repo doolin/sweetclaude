@@ -18,7 +18,7 @@ Known workflow names (case-insensitive):
 `something-broke`, `deploy-ship`, `design-architecture`, `design-tech-spec`,
 `design-api-design`, `design-data-model`, `design-ux`, `design-wireframes`,
 `design-user-flows`, `product-discovery`, `product-brief`, `product-prd`,
-`product-user-personas`, `product-user-stories`, `product-milestones`,
+`user-personas`, `product-user-stories`, `product-milestones`,
 `product-backlog`, `project-issues`, `project-sprints`, `testing-plan`,
 `testing-security`, `testing-accessibility`, `john-wick`, `adopt`
 

@@ -32,7 +32,7 @@ All output is labeled **synthetic**. Synthetic findings are hypotheses to valida
 Check for `.sweetclaude/` directory. If not found, tell the user to run `/sweetclaude:on` first. Stop.
 
 Read `.sweetclaude/state/personas.yaml` — required. If missing or empty:
-> "A UX review requires defined personas. Run `/sweetclaude:product-user-personas` first to define who you're designing for."
+> "A UX review requires defined personas. Run `/sweetclaude:user-personas` first to define who you're designing for."
 
 Stop if personas are absent.
 

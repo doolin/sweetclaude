@@ -69,7 +69,7 @@ Strategy and product definition. Useful before any code is written and on existi
 | **Product Discovery** | `/sweetclaude:product-discovery` | Establish what is being built, for whom, and why. Three depth levels: L1 quick intent, L2 problem and success, L3 full pain thesis. Collects compliance context (data categories, geography, user type) and derives applicable frameworks (GDPR, HIPAA, PCI DSS) — written to state for use throughout the pipeline. |
 | **Product Research** | `/sweetclaude:product-research` | Market and solution research. Feeds the competitive seed list. |
 | **Product Competition** | `/sweetclaude:product-competition` | Three depth levels: survey (who's in the space), matrix (structured comparison), feature-deep (capability analysis). |
-| **Product User Personas** | `/sweetclaude:product-user-personas` | Define users — who they are, what tasks they need to do, what success looks like. Includes triggers and deal-breakers. State-tracked: first invocation prompts for a first user type; subsequent invocations proceed immediately. Use `pause` to suspend without deleting data, `onboard` for the full setup ceremony. |
+| **User Personas** | `/sweetclaude:user-personas` | Define users — who they are, what tasks they need to do, what success looks like. Includes triggers and deal-breakers. Always loaded (cross-cuts all domains). State-tracked: first invocation prompts for a first user type; subsequent invocations proceed immediately. Use `pause` to suspend without deleting data, `onboard` for the full setup ceremony. |
 | **Product Positioning Statement** | `/sweetclaude:product-positioning-statement` | For/who/that/unlike framework. |
 
 ### Definition layer
@@ -78,7 +78,7 @@ Strategy and product definition. Useful before any code is written and on existi
 |---|---|---|
 | **Product Brief** | `/sweetclaude:product-brief` | Strategic product brief. Outline-first. Sections scale to available input depth. |
 | **Product PRD** | `/sweetclaude:product-prd` | Full PRD — functional requirements, NFRs, epics. |
-| **Product User Stories** | `/sweetclaude:product-user-stories` | Stories with acceptance criteria. Scoped to all personas, SLC, or MVP. State-tracked: first invocation offers GitHub Issues import; warns (does not block) if `product-user-personas` is not active. Use `pause` to suspend without deleting data. |
+| **Product User Stories** | `/sweetclaude:product-user-stories` | Stories with acceptance criteria. Scoped to all personas, SLC, or MVP. State-tracked: first invocation offers GitHub Issues import; warns (does not block) if `user-personas` is not active. Use `pause` to suspend without deleting data. |
 | **Product User TDD Tests** | `/sweetclaude:product-user-tdd-tests` | Convert stories to Gherkin `.feature` files for TDD Level 3. |
 | **Product Manage Scope** | `/sweetclaude:product-manage-scope` | Track scope changes with rationale. Prevents silent scope creep. |
 | **Product Parking Lot** | `/sweetclaude:product-parking-lot` | Manage deferred work. State-tracked: first invocation runs a lightweight setup (optional GitHub Issues import); subsequent invocations proceed immediately. Use `/sweetclaude:product-parking-lot pause` to suspend without deleting data. |

@@ -153,7 +153,7 @@ For each removed skill, check whether it owns live artifact content. Read `base_
 | `product-milestones` | `{base_path}/milestones/MILESTONES-INDEX.md` |
 | `product-parking-lot` or `product-backlog` | `{base_path}/backlog/BACKLOG-INDEX.md` |
 | `product-sprint-plan` | `{base_path}/sprints/` (any files) |
-| `product-user-personas` | `.sweetclaude/state/personas.yaml` |
+| `user-personas` | `.sweetclaude/state/personas.yaml` |
 | `product-user-stories` | `{base_path}/stories/US-*.md` (any files) |
 | `document-corpus` | `.sweetclaude/state/corpus-pipeline.yaml` |
 
@@ -316,7 +316,7 @@ For each of the six data-owning skills not already in `skills.yaml`, infer state
 | `product-milestones` | `{base_path}/milestones/MILESTONES-INDEX.md` |
 | `product-parking-lot` | `{base_path}/backlog/BACKLOG-INDEX.md` |
 | `product-sprint-plan` | *(no inference — always `uninitialized` if absent)* |
-| `product-user-personas` | `.sweetclaude/state/personas.yaml` |
+| `user-personas` | `.sweetclaude/state/personas.yaml` |
 | `product-user-stories` | any `US-*.md` under `{base_path}/stories/` |
 | `document-corpus` | `.sweetclaude/state/corpus-pipeline.yaml` |
 
@@ -341,7 +341,7 @@ If non-empty, ask:
 | `milestones` | `product-milestones` | Roadmap targets like "Exit Stealth" or "MVP Shipped" |
 | `backlog` | `product-parking-lot` | Deferred work items with context |
 | `sprint` | `product-sprint-plan` | Select stories from backlog into a sprint |
-| `personas` | `product-user-personas` | Define who your users are and what they need |
+| `personas` | `user-personas` | Define who your users are and what they need |
 | `stories` | `product-user-stories` | Write user stories for defined personas |
 | `corpus` | `document-corpus` | Import and index your project documents |
 

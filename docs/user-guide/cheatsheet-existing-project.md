@@ -108,7 +108,7 @@ Establish what is being built, for whom, and why. Three depth levels from quick 
 
 **Define your users:**
 ```
-/sweetclaude:product-user-personas
+/sweetclaude:user-personas
 ```
 Who specifically has this pain? Define users — who they are, what they need to do, and what success looks like. Includes triggers and deal-breakers.
 

@@ -20,7 +20,7 @@ skills:
     data_signal: ~
     dependencies: [product-parking-lot]
 
-  product-user-personas:
+  user-personas:
     description: "User personas"
     data_signal: ".sweetclaude/state/personas.yaml"
     dependencies: []
@@ -28,7 +28,7 @@ skills:
   product-user-stories:
     description: "User stories"
     data_signal: "{base_path}/stories/US-*.md"
-    dependencies: [product-user-personas]
+    dependencies: [user-personas]
 
   document-corpus:
     description: "Document corpus"

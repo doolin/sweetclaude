@@ -46,7 +46,7 @@ Present the offer, then ask:
 **"Yes"** — write `status: offered`, then invoke the appropriate setup skill:
 - `product_milestones`    → `sweetclaude:product-milestones`
 - `product_backlog`       → `sweetclaude:project-backlog`
-- `product_personas`      → `sweetclaude:product-user-personas`
+- `product_personas`      → `sweetclaude:user-personas`
 - `product_stories`       → `sweetclaude:product-user-stories`
 - `document_corpus`       → `sweetclaude:document-corpus`
 - `usage_tracking`        → `sweetclaude:usage`
