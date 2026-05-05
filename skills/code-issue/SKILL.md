@@ -15,6 +15,21 @@ Implement GitHub issue $ARGUMENTS using the SweetClaude pipeline.
 
 ## Process
 
+0. **Story Branch Setup.**
+
+   ```bash
+   git branch --show-current
+   ```
+
+   If already on a branch matching a story ID prefix (e.g., `issue-42/...`, `BL-046/...`) — skip.
+
+   Otherwise, derive the branch name: ID = `issue-{number}` from `$ARGUMENTS`; slug = issue title lowercased, non-alphanumeric → hyphens, collapsed + truncated to 40 chars. Branch name: `{ID}/{slug}`.
+
+   Offer via AskUserQuestion:
+   - **Create branch `{branch-name}`** (Recommended) — `git checkout -b {branch-name}`
+   - **Stay on current branch** — I'll manage branches myself
+   - **Something else**
+
 1. **Explore.** Read the issue (`gh issue view $ARGUMENTS`). Follow linked docs (Notion, specs, ADRs). Read relevant source files. Summarize current behavior and risks. Do not change code yet.
 
 2. **Ripple analysis.** Run `sweetclaude:design-change-impact-analysis` on the affected area. Present the impact assessment.
@@ -34,7 +49,11 @@ Implement GitHub issue $ARGUMENTS using the SweetClaude pipeline.
 
 6. **Update docs.** Run `sweetclaude:documents-update-docs` to check if documentation needs updating.
 
-7. **PR.** Run `sweetclaude:code-testing` for the pre-PR checklist. Create branch, commit, and open PR with `gh pr create`. Fill the PR template completely — reference the issue number.
+7. **Completion.** Run `sweetclaude:code-testing` for the pre-PR checklist. Stage any unstaged changes. Draft a conventional commit message referencing the issue number. Then offer via AskUserQuestion:
+   - **Open PR** (Recommended) — commit and open PR with `gh pr create`; fill the PR template completely, reference the issue number
+   - **Commit, merge, and push** — commit to story branch, merge to main, push origin; confirm commit message before executing
+   - **Commit only** — commit staged changes; I'll merge/push manually
+   - **Leave as is** — I'll handle git myself
 
 ## Rules
 
@@ -43,3 +62,4 @@ Implement GitHub issue $ARGUMENTS using the SweetClaude pipeline.
 - Every behavior change needs a test.
 - If you hit a blocker, report it. Do not work around it silently.
 - Update traceability in `.sweetclaude/` after completion.
+- **Direction change detection.** Watch for signals the scope has shifted: user says "actually, let me rethink" or "this is turning into something bigger"; issue scope changes materially mid-session; files well outside the original scope are touched. When detected, offer via AskUserQuestion: "Stash current work, create new story" (Recommended — `git stash push -m "WIP: {branch}"`, prompt for new backlog item + branch) / "Keep going on this branch" / "Something else".
