@@ -272,26 +272,28 @@ for f in sorted(glob.glob(os.path.join(product_base_abs, 'issues', 'I-*.md'))):
                        'status': s, 'roadmap': field(c, 'Roadmap Item'), 'open': s not in DONE})
     except Exception: pass
 
+_HORIZON_ORDER = {'next': 1, 'sooner': 2, 'soon': 3, 'later': 4, 'someday': 5}
 for f in sorted(glob.glob(os.path.join(product_base_abs, 'backlog', 'BL-*.md'))):
     try:
         c = open(f).read()
         s = field(c, 'Status').lower()
         p = field(c, 'Priority').upper()
+        h_raw = field(c, 'Horizon').lower()
+        h = h_raw if h_raw in _HORIZON_ORDER else 'unscheduled'
         if 'DONE' not in s.upper() and 'COMPLETE' not in s.upper():
             backlog.append({'id': os.path.basename(f).split('.')[0],
-                            'title': title_from(c), 'priority': p, 'status': s})
-    except Exception: pass
+                            'title': title_from(c), 'priority': p, 'status': s,
+                            'horizon': h, 'horizon_order': _HORIZON_ORDER.get(h, 6)})
+    except Exception:
+        pass
 
 in_progress = [i for i in issues if i['open'] and i['status'] == 'in_progress']
 open_issues  = [i for i in issues if i['open']]
 rm_achieved  = [r for r in roadmap if r['status'] in {'complete', 'achieved'}]
 rm_active    = [r for r in roadmap if r['status'] in {'in_progress', 'active'}]
 rm_planned   = [r for r in roadmap if r['status'] not in {'complete','achieved','in_progress','active'}]
-bl_p0  = [b for b in backlog if b['priority'] == 'P0']
-bl_p1  = [b for b in backlog if b['priority'] == 'P1']
-bl_p2  = [b for b in backlog if b['priority'] == 'P2']
-bl_sp  = [b for b in backlog if b['priority'] == 'SPIKE']
-bl_oth = [b for b in backlog if b['priority'] not in {'P0','P1','P2','SPIKE'}]
+_HORIZON_LABELS = ['next', 'sooner', 'soon', 'later', 'someday', 'unscheduled']
+bl_by_horizon = {h: [b for b in backlog if b['horizon'] == h] for h in _HORIZON_LABELS}
 
 L = []
 L.append(project_name)
@@ -362,28 +364,31 @@ if not backlog:
     L.append('Backlog is clear.')
 else:
     total_bl = len(backlog)
-    L.append(f'{total_bl} open: {len(bl_p0)} P0 · {len(bl_p1)} P1 · {len(bl_p2)} P2 · {len(bl_sp)} spikes · {len(bl_oth)} other')
-    if bl_p0:
+    bucket_counts = ' · '.join(
+        f'{len(bl_by_horizon[h])} {h}'
+        for h in _HORIZON_LABELS if bl_by_horizon[h]
+    )
+    L.append(f'{total_bl} open: {bucket_counts}')
+    for h in _HORIZON_LABELS:
+        items = bl_by_horizon[h]
+        if not items:
+            continue
+        label = 'UNSCHEDULED' if h == 'unscheduled' else h.upper()
+        suffix = ' — no horizon set' if h == 'unscheduled' else ''
         L.append('')
-        L.append('  Critical:')
-        for b in bl_p0:
-            L.append(f'    · {b["id"]}: {b["title"]}')
-    else:
-        up_next = (bl_p1 + bl_p2)[:3]
-        if up_next:
-            L.append('')
-            L.append('  Up next:')
-            for b in up_next:
-                L.append(f'    · {b["id"]}: {b["title"]} [{b["priority"]}]')
+        L.append(f'  {label} ({len(items)}{suffix})')
+        for b in items[:5]:
+            badge = f'[{b["priority"]}]' if b['priority'] else '[—]'
+            L.append(f'    · {b["id"]}  {badge}  {b["title"]}')
     if total_bl > 10:
-        L.append(f"  ({total_bl} total — ask me to run a backlog triage if it’s getting unwieldy)")
+        L.append(f"  ({total_bl} total — ask me to run a backlog triage if it's getting unwieldy)")
 
 L.append('')
 if reg_count > 0:
     noun = 'learnings' if reg_count != 1 else 'learning'
     L.append(f'I absorbed {reg_count} new {noun} from previous sessions. Feel free to ask about them if you want.')
     L.append('')
-L.append("Anything you want to look at more closely, or is there something above you’d like to work on — or something else entirely?")
+L.append("Anything you want to look at more closely, or is there something above you'd like to work on — or something else entirely?")
 
 with open(status_out, 'w') as f:
     f.write('\n'.join(L))
