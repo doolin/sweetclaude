@@ -39,6 +39,12 @@ Read available state:
 
 Note any missing state files — the interview is the primary input, but prior artifacts inform decisions.
 
+**ultraplan option:** For large or complex architectural decisions, Anthropic's ultraplan (3 explorer agents + 1 critic) produces more thorough results than a single-context pass. Offer via AskUserQuestion before starting the interview:
+- **Run native design interview** (default) — structured interview → SweetClaude produces the architecture document
+- **Use ultraplan** — invoke `sweetclaude:ultraplan` to prepare context, launch ultraplan, and ingest the result
+
+If the user picks ultraplan: invoke `sweetclaude:ultraplan`. Do not start the interview below.
+
 ## Step 1 — Architecture Interview
 
 Ask one question at a time. Always offer a recommendation before asking the user to decide.
