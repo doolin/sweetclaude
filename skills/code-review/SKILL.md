@@ -34,6 +34,28 @@ Wait for selection. Run chosen reviews in order: 1 → 2 → 3.
 If $ARGUMENTS specifies files or a PR number, use that.
 Otherwise: review staged changes, or if nothing staged, the last commit.
 
+## Step 2b: Run mode
+
+For reviews involving multiple types (e.g. code + security) or large diffs (50+ files), proactively offer background execution:
+
+Offer via AskUserQuestion:
+- **Review now (inline)** — run in this conversation; findings appear as Claude works
+- **Run in background** — dispatch as a background agent; continue working and get notified when findings are ready
+
+If "Run in background":
+Dispatch a background Agent with `run_in_background: true`. Pass:
+- The review type(s) selected in Step 1
+- The scope (files, diff, or PR number) from Step 2
+- Any compliance context from `.sweetclaude/state/compliance-context.yaml` (for compliance reviews)
+- Instruction: run the applicable review sections from this skill and produce the standard output format
+
+Confirm: "Review running in background. Findings will appear when the agent completes."
+Stop. Do not run the inline review sections below.
+
+If "Review now (inline)": proceed to the review sections below.
+
+For small focused reviews (single file, one type, short diff), skip the offer and run inline without asking.
+
 ---
 
 ## Code Review
