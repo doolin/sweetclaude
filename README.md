@@ -21,15 +21,26 @@ Requires [Claude Code](https://claude.ai/code) and an Anthropic subscription.
 
 ## Quick Start
 
-```bash
-git clone https://github.com/carson-sweet/sweetclaude.git
-cd sweetclaude && ./install.sh
+Inside Claude Code:
+
+```
+/plugin marketplace add https://github.com/carson-sweet/sweetclaude
+/plugin install sweetclaude@sweetclaude
 ```
 
 Then go to your project and run:
 
 ```
 /sweetclaude:go introduce me to sweetclaude
+```
+
+> **Note:** TDD enforcement hooks require a one-time setup after marketplace install. Run `/sweetclaude:on` in your first project to wire them, or use the manual install path below if you prefer.
+
+**Manual install** (full hook wiring, no extra step):
+
+```bash
+git clone https://github.com/carson-sweet/sweetclaude.git ~/dev/sweetclaude
+cd ~/dev/sweetclaude && ./install.sh
 ```
 
 

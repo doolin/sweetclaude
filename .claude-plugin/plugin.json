@@ -1,19 +1,22 @@
 {
   "name": "sweetclaude",
-  "description": "Full-lifecycle AI development partner: strategic planning, pain thesis, competitive analysis, product definition, milestones, architecture, TDD implementation, code review, corpus management, and self-updating. 60 skills from first concept to shipped code.",
-  "version": "1.27.0",
+  "description": "A discipline layer for Claude Code — phase gates, TDD enforcement, and multi-agent review that make AI-assisted development reproducible and auditable.",
+  "version": "3.37.0",
   "author": {
-    "name": "Carson Sweet"
+    "name": "Carson Sweet",
+    "email": "cs@carsonsweet.com"
   },
   "homepage": "https://github.com/carson-sweet/sweetclaude",
   "repository": "https://github.com/carson-sweet/sweetclaude",
   "license": "AGPL-3.0-or-later",
   "keywords": [
-    "framework",
     "tdd",
-    "strategy",
-    "product",
-    "design",
-    "pipeline"
+    "workflow",
+    "phase-gates",
+    "product-management",
+    "code-review",
+    "multi-agent",
+    "discipline",
+    "quality"
   ]
 }
