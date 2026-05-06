@@ -2,93 +2,431 @@
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:help
 user-invocable: true
-description: Interactive help for SweetClaude. Explains free-language usage, walks through setup, shows available features, and explains project modes. Conversation flows from the user's question.
+description: Interactive help for SweetClaude. Conversational — explains what SweetClaude is, how it works, and how to get started. Adapts based on what the user wants to explore.
 ---
 
 # SweetClaude Help
 
-SweetClaude works through conversation. You don't need to know any commands.
+## Step 1: Check the skip flag
 
-## Step 1: Set the frame
+Read `.sweetclaude/state/sweetclaude.yaml`. If `skip_help_welcome: true`, skip directly to Step 3.
+
+## Step 2: Show the welcome message and menu
 
 Tell the user:
 
-> "SweetClaude works through plain English — you describe what you want, and I figure out the right process. You don't need to know any skill names or commands.
+> Welcome to SweetClaude's help skill. It's designed to provide support through natural conversation instead of dumping a wall of text at you. If you want a more typical user guide, there's one in the repo: https://github.com/carson-sweet/sweetclaude/blob/main/docs/user-guide/index.md
 >
-> What would you like help with?"
+> **SweetClaude** is a software development partner built for the full project lifecycle — from the first idea through design, implementation, testing, and ship.
+>
+> It adapts to your working style. You can move fast with minimal structure (vibe-coding), or apply enterprise-class discipline with phase gates, formal specs, TDD pipelines, and QA caucuses — or land anywhere in between. The framework adjusts to the project, not the other way around.
+>
+> SweetClaude has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work, but software development is where it lives.
 
-Offer these options (conversationally based on context):
+Then use AskUserQuestion with these four options:
 
-1. **Set up SweetClaude** — for a new project or an existing codebase
-2. **See what's available** — browse the features: product planning, coding workflows, design, testing, and more
-3. **Understand project modes** — Flow, Kanban, Shape Up, Agile
-4. **Learn how to use SweetClaude** — examples of what to type
-5. **Something else** — ask freely
+1. **Project Phases** — how SweetClaude structures product development, from conceptual idea to go-live
+2. **Operating Modes** — how SweetClaude supports incremental structure and discipline, from vibe-coding to enterprise-grade
+3. **Workflows and Skills** — an inventory of the individual skills and how they compose into orchestrated workflows
+4. **Tell me about your project** — start a conversation about how SweetClaude would approach your specific situation
 
-## Step 2: Follow the user's choice
+The AskUserQuestion tool automatically provides an "Other" option — freeform questions from the user are handled there (see Option 5 below).
 
-**"Set up SweetClaude":**
-> "Just type `/sweetclaude` and I'll walk you through it — I'll detect whether this is a new project or an existing codebase and ask a couple of questions."
+After the menu, add this line as plain text:
+> "To skip this intro in future sessions, just say `skip the welcome`."
 
-**"See what's available":**
-Present a plain-language feature tour (grouped by area, no skill names):
+## Step 3: Follow the user's choice
 
-*Building things*
-- Plan a new feature from scratch (discovery → stories → code → ship)
-- Fix a bug end-to-end with a proper diagnosis
-- Review code before merging
-- Deploy and run a smoke test
+**Option 1 — Project Phases:**
+Present the following content verbatim, then show the follow-up menu below.
 
-*Product work*
-- Write a product brief or PRD
-- Define your users (personas)
-- Prioritize your backlog (RICE scoring, roadmap)
-- Plan a sprint
+---
 
-*Design*
-- Define your architecture
-- Design an API
-- Create wireframes and user flows
+SweetClaude structures every project through seven phases:
 
-*Testing*
-- Plan your test strategy
-- Run a security review (STRIDE / OWASP)
-- Accessibility audit (WCAG 2.1)
+**Discover** — understand the problem before committing to a solution. Who are the users, what do they actually need, and what's explicitly out of scope?
 
-*Day-to-day*
-- See where things stand (`/sweetclaude` with no text)
-- Prepare for a meeting
-- Export a session
+**Define** — write down what you're building and how you'll know it worked. This produces a product brief and, for larger work, a PRD with functional requirements and success criteria.
 
-**"Understand project modes":**
-Explain each mode in 2 sentences:
-- **Flow** — unstructured creative work, minimal process overhead
-- **Kanban** — visual board, continuous flow, limit WIP
-- **Shape Up** — fixed time, variable scope, 6-week cycles with appetite-based bets
-- **Agile** — sprints, ceremonies, velocity tracking
+**Design** — decide the technical approach before writing code. Architecture, data model, API contracts, UX flows. The goal is to resolve ambiguity on paper, not in the middle of implementation.
 
-> "To switch modes, just tell me: 'Switch to Kanban mode' or 'I want to use Shape Up.'"
+**Plan** — break the work into stories and tests. Gherkin specs or acceptance criteria get written here, before any implementation begins.
 
-**"Learn how to use SweetClaude":**
-Show examples:
+**Implement** — write the code. Tests go red first, then green. SweetClaude runs the TDD pipeline here, with subagent isolation between test writers and implementers at higher rigor levels.
+
+**Verify** — code review, security review, all tests passing in CI, documentation updated. No skipping.
+
+**Ship** — merge, deploy, smoke test in production, changelog updated.
+
+Not every project uses all seven. A hotfix might go straight Diagnose → Implement → Ship. An experiment might stay in Discover for a while. The phases adapt to the work type.
+
+---
+
+Then use AskUserQuestion with these four options:
+
+- **Skill workflows per phase** — the skills SweetClaude typically uses at each phase, and how they vary by operating mode
+- **Project structure and deliverables** — what files and artifacts SweetClaude produces, and where they live
+- **Hello-world project** — walk a toy project end-to-end so you can see the whole thing in motion, or take it for a real spin
+- **Approaching an existing project** — how SweetClaude gets oriented and starts contributing to a codebase that's already in progress
+
+**Option 1c — Hello-world project:**
+Present the following content verbatim:
+
+---
+
+The best way to see SweetClaude in action is to walk a small project through the full lifecycle. Here's what that looks like end-to-end with a toy example — a simple task list API.
+
+**Discover** — SweetClaude asks: who uses this, what problem does it solve, what's out of scope? We establish: it's a personal productivity tool, single user, no auth needed, just CRUD for tasks.
+
+**Define** — A one-page product brief gets written: problem statement, success criteria, three explicit out-of-scope items. For a hello-world we skip the full PRD.
+
+**Design** — Architecture decision: SQLite, single REST service, three endpoints. Data model defined. No UX flows needed — it's an API.
+
+**Plan** — Two user stories with acceptance criteria. Gherkin specs written for each.
+
+**Implement** — Test writer agent produces failing tests from the Gherkin. Implementer agent makes them green. No test files were touched during implementation.
+
+**Verify** — Code review runs. All tests pass. No security surface to review for a local-only API.
+
+**Ship** — Committed, tagged, changelog entry written.
+
+Total conversation turns to get here: roughly 15–20. Most of the work happens in subagents you don't see.
+
+We can do a simple hello-world project, brainstorm something a little more substantial as a pilot, or you can grab one of those ideas you've never had time to build. Want to take it for a spin?
+
+---
+
+**Option 1b — Project structure and deliverables:**
+Present the following content verbatim:
+
+---
+
+SweetClaude keeps all of its own artifacts in a `.sweetclaude/` directory at the root of your repo — separate from your codebase so its work never mingles with your distributable code.
+
+**State** (`.sweetclaude/state/`)
+- `sweetclaude.yaml` — active project state, operating mode, session flags
+- `personas.yaml` — defined user personas
+- `decision-log.md` — architecture and product decisions
+- `improvement-register.md` — learnings captured across sessions
+
+**Product** (`.sweetclaude/product/`)
+- Product brief, PRD, roadmap, competitive research
+
+**Design** (`.sweetclaude/design/`)
+- Architecture doc, tech spec, data model, API contracts, UX flows
+
+**Plans** (`.sweetclaude/plans/`)
+- Implementation plans, sprint plans, task breakdowns
+
+**Tests** — live alongside your source code; SweetClaude follows your existing conventions.
+
+Nothing gets created until you work through the phase that produces it. A vibe-coding project might only ever have `sweetclaude.yaml`. A fully structured project accumulates the full tree.
+
+SweetClaude can also set up a local RAG system using LanceDB — indexing all your design documents so both you and SweetClaude can ask questions about the architecture, data model, or product decisions and get fast, canonical answers without digging through files manually. It runs fully offline with no external services or API keys required.
+
+---
+
+I can explain any of the above, walk you through how the RAG system works, or take you somewhere else. Just tell me where you want to go.
+
+---
+
+**Option 1a — Skill workflows per phase:**
+Present the following content verbatim:
+
+---
+
+What SweetClaude typically uses at each phase depends on how much structure you're running with — lighter modes use a subset, fuller modes use more.
+
+**Discover** — `product-discovery`, `user-personas`, `product-user-focus-group`, `product-competition`
+
+**Define** — `product-brief`, `product-prd`, `product-terminology`, `product-user-stories`
+
+**Design** — `design-architecture`, `design-data-model`, `design-api-design`, `design-ux`, `design-user-flows`, `design-wireframes`, `design-tech-spec`, `design-solutioning-gate`, `design-manage-decisions`
+
+**Plan** — `project-backlog`, `project-sprints`, `project-themes`, `epic-design`, `product-milestone-planning`
+
+**Implement** — `code-feature`, `code-issue`, `code-debt`, `code-tdd`
+
+**Verify** — `code-review`, `code-verify`, `testing-plan`, `testing-security`, `testing-accessibility`, `testing-performance`, `testing-compliance`, `testing-session`
+
+**Ship** — `deploy-ship`
+
+I can explain any of these skills individually, or I can show you what's used at various levels of structure. Just tell me where you want to go.
+
+---
+
+**Option 1d — Approaching an existing project:**
+Present the following content verbatim:
+
+---
+
+SweetClaude can drop into a codebase that's already in progress. Here's how it typically gets oriented.
+
+First, it does a read-only survey — structure, stack, test coverage, README, recent git history, any existing docs. No changes, just observation.
+
+From there it builds a picture of where the project is in its lifecycle and what's missing. A mature codebase with no tests gets a different recommendation than a greenfield project mid-build. It'll flag things like: no architecture doc, no defined personas, gaps in test coverage, security surface that hasn't been reviewed.
+
+Then it proposes a starting point — usually one of three:
+- **Catch up on artifacts** — write the docs and decisions that should exist but don't, so SweetClaude has solid ground to work from
+- **Jump straight to active work** — pick up the next logical task and start building, letting artifacts accumulate naturally as you go
+- **Run a health check** — get a structured assessment of the project's shape before deciding anything
+
+Before doing any of this, SweetClaude will recommend creating a safety branch — a snapshot of exactly where things are now, so you always have a clean rollback point.
+
+Want to try this on a current project (safety branch first), or keep exploring?
+
+---
+
+**Option 2 — Operating Modes:**
+Present the following content verbatim, then show the follow-up menu below.
+
+---
+
+SweetClaude doesn't lock you into a single methodology. Think of it as a dial, not a switch.
+
+At the lightweight end, you work conversationally with almost no process overhead. You describe what you want, SweetClaude builds it, you iterate. No phase gates, no formal specs, no ceremonies. This is the right mode when you're exploring an idea, moving fast, or working alone on something that doesn't need a paper trail.
+
+At the structured end, you get the full stack: formal phase gates with exit criteria, TDD pipelines with subagent isolation, QA caucuses that review test plans from three angles, architecture reviews, security reviews, and documented design decisions. This is the right mode when the stakes are high — production systems, regulated industries, team codebases, or anything where "it seemed to work" isn't good enough.
+
+Most projects land somewhere in between. You might vibe-code a prototype, then dial up the rigor when it's time to harden it for production. SweetClaude adjusts to where you are — and you can change the level at any time, even mid-project.
+
+---
+
+Then use AskUserQuestion with these four options:
+
+- **Help me choose a level** — answer four quick questions and get a recommended starting level
+- **What actually changes at each level** — what's on and off at each level, and how they differ
+**Option 2b — What actually changes at each level:**
+Present the following content verbatim:
+
+---
+
+Here's what's on and off at each level:
+
+**Lightweight**
+- Conversational routing — describe what you want, SweetClaude figures out what to run
+- No phase gates, no required artifacts
+- Quietly accumulates thin versions of key artifacts in the background (mini brief, architecture sketch, decision log entries) as your project evolves — so if you decide to uplevel later, there's something to build from instead of starting from scratch
+- Right for: exploration, prototypes, personal projects
+
+**Standard**
+- Phase awareness — SweetClaude tracks where you are and what's next
+- Light TDD — tests written before implementation, no subagent isolation
+- Code review before ship
+- Right for: side projects going to production, internal tools, solo developers who want a safety net
+
+**Structured**
+- Full phase gates with exit criteria
+- TDD pipeline with subagent isolation — test writer and implementer never share context
+- QA caucus reviews test plans from three angles before implementation
+- Security review on anything with an auth surface or sensitive data
+- Right for: B2C products, team codebases, anything with real users
+
+**Full discipline**
+- Everything in Structured, plus:
+- Architecture reviews and documented design decisions
+- Compliance planning (HIPAA, GDPR, SOC 2, PCI)
+- Formal solutioning gate before any significant design decision
+- Right for: regulated industries, B2B products, enterprise
+
+You can move between levels at any time — even mid-feature.
+
+---
+
+- **How to change levels mid-project** — the mechanics of dialing up or down without losing work
+- **Start a conversation about something else** — ask anything or describe your situation
+
+**Option 2c — How to change levels mid-project:**
+Present the following content verbatim:
+
+---
+
+Changing levels is a conversation, not a config file. Just tell SweetClaude what you want:
+
+> "Let's dial this up — I want full TDD from here on."
+> "We're just exploring right now, let's keep it lightweight."
+> "We're getting close to production, I want to add code review and security."
+
+SweetClaude updates your project state and applies the new level from that point forward. Work already done stays as-is — nothing gets undone or invalidated.
+
+**When upleveling**, you may have gaps. If you've been working lightweight and want to move to Structured, you won't have a product brief, architecture doc, or decision log yet. SweetClaude will flag what's missing and offer to catch up — either in a dedicated session or as you go. You don't have to fill everything in at once.
+
+**When downleveling**, nothing gets removed. Your existing artifacts stay and SweetClaude keeps referencing them. You're just turning off the guardrails for new work — useful when you want to move fast on a known problem without going through the full process.
+
+You can also set level per-task rather than globally: "just do this one thing lightweight" works fine even if your project is otherwise structured.
+
+---
+
+Want to explore this further or see something else?
+
+**Option 2a — Help me choose a level:**
+
+Open with: "I'm going to ask you four quick questions, then I'll give you a recommendation."
+
+Ask each question one at a time using AskUserQuestion:
+
+**Q1** — plain text prompt: "What are you building?"
+
+**Q2** — AskUserQuestion: *Where is it now?*
+- Just an idea
+- Exploring / early prototyping
+- Prototype built
+- Actively shipping
+
+**Q3** — AskUserQuestion: *What kind of project?*
+- Hobby / side project
+- Internal company tool
+- B2C product
+- B2B product
+
+**Q4** — AskUserQuestion: *Does the data or user base create compliance requirements?*
+- No
+- Possibly — not sure
+- Yes (HIPAA, GDPR, SOC 2, PCI, etc.)
+
+Synthesize all four answers into one of these levels:
+- **Lightweight** — conversational, minimal process, no gates
+- **Standard** — phase awareness, light TDD, code review before ship
+- **Structured** — full phase gates, TDD pipeline, QA caucus, security review
+- **Full discipline** — everything, including compliance planning and architecture reviews
+
+Present the recommended level with a one-sentence rationale explaining why it fits their situation.
+
+Then ask using AskUserQuestion: "Want to explore this further or give it a try?"
+- Explore further
+- Give it a try
+
+**Option 3 — Workflows and Skills:**
+Present the following content verbatim, then show the follow-up menu below.
+
+---
+
+SweetClaude ships 98 skills built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. You don't need to learn them. The single entry point is `/sweetclaude:go` — it reads your project state, figures out what to work on next, and drives the right workflow. Skills and workflows run automatically based on what you're doing.
+
+For those who want to go deeper, skills compose into dynamic, situation-driven workflows — a feature build, for example, chains spec generation, isolated test writing, a multi-angle QA review, and implementation into a single pipeline. Workflows adapt to the project rather than following a fixed script.
+
+The full inventory is in the skills reference: https://github.com/carson-sweet/sweetclaude/blob/main/docs/user-guide/skills-reference.md
+
+---
+
+Then use AskUserQuestion with these three options:
+
+- **View all skills by phase** — see the full skill set organized by project phase
+- **Explore workflow examples** — walk through what a real workflow looks like end-to-end
+
+**Option 3a — View all skills by phase:**
+Present the following content verbatim:
+
+---
+
+Here's the full skill set organized by the phase where they're most commonly used:
+
+**Discover** — `product-discovery`, `user-personas`, `product-user-focus-group`, `product-competition`, `product-parking-lot`
+
+**Define** — `product-brief`, `product-prd`, `product-terminology`, `product-user-stories`, `product-manage-scope`
+
+**Design** — `design-architecture`, `design-data-model`, `design-api-design`, `design-ux`, `design-user-flows`, `design-wireframes`, `design-tech-spec`, `design-solutioning-gate`, `design-manage-decisions`, `design-change-impact-analysis`, `design-ux-review`
+
+**Plan** — `project-backlog`, `project-sprints`, `project-themes`, `project-goals`, `project-scope`, `project-epics`, `epic-design`, `product-milestone-planning`, `product-milestones`, `product-roadmap`, `product-sprint-plan`
+
+**Implement** — `code-feature`, `code-issue`, `code-debt`, `code-tdd`
+
+**Verify** — `code-review`, `code-verify`, `testing-plan`, `testing-security`, `testing-accessibility`, `testing-performance`, `testing-compliance`, `testing-session`, `behavioral-regression`
+
+**Ship** — `deploy-ship`
+
+**Ongoing** — `status`, `go`, `recap`, `session-export`, `misc-meeting-prep`, `retro`, `next-steps`
+
+---
+
+I can explain any of these, or give you some examples of how these are dynamically combined into workflows, or anything else — tell me where you want to go next.
+- **Ask something else** — ask anything or describe your situation
+
+**Option 3b — Explore workflow examples:**
+Present the following content verbatim:
+
+---
+
+Here are three examples of how SweetClaude composes skills into workflows:
+
+**Building a new feature (Structured mode)**
+`code-feature` kicks off the pipeline: it generates Gherkin acceptance specs from the story, dispatches a test writer agent that produces failing tests, convenes a QA caucus that reviews the test plan from three angles, then dispatches an implementer agent to make them green. `code-review` and `code-verify` run before ship. The test writer and implementer never share context — each works in isolation.
+
+**Responding to a production bug**
+`something-broke` triages the incident, establishes a reproduction case, and identifies the root cause. `code-issue` runs the fix through a lightweight TDD cycle. `deploy-ship` handles the release. A post-mortem work item gets created automatically.
+
+**Kicking off a new product**
+`product-discovery` establishes personas and scenarios. `product-brief` produces the one-pager. `design-architecture` and `design-data-model` define the technical shape. `project-backlog` turns it into prioritized work. `sweetclaude:go` takes it from there.
+
+In all cases, `/sweetclaude:go` is the entry point — it reads your project state and decides which workflow to run next.
+
+---
+
+Want to go deeper on any of these, see more examples, or take it somewhere else?
+
+**Option 4 — Tell me about your project:**
+
+Open with: "Tell me about your project. I will probably have questions, then I'll share how I'd approach it with you."
+
+The goal of this conversation is to arrive at three things:
+1. The right operating mode — how much structure and discipline fits this project
+2. Whether security or compliance work is needed — ask briefly about what data the app handles and who the users are (consumers, employees, regulated industries)
+3. A concrete recommendation for how to start
+
+Keep it conversational. Ask one question at a time. Cover:
+- What are they building and where are they in the process
+- Who are the users and what data does the app handle
+- Are they working alone or with a team
+- Is this exploratory or going to production
+
+After a few exchanges, offer to look directly at the project to give a more grounded recommendation:
+
+> "If you'd like, I can take a look at your project directly — read the codebase, git history, and any existing docs — and give you a more specific picture of how I'd approach it. I won't make any changes. No files touched, no commits, nothing written. Read-only, full stop."
+
+If they agree, do a read-only survey (structure, stack, existing tests, README, recent commits) and return a concrete recommendation covering:
+
+- **First: create a safety branch.** Before doing anything else, strongly recommend they create a snapshot branch (`git checkout -b pre-sweetclaude-snapshot`) so they have a clean rollback point if they ever want to undo everything SweetClaude has touched. Frame it as a seatbelt — takes 5 seconds, costs nothing, and means they can always get back to exactly where they are right now.
+- **Suggested operating mode** — based on the conversation and what was observed in the project
+- **First steps** — concrete next actions to get started with SweetClaude on this project
+- **Security/compliance flags** — anything worth knowing based on the data and user types described
+
+**Option 5 — Other (freeform):**
+The user typed their own question or request. Answer directly and conversationally.
+
+**"skip the welcome" (any time the user says this):**
+Set `skip_help_welcome: true` in `.sweetclaude/state/sweetclaude.yaml`:
+
+```bash
+python3 - << 'PY'
+import yaml, tempfile, os
+path = '.sweetclaude/state/sweetclaude.yaml'
+try:
+    with open(path) as f:
+        d = yaml.safe_load(f) or {}
+except FileNotFoundError:
+    d = {}
+d['skip_help_welcome'] = True
+with tempfile.NamedTemporaryFile('w', dir=os.path.dirname(path), suffix='.tmp', delete=False) as tmp:
+    yaml.dump(d, tmp, default_flow_style=False, allow_unicode=True, sort_keys=False)
+    tmp_name = tmp.name
+os.replace(tmp_name, path)
+print("Done.")
+PY
 ```
-/sweetclaude                          → see where things stand
-/sweetclaude build a login page       → start a new feature
-/sweetclaude fix the auth bug         → diagnose and fix a bug
-/sweetclaude review my PR             → code review
-/sweetclaude something broke in prod  → incident response
-/sweetclaude use code-review          → explicit skill routing
-```
 
-**"Something else":**
-Answer the user's question directly and offer to continue exploring.
+Confirm it's set, then say: "Done — I'll skip the intro next time. Tell me what you need and let's see how I can help."
 
-## Step 3: Continue the conversation
+## Step 3 (skip path): Conversation-only entry
 
-After answering, ask:
-> "Anything else you'd like to know, or ready to dive in?"
+If `skip_help_welcome` was true, say:
 
-If they're ready: "Just type `/sweetclaude` and tell me what you want to build."
+> "Tell me what you need and let's see how I can help."
+
+Then answer directly and conversationally.
+
+## After any answer
+
+Continue the conversation naturally. Don't ask "anything else?" — just stay available. The user will redirect if they want to explore something different.
 
 ## Learnings visibility
 
@@ -114,6 +452,7 @@ PY
 Offer: "Want to remove any of these? Just tell me which number."
 
 If they specify one, remove it:
+
 ```bash
 python3 - .sweetclaude/state/sweetclaude.yaml INDEX << 'PY'
 import sys, yaml, tempfile, os
