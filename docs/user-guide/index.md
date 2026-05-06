@@ -1,17 +1,17 @@
 # SweetClaude User Guide
 
 **Version:** 1.0
-**Date:** 2026-05-01
+**Date:** 2026-05-06
 
 SweetClaude is a software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship.
 
 It adapts to your working style. Start with vibe-coding in Flow Mode — no ceremony, no gates. Switch to Kanban, Shape Up, or Agile as the project matures. Or apply full enterprise-class discipline from day one. The framework adjusts to the project, not the other way around. It works with any language because the workflow discipline is the product, not the boilerplate.
 
-> **New to SweetClaude?** Don't start here. Run `/sweetclaude:help` in Claude Code — it teaches itself through conversation and will get you oriented faster than any written doc. Come back to this guide when you need a specific reference.
-
 SweetClaude was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
 
 This guide is the long form. The README on the front page sells the idea; these pages explain how it actually fits together when you sit down to use it.
+
+> **New to SweetClaude?** Don't start here. Run `/sweetclaude:help` in Claude Code — it teaches itself through conversation and will get you oriented faster than any written doc. Come back to this guide when you need a specific reference.
 
 ---
 
