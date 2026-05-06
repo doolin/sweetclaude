@@ -175,3 +175,16 @@ def test_velocity_counts_sprint_id_key(project_dir):
     assert read_r.returncode == 0, read_r.stderr
     out = json.loads(read_r.stdout)
     assert out['velocity'] == 1, f"Expected velocity=1, got {out['velocity']}"
+
+
+def test_issue_default_priority_is_soon(project_dir):
+    r = run_create(project_dir, 'issue', {'title': 'Test priority default'})
+    assert r.returncode == 0, r.stderr
+    issue_id = json.loads(r.stdout)['id']
+    read_r = run_read(project_dir, issue_id)
+    assert read_r.returncode == 0, read_r.stderr
+    out = json.loads(read_r.stdout)
+    assert out['priority'] == 'soon', (
+        f"Expected default priority 'soon', got '{out['priority']}'. "
+        "Old value 'soonish' must be renamed to 'soon'."
+    )

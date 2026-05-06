@@ -52,7 +52,7 @@ For each GitHub issue:
      "title": "<title>",
      "type": "story",
      "description": "<body truncated to 500 chars>",
-     "priority": "soonish",
+     "priority": "soon",
      "effort": "m",
      "status": "backlog",
      "source": "github",

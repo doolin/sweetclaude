@@ -170,9 +170,9 @@ Compile violations across all steps. Classify:
 | **Minor** | Small friction, minimal impact |
 
 Map to issue priority:
-- Critical → `now`
+- Critical → `next`
 - Serious → `sooner`
-- Moderate → `soonish`
+- Moderate → `soon`
 - Minor → `later`
 
 Present findings list:

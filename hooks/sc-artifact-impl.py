@@ -548,7 +548,7 @@ def _build_template(entity_id: str, entity_type: str, title: str, data: dict) ->
             f"# {entity_id}: {title}\n\n"
             f"**Type:** {issue_type}\n"
             f"**Status:** {status}\n"
-            f"**Priority:** {field('priority', 'soonish')}\n"
+            f"**Priority:** {field('priority', 'soon')}\n"
             f"**Effort:** {field('effort', 'm')}\n"
             f"**Epic:** {field('epic_id')}\n"
             f"**Theme:** {field('theme_id')}\n"

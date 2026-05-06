@@ -87,7 +87,7 @@ Evaluate these criteria against the issue's description and acceptance criteria.
 INVEST: {clean | list any flags}
 
 Recommended:
-  Priority: {now|sooner|soonish|later|someday}  — {one-line reason}
+  Priority: {next|sooner|soon|later|someday}  — {one-line reason}
   Effort:   {xs|s|m|l|xl|xxl}                   — {one-line reason}
 ```
 

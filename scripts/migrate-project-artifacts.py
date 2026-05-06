@@ -30,7 +30,7 @@ TODAY = datetime.now().strftime("%Y-%m-%d")
 
 PRIORITY_MAP = {
     "P1": "sooner",
-    "P2": "soonish",
+    "P2": "soon",
     "P3": "later",
     "SPIKE": "later",
 }
@@ -98,7 +98,7 @@ def map_priority(raw: str) -> str:
     for key, val in PRIORITY_MAP.items():
         if key in raw:
             return val
-    return "soonish"
+    return "soon"
 
 
 def map_status_bl(raw: str) -> str:
@@ -495,7 +495,7 @@ def write_report(repo_root: Path, log_lines: str, issues: list[dict], dry_run: b
         1. **Roadmap rationale sections** — each RM-NNN has a stub rationale. Fill in the "why now" reasoning.
         2. **Issue type review** — type inference is heuristic. Review issues where type=story to confirm none should be chore or bug.
         3. **Effort estimates** — all migrated issues have effort=m (default). Run `project-backlog-triage` to set real estimates.
-        4. **Priority calibration** — P1→sooner, P2→soonish, P3→later mapping may need adjustment for specific items.
+        4. **Priority calibration** — P1→sooner, P2→soon, P3→later mapping may need adjustment for specific items.
         5. **Cross-references** — search all .md files for `BL-NNN` and `MS-002/003/004` references and update to new IDs.
     """)
 

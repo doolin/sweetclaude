@@ -67,15 +67,15 @@ _sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc
 sc_artifact_list issue
 ```
 
-Present as a compact table. Sort by: done/cancelled last, then by priority order (now → sooner → soonish → later → someday), then by ID.
+Present as a compact table. Sort by: done/cancelled last, then by priority order (next → sooner → soon → later → someday), then by ID.
 
-Priority sort order: now=1, sooner=2, soonish=3, later=4, someday=5, null=6.
+Priority sort order: next=1, sooner=2, soon=3, later=4, someday=5, null=6.
 
 ```
 ID       Type    Status      Pri       Eff  Title
 ──────────────────────────────────────────────────────────────────
 I-001    spike   done        later     m    Agentic Skills spike
-I-025    story   backlog     soonish   m    CLI UX Improvements
+I-025    story   backlog     soon      m    CLI UX Improvements
 ...
 ```
 
@@ -114,7 +114,7 @@ Otherwise present as:
 I-025 — CLI UX Improvements
 ─────────────────────────────────────────
 Type:      story          Status:   backlog
-Priority:  soonish        Effort:   m
+Priority:  soon           Effort:   m
 Epic:      (none)         Sprint:   (none)
 Source:    manual
 
@@ -141,7 +141,7 @@ Ask one question at a time. Do not present a form.
 2. **Type** — "story / bug / chore / spike?" (default: story)
 3. **Description** — For stories: "As a [who], they want [what] so that [why]?" For bugs: "Steps to reproduce?" For chores: "What needs to be done?" For spikes: "What question needs answering?"
 4. **Acceptance criteria** (story/bug only) — "What conditions make this done? List them one per line, or say none."
-5. **Priority** — "now / sooner / soonish / later / someday?" (default: soonish)
+5. **Priority** — "next / sooner / soon / later / someday?" (default: soon)
 6. **Effort** — "xs / s / m / l / xl / xxl?" (default: m)
 7. **Epic** — "Does this belong to an epic?" List available epics first, or say none.
 

@@ -186,7 +186,7 @@ sc_artifact_create issue '{
   "title": "<bug title>",
   "type": "bug",
   "status": "backlog",
-  "priority": "<now|sooner|soonish|later>",
+  "priority": "<next|sooner|soon|later>",
   "description": "Steps to reproduce:\n<steps>\n\nExpected: <expected>\nActual: <actual>",
   "tags": ["qa", "QA-NNN"]
 }'
@@ -195,9 +195,9 @@ sc_artifact_create issue '{
 Confirm: `Filed <I-NNN> — {title}` and append to session file Bugs Filed section.
 
 Severity → priority mapping:
-- P0 → `now`
+- P0 → `next`
 - P1 → `sooner`
-- P2 → `soonish`
+- P2 → `soon`
 - P3 → `later`
 
 ---
