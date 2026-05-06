@@ -4,9 +4,11 @@
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 
-A software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship.
+A software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship. **SweetClaude is the only Claude Code plugin that teaches itself through conversation** — run `/sweetclaude:help` and it walks you through what it is, how it works, and whether it's right for your project before you touch a single file.
 
 SweetClaude adapts to your working style. Start with vibe-coding in Flow Mode — no ceremony, no gates, SweetClaude quietly collects artifacts as you go. When you're ready for more structure, switch to Kanban, Shape Up, or Agile — the artifacts you've accumulated are already there, so you're not starting from zero. Or apply full enterprise-class discipline from day one: phase gates, TDD pipelines with subagent isolation, QA caucuses, architecture reviews, and security gates. The framework adjusts to the project, not the other way around.
+
+Right tool if quality and traceability matter. Wrong tool if you just want to go faster — [GStack](https://github.com/garry-tan/gstack) owns that lane.
 
 SweetClaude has 98 skills built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. These skills compose into dynamic, situation-driven workflows across four operating modes:
 
@@ -15,7 +17,7 @@ SweetClaude has 98 skills built natively on Claude Code's Skills framework and A
 - **Shape Up** — 6-week cycles with pitches and a betting table. Fixed appetite, variable scope.
 - **Agile** — Sprint-based. Active sprint required to implement.
 
-There's also **John Wick mode** — an experimental, fully autonomous SDLC pipeline from discovery through PR, for when you want maximum automation and discipline end-to-end.
+There's also **John Wick mode** *(experimental)* — a fully autonomous SDLC pipeline that runs discovery through PR with zero ceremony. TDD Level 3, subagent isolation, QA caucus, hard gates at key decisions. Not for everyday use — but nothing else comes close for maximum automation. `/sweetclaude:john-wick`
 
 SweetClaude was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
 
@@ -79,10 +81,12 @@ Once SweetClaude is installed, here are some things to try. You'll quickly get o
 ## Major Features
 
 - **Discovery-first pipeline** — Compliance requirements (GDPR, HIPAA, PCI DSS) flow from user and data discovery into architecture and code review automatically — not a checkbox at the end.
+- **Compliance-ready from day one** — GDPR, HIPAA, PCI DSS, and SOC 2 requirements surface during discovery and flow into architecture and code review automatically. For regulated industries, SweetClaude produces artifacts your auditor needs — decision logs, gate records, traceability maps — not just code.
 - **Enforced TDD at four levels** — At the highest level, test writer and implementer are separate AI agents. Test files are physically blocked from modification during implementation by hooks. Tests run after every source edit.
 - **Persistent phase state** — `.sweetclaude/` tracks phase, decisions, and scope changes in git. Return after weeks and `/sweetclaude:go` re-orients without re-explaining.
 - **Mockup pipeline** — Design UI components in an isolated Vite + React sandbox before touching production code. Graduate approved mockups with acceptance criteria extracted automatically.
-- **Corpus management** — Four-step pipeline (consolidate → triage → reconcile → promote) for messy document collections, with local RAG indexing. No external services.
+- **Local semantic search over your design documents** — LanceDB-powered RAG, fully offline, no API keys, no external services. Index your architecture docs, data model, and product decisions so both you and SweetClaude can ask questions and get canonical answers instantly. Setup takes one command.
+- **Corpus management** — Four-step pipeline (consolidate → triage → reconcile → promote) for messy document collections. Pairs with local RAG for full document lifecycle management.
 - **Behavioral contracts** — 15 behavioral properties tested against each Claude model version. Hook-enforced properties are deterministic; instruction-guided properties are validated by a regression suite.
 
 ## How It Works
