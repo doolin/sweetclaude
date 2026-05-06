@@ -1,23 +1,23 @@
-<p align="left"><img src="sweetclaude.png" alt="SweetClaude" width="180"></p>
+<img src="sweetclaude.png" alt="SweetClaude" width="180">
 
 # SweetClaude
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 
-A software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship. **SweetClaude is the only Claude Code plugin that teaches itself through conversation** — run `/sweetclaude:help` and it walks you through what it is, how it works, and whether it's right for your project before you touch a single file.
+A software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship. **SweetClaude is the only Claude Code plugin that teaches itself through conversation** — run `/sweetclaude:help` and it walks you through what it is, how it works, and whether it's right for your project before touching a single file. You're always in control.
 
 SweetClaude adapts to your working style. Start with vibe-coding in Flow Mode — no ceremony, no gates, SweetClaude quietly collects artifacts as you go. When you're ready for more structure, switch to Kanban, Shape Up, or Agile — the artifacts you've accumulated are already there, so you're not starting from zero. Or apply full enterprise-class discipline from day one: phase gates, TDD pipelines with subagent isolation, QA caucuses, architecture reviews, and security gates. The framework adjusts to the project, not the other way around.
 
-Right tool if quality and traceability matter. Wrong tool if you just want to go faster — [GStack](https://github.com/garry-tan/gstack) owns that lane.
+SweetClaude right if quality and traceability matter. Wrong tool if you just want to go faster — we suggest [GStack](https://github.com/garry-tan/gstack) if speed is your primary goal.
 
 SweetClaude has 98 skills built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. These skills compose into dynamic, situation-driven workflows across four operating modes:
 
-- **Flow Mode** — No ceremony. SweetClaude observes quietly, builds what you ask, and collects thin artifacts in the background.
-- **Kanban** — WIP-limited continuous flow. Hard block at 3 in-progress items. No sprints.
-- **Shape Up** — 6-week cycles with pitches and a betting table. Fixed appetite, variable scope.
-- **Agile** — Sprint-based. Active sprint required to implement.
+* **Flow Mode** — No ceremony. SweetClaude observes quietly, builds what you ask, and collects thin artifacts in the background.
+* **Kanban** — WIP-limited continuous flow. Hard block at 3 in-progress items. No sprints.
+* **Shape Up** — 6-week cycles with pitches and a betting table. Fixed appetite, variable scope.
+* **Agile** — Sprint-based. Active sprint required to implement.
 
-There's also **John Wick mode** *(experimental)* — a fully autonomous SDLC pipeline from discovery to merged PR. TDD Level 3, subagent isolation, QA caucus, hard gates at key decisions. Not for everyday use — but nothing else comes close for maximum automation. `/sweetclaude:john-wick`
+There's also **John Wick mode** *(experimental and dangerous)* — a fully autonomous SDLC pipeline from discovery to merged PR. TDD Level 3, subagent isolation, QA caucus, hard gates at key decisions. Not for everyday use — but nothing else comes close for maximum automation. Fast, quiet, potentially dangerous - but disciplined. No loose ends.  `/sweetclaude:john-wick`
 
 SweetClaude was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
 
@@ -51,7 +51,7 @@ cd sweetclaude && ./install.sh
 
 Inside Claude Code, the primary command is `/sweetclaude:go`.
 
-Install SweetClaude and run `/sweetclaude:go` with what you want to do — or with no arguments to pick up where you left off. Describe what you want in plain English — "I want to start building X", "pick up where I left off", "what should I work on next". SweetClaude will ask questions if needed and the orchestrator detects your project state, routes to the right skill, and collaborates with you — it handles the red tape, you do the thinking.
+Use `/sweetclaude:go` followed by what you want to do, in plain English — "show me milestones and sprints", "let's see the backlog", I want to start building X", "what should I work on next".  Or use `/sweetclaude:go` with no arguments to just pick up where you left off. SweetClaude will ask questions if needed and the orchestrator detects your project state, routes to the right skill, and collaborates with you — it handles the red tape, you do the creating.
 
 You can use SweetClaude to start a new effort from scratch, or have it adopt an existing project. Just point to any documents you might have — backlog, roadmaps, design, etc. — it will assess and migrate what you have and then help you fill in the gaps.
 
@@ -67,7 +67,7 @@ You can use SweetClaude to start a new effort from scratch, or have it adopt an 
 
 Once SweetClaude is installed, here are some things to try. You'll quickly get oriented.
 
-* `/sweetclaude:help`
+* `/sweetclaude:help` (this is the single most important first step, you'll get a guided tour)
 * `/sweetclaude:go give me a quick overview of what you can do`
 * `/sweetclaude:go tell me about the product development lifecycle phases you use`
 * `/sweetclaude:go tell me about the differences in flow mode, kanban mode, shape up mode, and agile mode`
@@ -88,6 +88,8 @@ Once SweetClaude is installed, here are some things to try. You'll quickly get o
 - **Local semantic search over your design documents** — LanceDB-powered RAG, fully offline, no API keys, no external services. Index your architecture docs, data model, and product decisions so both you and SweetClaude can ask questions and get canonical answers instantly. Setup takes one command.
 - **Corpus management** — Four-step pipeline (consolidate → triage → reconcile → promote) for messy document collections. Pairs with local RAG for full document lifecycle management.
 - **Behavioral contracts** — 15 behavioral properties tested against each Claude model version. Hook-enforced properties are deterministic; instruction-guided properties are validated by a regression suite.
+
+
 
 ## How It Works
 
@@ -159,30 +161,18 @@ Contributions welcome. SweetClaude is built by solo developers, for solo develop
 
 For skill improvements, documentation, walkthroughs, and examples — read [CONTRIBUTING.md](CONTRIBUTING.md) for where to start. Questions and ideas belong in [GitHub Discussions](https://github.com/carson-sweet/sweetclaude/discussions). Bugs and PRs go to Issues.
 
-<p align="left">
-  <img src="sweetclaude-workshop.png" alt="SweetClaude Workshop" width="600">
-</p>
-
-
-
-
-
-
-
-
-
-
+<img src="sweetclaude-workshop.png" alt="SweetClaude Workshop" width="600">
 
 
 
 ## Support
 
-If you're getting value from SweetClaude, consider [buying me a coffee](https://ko-fi.com/carsonsweet). Which in reality means you're moving dollars from my coffee budget to [my dog Smushford's](http://instagram.com/smushford) treat budget. 
+If you're getting value from SweetClaude, consider [buying me a coffee](https://ko-fi.com/carsonsweet). 
+
+Which in reality means you're moving dollars from my coffee budget to [my dog Smushford's](http://instagram.com/smushford) treat budget. 
 
 Smushford thanks you.
-<p align="left">
-  <img src="smushford.png" alt="Smushford Wellington DuBois III" width="400">
-</p>
+<img src="smushford.png" alt="Smushford Wellington DuBois III" width="400">
 
 
 
