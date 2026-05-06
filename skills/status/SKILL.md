@@ -118,13 +118,17 @@ print('ISSUES_END')
 
 # --- Backlog ---
 backlog = []
+_HORIZON_ORDER = {'next': 1, 'sooner': 2, 'soon': 3, 'later': 4, 'someday': 5}
 for f in sorted(glob.glob(f'{base}/backlog/BL-*.md')):
     c = open(f).read()
     s = field(c, 'Status').lower()
     p = field(c, 'Priority').upper()
+    h_raw = field(c, 'Horizon').lower()
+    h = h_raw if h_raw in _HORIZON_ORDER else 'unscheduled'
     if 'DONE' not in s.upper() and 'COMPLETE' not in s.upper():
-        backlog.append({'id': os.path.basename(f).split('.')[0], 'title': title(c),
-                        'priority': p, 'status': s})
+        backlog.append({'id': os.path.basename(f).split('.')[0],
+                        'title': title(c), 'priority': p, 'status': s,
+                        'horizon': h, 'horizon_order': _HORIZON_ORDER.get(h, 6)})
 print('BACKLOG_START')
 print(json.dumps(backlog))
 print('BACKLOG_END')
@@ -142,11 +146,7 @@ Compute derived values:
 - **ROADMAP_ACHIEVED** = roadmap items where status ∈ {complete, achieved}
 - **ROADMAP_ACTIVE** = roadmap items where status ∈ {in_progress, active}
 - **ROADMAP_PLANNED** = all others (not achieved/complete)
-- **BACKLOG_P0** = backlog items where priority = P0
-- **BACKLOG_P1** = backlog items where priority = P1
-- **BACKLOG_P2** = backlog items where priority = P2
-- **BACKLOG_SPIKE** = backlog items where priority = SPIKE
-- **BACKLOG_OTHER** = backlog items with any other priority
+- **BACKLOG_BY_HORIZON** = backlog items grouped by horizon: next, sooner, soon, later, someday, unscheduled (items where `horizon` field is absent or unrecognized)
 
 Output exactly:
 
@@ -226,26 +226,22 @@ BACKLOG
 ───────
 ```
 
+For each horizon bucket that is non-empty, in order: next, sooner, soon, later, someday, unscheduled:
+
+Output the heading as ANSI bold blue followed by the item count:
+`\033[1;34m{BUCKET_LABEL}\033[0m ({N}{suffix})`
+
+Where `{BUCKET_LABEL}` is the bucket name in uppercase (e.g. `NEXT`, `SOONER`, `UNSCHEDULED`), and `{suffix}` is ` — no horizon set` for the unscheduled bucket only.
+
+Under each heading, show up to 5 items:
+`  · {id}  [{priority_badge}]  {title}`
+
+Where `{priority_badge}` is the item's **Priority:** value (e.g. `P1`, `SPIKE`) or `—` if unset.
+
+After all buckets: if total open backlog > 10, append:
+`  ({total} total — ask me to run a backlog triage if it's getting unwieldy)`
+
 If backlog is empty: `Backlog is clear.`
-
-Otherwise: `{total open} open: {BACKLOG_P0} P0 · {BACKLOG_P1} P1 · {BACKLOG_P2} P2 · {BACKLOG_SPIKE} spikes · {BACKLOG_OTHER} other`
-
-If BACKLOG_P0 > 0:
-```
-
-  Critical:
-    · {id}: {title}
-    (list all P0 items)
-```
-
-Else show up to 3 next items (P1 first, then P2, skip spikes):
-```
-
-  Up next:
-    · {id}: {title} [{priority}]
-```
-
-If total open backlog > 10, append: `  ({total} total — ask me to run a backlog triage if it's getting unwieldy)`
 
 ## Step 4: Closing
 
