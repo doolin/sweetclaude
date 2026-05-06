@@ -339,7 +339,7 @@ Present the following content verbatim, then show the follow-up menu below.
 
 ---
 
-SweetClaude ships 98 skills built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. You don't need to learn them. The single entry point is `/sweetclaude:go` — it reads your project state, figures out what to work on next, and drives the right workflow. Skills and workflows run automatically based on what you're doing.
+SweetClaude has deep coverage across the full project lifecycle — from discovery and product definition through design, implementation, testing, and ship. Built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. You don't need to learn any of it. The single entry point is `/sweetclaude:go` — it reads your project state, figures out what to work on next, and drives the right workflow. Skills and workflows run automatically based on what you're doing.
 
 For those who want to go deeper, skills compose into dynamic, situation-driven workflows — a feature build, for example, chains spec generation, isolated test writing, a multi-angle QA review, and implementation into a single pipeline. Workflows adapt to the project rather than following a fixed script.
 
@@ -347,10 +347,12 @@ The full inventory is in the skills reference: https://github.com/carson-sweet/s
 
 ---
 
-Then use AskUserQuestion with these three options:
+Then use AskUserQuestion with these four options:
 
 - **View all skills by phase** — see the full skill set organized by project phase
 - **Explore workflow examples** — walk through what a real workflow looks like end-to-end
+- **How does testing work?** — understand SweetClaude's approach to test-driven development and enforcement
+- **Ask something else** — ask anything or describe your situation
 
 **Option 3a — View all skills by phase:**
 Present the following content verbatim:
@@ -411,6 +413,34 @@ For "Go deeper on one of these": ask which workflow they want (feature build / p
 For "Show me more workflow examples": offer two or three from adjacent areas — a security review workflow, a corpus/RAG setup workflow, and a Shape Up pitch-to-implementation cycle.
 
 For "I want to try one of these on my project": route to Option 4 content (Tell me about your project).
+
+**Option 3c — How does testing work?:**
+Present the following content verbatim:
+
+---
+
+SweetClaude doesn't ask you to do TDD — it enforces it. There's a difference.
+
+Most AI coding tools will write tests if you ask. SweetClaude uses Claude Code hooks to make test discipline physically unavoidable:
+
+- **Test-guardian hook** — blocks any edit to test files during the implementation phase. The implementer cannot modify tests to make them pass. Tests are written once, then locked.
+- **Auto-test-runner hook** — runs the test suite automatically after every source file edit. You see RED or GREEN after every change, not at the end.
+
+There are four TDD levels — you don't choose them manually, SweetClaude selects based on the operating mode and work type:
+
+**Level 0 (Hotfix)** — Fix the immediate problem, write a regression test in the same session. No ceremony.
+
+**Level 1 (Light)** — Tests written before implementation, all in one context. Right for simple additions and config changes.
+
+**Level 2 (Standard)** — Test writer and implementer are separate subagents. The implementer never sees the spec — only failing tests. Test files are committed to git before implementation begins. Active in Kanban, Shape Up, and Agile modes.
+
+**Level 3 (Full)** — Maximum isolation. Gherkin acceptance specs → test writer agent → QA caucus reviews the test plan from three independent angles → implementer agent makes tests go green. Active in John Wick mode and available on demand.
+
+The rule underneath all of this: **never modify test files to make them pass. Fix the implementation.**
+
+---
+
+Ask: "Want to go deeper on any of this, or tell me what you're building and I'll show you what TDD looks like in practice?"
 
 **Option 4 — Tell me about your project:**
 
