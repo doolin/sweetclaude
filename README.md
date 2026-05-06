@@ -17,7 +17,7 @@ SweetClaude has 98 skills built natively on Claude Code's Skills framework and A
 - **Shape Up** — 6-week cycles with pitches and a betting table. Fixed appetite, variable scope.
 - **Agile** — Sprint-based. Active sprint required to implement.
 
-There's also **John Wick mode** *(experimental)* — a fully autonomous SDLC pipeline that runs discovery through PR with zero ceremony. TDD Level 3, subagent isolation, QA caucus, hard gates at key decisions. Not for everyday use — but nothing else comes close for maximum automation. `/sweetclaude:john-wick`
+There's also **John Wick mode** *(experimental)* — a fully autonomous SDLC pipeline from discovery to merged PR. TDD Level 3, subagent isolation, QA caucus, hard gates at key decisions. Not for everyday use — but nothing else comes close for maximum automation. `/sweetclaude:john-wick`
 
 SweetClaude was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
 
@@ -81,7 +81,7 @@ Once SweetClaude is installed, here are some things to try. You'll quickly get o
 ## Major Features
 
 - **Discovery-first pipeline** — Compliance requirements (GDPR, HIPAA, PCI DSS) flow from user and data discovery into architecture and code review automatically — not a checkbox at the end.
-- **Compliance-ready from day one** — GDPR, HIPAA, PCI DSS, and SOC 2 requirements surface during discovery and flow into architecture and code review automatically. For regulated industries, SweetClaude produces artifacts your auditor needs — decision logs, gate records, traceability maps — not just code.
+- **Compliance-ready from day one** — SOC 2, GDPR, HIPAA, and PCI DSS requirements surface automatically during discovery, not as an afterthought. For regulated industries, SweetClaude produces the artifacts your auditor needs: decision logs, gate records, and traceability maps.
 - **Enforced TDD at four levels** — At the highest level, test writer and implementer are separate AI agents. Test files are physically blocked from modification during implementation by hooks. Tests run after every source edit.
 - **Persistent phase state** — `.sweetclaude/` tracks phase, decisions, and scope changes in git. Return after weeks and `/sweetclaude:go` re-orients without re-explaining.
 - **Mockup pipeline** — Design UI components in an isolated Vite + React sandbox before touching production code. Graduate approved mockups with acceptance criteria extracted automatically.
