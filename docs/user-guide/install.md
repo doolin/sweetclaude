@@ -34,8 +34,6 @@ cd ~/dev/sweetclaude
 ./install.sh
 ```
 
-> **Note:** Clone to `~/dev/sweetclaude`. Some skills reference scripts at `~/dev/sweetclaude/scripts/` and require the repository to remain at that path after install.
-
 The installer:
 - Checks prerequisites (Claude Code, Git, GitHub CLI)
 - Backs up your existing `~/.claude/` configuration

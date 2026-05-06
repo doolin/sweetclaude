@@ -29,7 +29,8 @@ Check four things in order:
    Check for an available update:
    ```bash
    installed=$(cat ~/.claude/plugins/installed_plugins.json 2>/dev/null | python3 -c "import sys,json; d=json.load(sys.stdin); e=[v for k,v in d.items() if 'sweetclaude' in k.lower()]; print(e[0].get('version','?') if e else '?')" 2>/dev/null)
-   latest=$(cat ~/dev/sweetclaude/package.json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('version','?'))" 2>/dev/null)
+   repo_path=$(python3 -c "import json,os; d=json.load(open(os.path.expanduser('~/.claude/sweetclaude-install.json'))); print(d.get('repo_path',''))" 2>/dev/null || echo "")
+   latest=$([ -n "$repo_path" ] && cat "$repo_path/package.json" 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('version','?'))" 2>/dev/null || echo "?")
    echo "installed=$installed latest=$latest"
    ```
 

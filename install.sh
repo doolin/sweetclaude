@@ -554,6 +554,9 @@ UNINSTALL
 
 chmod +x "$SCRIPT_DIR/uninstall.sh"
 
+# --- Write install config (path used by update/on skills to find local repo) ---
+echo "{\"repo_path\": \"$SCRIPT_DIR\"}" > "$CLAUDE_DIR/sweetclaude-install.json"
+
 # --- Summary ---
 
 FIND_DIRS="$CLAUDE_DIR/skills/sweetclaude $CLAUDE_DIR/rules/sweetclaude $CLAUDE_DIR/config/sweetclaude"

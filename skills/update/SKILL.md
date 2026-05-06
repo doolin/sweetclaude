@@ -40,17 +40,27 @@ Source:    {repository}
 
 ### 2a: Local repo (developer workflow)
 
-Check if `~/dev/sweetclaude/package.json` exists AND the repo has a remote matching the repository URL.
-
-If found, fetch from origin and use it as the source:
+Read `~/.claude/sweetclaude-install.json` (written by `install.sh`) to find the local repo path:
 
 ```bash
-git -C ~/dev/sweetclaude fetch origin
-git -C ~/dev/sweetclaude log --oneline -1
+REPO_PATH=$(python3 -c "
+import json, os
+try:
+    d = json.load(open(os.path.expanduser('~/.claude/sweetclaude-install.json')))
+    print(d.get('repo_path', ''))
+except: print('')
+" 2>/dev/null)
 ```
 
-- If fetch succeeds: use `~/dev/sweetclaude` as SOURCE_DIR. The local repo may be ahead of GitHub (unpushed dev commits) — that is intentional and correct. Skip to Step 3.
-- If fetch fails (network error): warn ("Could not reach GitHub to check for remote updates — proceeding with local repo state.") and use `~/dev/sweetclaude` as SOURCE_DIR. Skip to Step 3.
+If `REPO_PATH` is non-empty AND `$REPO_PATH/package.json` exists AND the repo has a remote matching the repository URL, fetch from origin and use it as the source:
+
+```bash
+git -C "$REPO_PATH" fetch origin
+git -C "$REPO_PATH" log --oneline -1
+```
+
+- If fetch succeeds: use `$REPO_PATH` as SOURCE_DIR. The local repo may be ahead of GitHub (unpushed dev commits) — that is intentional and correct. Skip to Step 3.
+- If fetch fails (network error): warn ("Could not reach GitHub to check for remote updates — proceeding with local repo state.") and use `$REPO_PATH` as SOURCE_DIR. Skip to Step 3.
 
 ### 2b: GitHub (standard user workflow)
 
@@ -81,7 +91,8 @@ When SOURCE_DIR is the local repo (came from Step 2a), compare against `origin/H
 
 ```bash
 # Determine effective SHA to compare
-if [ "$SOURCE_DIR" = "$HOME/dev/sweetclaude" ]; then
+CONFIGURED_REPO=$(python3 -c "import json,os; d=json.load(open(os.path.expanduser('~/.claude/sweetclaude-install.json'))); print(d.get('repo_path',''))" 2>/dev/null || echo "")
+if [ "$SOURCE_DIR" = "$CONFIGURED_REPO" ]; then
   EFFECTIVE_SHA=$(git -C $SOURCE_DIR rev-parse origin/HEAD)
   LOCAL_SHA=$(git -C $SOURCE_DIR rev-parse HEAD)
   if [ "$EFFECTIVE_SHA" != "$LOCAL_SHA" ]; then
