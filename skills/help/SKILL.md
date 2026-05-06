@@ -269,7 +269,15 @@ You can also set mode per-task rather than globally: "just do this one thing in 
 
 ---
 
-Want to explore this further or see something else?
+Use AskUserQuestion with these four options:
+- **Help me choose a mode** — answer four quick questions and get a recommendation
+- **What actually changes at each mode** — side-by-side breakdown of what's on and off
+- **Tell me about your project** — start a conversation about how SweetClaude would approach your specific situation
+- **Something else** — ask anything
+
+For "Help me choose a mode": route to Option 2a content.
+For "What actually changes at each mode": route to Option 2b content.
+For "Tell me about your project": route to Option 4 content.
 
 **Option 2a — Help me choose a level:**
 
@@ -307,6 +315,24 @@ Present the recommended level with a one-sentence rationale explaining why it fi
 Then ask using AskUserQuestion: "Want to explore this further or give it a try?"
 - Explore further
 - Give it a try
+
+**If "Give it a try":**
+> "Great. Start a Claude Code session in your project folder. When Claude starts up, just run `/sweetclaude:go` — it'll detect where you are and route to the right starting point. If SweetClaude isn't set up yet, it'll walk you through init and mode selection. If it's already running, just describe what you want to work on and it takes it from there.
+>
+> You can always come back to `/sweetclaude:help` if you have questions along the way."
+
+**If "Explore further":**
+Use AskUserQuestion with these four options:
+- **Tell me more about [recommended mode]** — what a typical session looks like in that mode day-to-day
+- **Compare it to the other modes** — side-by-side of what's on and off across all four
+- **How do I switch modes later if I change my mind?** — the mechanics of changing modes mid-project
+- **Something else** — ask anything
+
+For "Tell me more about [recommended mode]": describe a concrete day-in-the-life session in that mode — what the user says, what SweetClaude does, what artifacts get produced, what gates (if any) they encounter. Keep it specific to the recommended mode, not generic.
+
+For "Compare it to the other modes": route to Option 2b content (What actually changes at each level).
+
+For "How do I switch modes later": route to Option 2c content (How to change modes mid-project).
 
 **Option 3 — Workflows and Skills:**
 Present the following content verbatim, then show the follow-up menu below.
@@ -374,7 +400,17 @@ In all cases, `/sweetclaude:go` is the entry point — it reads your project sta
 
 ---
 
-Want to go deeper on any of these, see more examples, or take it somewhere else?
+Use AskUserQuestion with these four options:
+- **Go deeper on one of these** — pick a workflow and walk through it step by step
+- **Show me more workflow examples** — see examples from testing, design, or other domains
+- **I want to try one of these on my project** — start a conversation about applying a workflow to your situation
+- **Something else** — ask anything
+
+For "Go deeper on one of these": ask which workflow they want (feature build / production bug / new product kickoff), then walk through it in detail — what each skill does, what the user sees at each step, what artifacts come out.
+
+For "Show me more workflow examples": offer two or three from adjacent areas — a security review workflow, a corpus/RAG setup workflow, and a Shape Up pitch-to-implementation cycle.
+
+For "I want to try one of these on my project": route to Option 4 content (Tell me about your project).
 
 **Option 4 — Tell me about your project:**
 
