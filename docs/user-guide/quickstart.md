@@ -29,13 +29,13 @@ Your daily driver. Detects where you are and routes automatically. Empty folder 
 /sweetclaude:purge  # delete all artifacts — warns and requires typed confirmation first
 ```
 
-**Get help:**
+**Questions at any point:**
 
 ```
 /sweetclaude:help
 ```
 
-Conversational onboarding — explains what SweetClaude is, walks you through the four operating modes, and helps you decide where to start. Teaches itself through conversation so you don't have to read docs first.
+Conversational onboarding — explains what SweetClaude is, walks you through the four operating modes, and helps you decide where to start. Takes about 5 minutes. Teaches itself through conversation so you don't have to read docs first.
 
 ---
 
