@@ -71,7 +71,7 @@ features:
   # ... other features
 
 framework:
-  installed_version: 3.0.0
+  installed_version: 3.44.4
   setup_complete: true
   hook_last_ran: 2026-05-03T14:00:00+00:00
   consistency:
@@ -160,7 +160,7 @@ of DynamoDB does not outweigh the modeling cost for this access pattern.
 
 **Consequences:**
 - Need to provision RDS in IaC.
-- Migrations managed via [tool TBD].
+- Migrations managed via Flyway.
 - Cost ceiling slightly higher than DynamoDB for low traffic; acceptable.
 ```
 
