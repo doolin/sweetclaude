@@ -46,13 +46,18 @@ The installer:
 
 ### Strategy Skills Only
 
-If you want product thinking, strategy, and corpus management — without code and TDD phases:
+SweetClaude has two layers: a **strategy and product layer** (discovery, product briefs, PRDs, personas, roadmaps, corpus management) and a **code and TDD layer** (phase gates, test-first enforcement, multi-agent review, implementation workflows). The full install includes both. The strategy-only install includes just the first layer.
+
+Use `--strategy-skills-only` if:
+- You are a founder, PM, or non-engineer who wants product and strategy workflows without the coding scaffolding
+- You are evaluating SweetClaude's product thinking capabilities before committing to the full install
+- You want to run SweetClaude on a project that does not involve Claude Code-assisted coding
 
 ```bash
 ./install.sh --strategy-skills-only
 ```
 
-Installs strategy, product, corpus, and orchestration skills. No TDD hooks, no subagents. Upgrade to the full install later by running `./install.sh`.
+This installs the discovery, brief, PRD, persona, roadmap, corpus, and project management skills. It does not install TDD hooks, subagents, or code-phase skills. Upgrade to the full install at any time by running `./install.sh` with no flags.
 
 ---
 
