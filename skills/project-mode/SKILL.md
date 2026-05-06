@@ -143,9 +143,9 @@ Confirm: "Proceed with shift?"
 Check for `{product_base}/backlog/BACKLOG-INDEX.md` and at least one file in `{product_base}/epics/`. If missing:
 > "Agile works best with an organized backlog and epics. Missing: {list}. Set these up now, or skip and set them up later? (setup now / skip)"
 
-**Shifting to Level Up:**
+**Shifting to Shape Up:**
 Check for any files in `{product_base}/pitches/`. If none:
-> "Level Up uses pitches as the entry point for all work. You don't have any yet. Write your first pitch now, or skip? (write pitch / skip)"
+> "Shape Up uses pitches as the entry point for all work. You don't have any yet. Write your first pitch now, or skip? (write pitch / skip)"
 
 **Shifting to Kanban:**
 If `wip_limit` is not set in sweetclaude.yaml, ask:
@@ -162,7 +162,7 @@ Check for any sprint artifact with `status: active`. If found:
 > Run `/sweetclaude:project-sprints close` or `/sweetclaude:project-sprints cancel`.
 Block until resolved.
 
-**Shifting from Level Up:**
+**Shifting from Shape Up:**
 Check for any cycle artifact with `status: planning` or `status: active`. If found:
 > "You have an open cycle ({CYC-XXX}). Close it before shifting? (yes / skip)"
 
@@ -306,7 +306,7 @@ Date        Mode         Snapshot
 
 ---
 
-## Level Up — Solo Betting Table (DEFINE phase)
+## Shape Up — Solo Betting Table (DEFINE phase)
 
 When `mode` is `shape_up` and the current phase is `DEFINE`, after the pitch document is written, present three required questions:
 
@@ -329,7 +329,7 @@ Set `betting_table_approved: true` on linked issues. This is the gate the IMPLEM
 
 ---
 
-## Level Up — Cycle Duration
+## Shape Up — Cycle Duration
 
 Ask at setup:
 > "What is your cycle duration? Shape Up default is 6 weeks. (Enter number of weeks, or press Enter for 6)"

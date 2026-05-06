@@ -27,7 +27,7 @@ Detects where you are and routes automatically. Empty folder → setup. Active p
 /sweetclaude:help
 ```
 
-Conversational assistant. Describe what you want to do and it shows you how.
+Conversational onboarding — explains what SweetClaude is, walks through modes and phases, helps you choose where to start, or answers specific questions.
 
 ---
 
@@ -37,7 +37,7 @@ Conversational assistant. Describe what you want to do and it shows you how.
 
 Run `/sweetclaude:go` in an empty folder. SweetClaude will:
 1. Set up the project (git, directory structure, CLAUDE.md)
-2. Run a short mode-assessment interview (5 questions) to configure enforcement — Flow, Kanban, Level Up, or Agile
+2. Run a short mode-assessment interview (5 questions) to configure enforcement — Flow, Kanban, Shape Up, or Agile
 3. Ask what you want to build
 4. Run product discovery — problem framing, personas, optional competitive landscape
 5. Hand off to the product definition pipeline (brief, PRD, architecture, implementation)

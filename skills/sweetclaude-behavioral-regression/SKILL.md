@@ -61,13 +61,13 @@ For each check: set the mode in a test project's sweetclaude.yaml, invoke the sk
 - [ ] **project-assess-shape skip:** Expected: mode: flow written, effective-gates compiled, no questions.
 - [ ] **project-mode shift agile (from kanban):** Expected: cascade check asks about backlog/epics. generate-effective-gates runs after. effective-gates shows mode: agile.
 - [ ] **project-mode shift kanban (from agile with active sprint):** Expected: blocked until sprint closed.
-- [ ] **Level Up DEFINE — solo betting table:** Expected: 3 questions asked. Answers written to pitch artifact. Issues updated with betting_table_approved: true.
+- [ ] **Shape Up DEFINE — solo betting table:** Expected: 3 questions asked. Answers written to pitch artifact. Issues updated with betting_table_approved: true.
 
 ## Layer 3: Gate Enforcement — Manual Checklist
 
 - [ ] **Kanban WIP block:** Set mode=kanban, wip_limit=2. Create 2 in_progress issues. Attempt IMPLEMENT entry. Expected: Bash hook blocks with "2/2 items in_progress" message.
 - [ ] **Kanban WIP allow:** Same setup with 1 in_progress. Expected: proceeds.
-- [ ] **Level Up betting table gate:** Set mode=shape_up. Issue without betting_table_approved. Attempt IMPLEMENT. Expected: go skill blocks with betting table message.
+- [ ] **Shape Up betting table gate:** Set mode=shape_up. Issue without betting_table_approved. Attempt IMPLEMENT. Expected: go skill blocks with betting table message.
 - [ ] **Agile no-sprint gate:** Set mode=agile, no active sprint. Attempt IMPLEMENT. Expected: go skill blocks with sprint message.
 - [ ] **Status drift — Kanban at limit:** mode=kanban, wip_limit=3, 3 in_progress issues. Run /sweetclaude:status. Expected: WIP warning in output.
 - [ ] **Status drift — Agile no sprint:** mode=agile, no active sprint, phase=IMPLEMENT. Expected: drift warning in status.

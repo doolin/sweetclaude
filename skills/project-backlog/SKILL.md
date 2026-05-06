@@ -10,9 +10,9 @@ Read `mode` from pre-loaded session state.
 
 If `mode` is `shape_up`, output and stop:
 
-> "This skill is not active in **Level Up** mode.
+> "This skill is not active in **Shape Up** mode.
 >
-> Level Up has no backlog by design. New work enters through pitches: describe the problem and proposed solution, get it approved at the betting table, then create issues from the approved pitch.
+> Shape Up has no backlog by design. New work enters through pitches: describe the problem and proposed solution, get it approved at the betting table, then create issues from the approved pitch.
 >
 > Write a pitch: `/sweetclaude:project-issues pitch`"
 

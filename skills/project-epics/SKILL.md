@@ -17,7 +17,7 @@ _sc_hooks="${CLAUDE_PLUGIN_ROOT:+${CLAUDE_PLUGIN_ROOT}/hooks}"; _sc_hooks="${_sc
 Read `mode` from pre-loaded session state.
 
 - **Agile:** Epics are first-class. Proceed normally.
-- **Flow, Kanban, Level Up:** Epics are available but not surfaced by default. If the user explicitly invoked this skill, proceed with a note:
+- **Flow, Kanban, Shape Up:** Epics are available but not surfaced by default. If the user explicitly invoked this skill, proceed with a note:
   > "Epics are optional in **{mode}** mode — useful for grouping related issues, but not required."
 
 This skill is never blocked, only unsurfaced in non-Agile routing.

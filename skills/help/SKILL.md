@@ -182,13 +182,19 @@ Present the following content verbatim, then show the follow-up menu below.
 
 ---
 
-SweetClaude doesn't lock you into a single methodology. Think of it as a dial, not a switch.
+SweetClaude doesn't lock you into a single methodology. Think of it as a dial, not a switch. There are four named modes on that dial — each one enforcing a different level of structure:
 
-At the lightweight end, you work conversationally with almost no process overhead. You describe what you want, SweetClaude builds it, you iterate. No phase gates, no formal specs, no ceremonies. This is the right mode when you're exploring an idea, moving fast, or working alone on something that doesn't need a paper trail.
+**Flow Mode** — the lightweight end. No phase gates, no required artifacts, no ceremony. SweetClaude observes quietly and builds what you ask. Right for exploration, prototypes, and personal projects where speed matters more than auditability.
 
-At the structured end, you get the full stack: formal phase gates with exit criteria, TDD pipelines with subagent isolation, QA caucuses that review test plans from three angles, architecture reviews, security reviews, and documented design decisions. This is the right mode when the stakes are high — production systems, regulated industries, team codebases, or anything where "it seemed to work" isn't good enough.
+**Kanban** — adds a WIP limit (3 in-progress items, hard enforced). Keeps work flowing without piling up. Right for continuous delivery without sprints.
 
-Most projects land somewhere in between. You might vibe-code a prototype, then dial up the rigor when it's time to harden it for production. SweetClaude adjusts to where you are — and you can change the level at any time, even mid-project.
+**Shape Up** — 6-week cycles with pitches and a betting table. No backlog — all work enters through approved pitches. A hard gate prevents implementation until the betting table approves the pitch. Right for product teams that want fixed appetite and variable scope.
+
+**Agile** — sprint-based execution. You must have an active sprint to implement. Right for teams running structured iteration cycles.
+
+Most solo developers start in Flow Mode and dial up as the project matures. You can change mode at any time — even mid-project.
+
+There's also **John Wick mode** — an experimental, fully autonomous SDLC pipeline that runs discovery through PR with minimal human intervention. It uses TDD Level 3, subagent isolation, QA caucus review, and a full phase sequence. Not for everyday use — but powerful for teams that want maximum automation and discipline. Invoke with `/sweetclaude:john-wick`.
 
 ---
 
@@ -201,35 +207,41 @@ Present the following content verbatim:
 
 ---
 
-Here's what's on and off at each level:
+Here's what each mode actually enforces:
 
-**Lightweight**
+**Flow Mode**
 - Conversational routing — describe what you want, SweetClaude figures out what to run
+- TDD Level 1 — tests written before implementation, single context
 - No phase gates, no required artifacts
-- Quietly accumulates thin versions of key artifacts in the background (mini brief, architecture sketch, decision log entries) as your project evolves — so if you decide to uplevel later, there's something to build from instead of starting from scratch
+- Quietly accumulates thin versions of key artifacts in the background (mini brief, architecture sketch, decision log entries) — so if you decide to switch modes later, there's something to build from
 - Right for: exploration, prototypes, personal projects
 
-**Standard**
-- Phase awareness — SweetClaude tracks where you are and what's next
-- Light TDD — tests written before implementation, no subagent isolation
-- Code review before ship
-- Right for: side projects going to production, internal tools, solo developers who want a safety net
+**Kanban**
+- TDD Level 1
+- WIP limit of 3 enforced as a hard block — can't start new work until something finishes
+- Sprint skills disabled — continuous flow only
+- Right for: solo or small teams doing continuous delivery without sprint ceremonies
 
-**Structured**
-- Full phase gates with exit criteria
-- TDD pipeline with subagent isolation — test writer and implementer never share context
-- QA caucus reviews test plans from three angles before implementation
-- Security review on anything with an auth surface or sensitive data
-- Right for: B2C products, team codebases, anything with real users
+**Shape Up**
+- TDD Level 2 — subagent isolation between test writer and implementer
+- Betting table required before any implementation begins (hard gate)
+- 6-week cycles, no backlog — all work enters through approved pitches
+- Ship/no-ship decision required at end of each cycle
+- Right for: product teams who want fixed appetite and real scope control
 
-**Full discipline**
-- Everything in Structured, plus:
-- Architecture reviews and documented design decisions
-- Compliance planning (HIPAA, GDPR, SOC 2, PCI)
-- Formal solutioning gate before any significant design decision
-- Right for: regulated industries, B2B products, enterprise
+**Agile**
+- TDD Level 2
+- Active sprint required to implement (hard gate)
+- Sprint close required before ship
+- Right for: teams running structured iteration with sprint ceremonies
 
-You can move between levels at any time — even mid-feature.
+**John Wick** *(experimental)*
+- TDD Level 3 — full subagent isolation, QA caucus, mutation testing available
+- Fully autonomous — runs discovery through PR with minimal human intervention
+- Hard gates at key decisions (PRD approval, design review, final PR)
+- Right for: when you want maximum automation and discipline end-to-end
+
+You can switch modes at any time — even mid-feature.
 
 ---
 
@@ -241,19 +253,19 @@ Present the following content verbatim:
 
 ---
 
-Changing levels is a conversation, not a config file. Just tell SweetClaude what you want:
+Changing modes is a conversation, not a config file. Just tell SweetClaude what you want:
 
 > "Let's dial this up — I want full TDD from here on."
-> "We're just exploring right now, let's keep it lightweight."
-> "We're getting close to production, I want to add code review and security."
+> "We're just exploring right now, let's switch to Flow Mode."
+> "We're getting close to production — switch to Agile."
 
-SweetClaude updates your project state and applies the new level from that point forward. Work already done stays as-is — nothing gets undone or invalidated.
+SweetClaude updates your project state and applies the new mode from that point forward. Work already done stays as-is — nothing gets undone or invalidated.
 
-**When upleveling**, you may have gaps. If you've been working lightweight and want to move to Structured, you won't have a product brief, architecture doc, or decision log yet. SweetClaude will flag what's missing and offer to catch up — either in a dedicated session or as you go. You don't have to fill everything in at once.
+**When switching to a more structured mode**, you may have gaps. If you've been in Flow Mode and want to move to Shape Up or Agile, you won't have a product brief, architecture doc, or decision log yet. SweetClaude will flag what's missing and offer to catch up — either in a dedicated session or as you go. You don't have to fill everything in at once.
 
-**When downleveling**, nothing gets removed. Your existing artifacts stay and SweetClaude keeps referencing them. You're just turning off the guardrails for new work — useful when you want to move fast on a known problem without going through the full process.
+**When switching to a lighter mode**, nothing gets removed. Your existing artifacts stay and SweetClaude keeps referencing them. You're just turning off the guardrails for new work — useful when you want to move fast on a known problem without ceremony.
 
-You can also set level per-task rather than globally: "just do this one thing lightweight" works fine even if your project is otherwise structured.
+You can also set mode per-task rather than globally: "just do this one thing in Flow Mode" works fine even if your project is otherwise running Agile.
 
 ---
 
@@ -284,11 +296,11 @@ Ask each question one at a time using AskUserQuestion:
 - Possibly — not sure
 - Yes (HIPAA, GDPR, SOC 2, PCI, etc.)
 
-Synthesize all four answers into one of these levels:
-- **Lightweight** — conversational, minimal process, no gates
-- **Standard** — phase awareness, light TDD, code review before ship
-- **Structured** — full phase gates, TDD pipeline, QA caucus, security review
-- **Full discipline** — everything, including compliance planning and architecture reviews
+Synthesize all four answers into one of these modes:
+- **Flow Mode** — conversational, minimal process, no gates
+- **Kanban** — WIP-limited continuous flow, light TDD
+- **Shape Up** — pitch-driven 6-week cycles, TDD Level 2, betting table gate
+- **Agile** — sprint-based, TDD Level 2, structured iteration
 
 Present the recommended level with a one-sentence rationale explaining why it fits their situation.
 

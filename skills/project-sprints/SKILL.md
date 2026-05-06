@@ -36,7 +36,7 @@ If `mode` is `flow`, `kanban`, or `shape_up`, output and stop:
 > "This skill is not active in **{mode}** mode.
 >
 > - **Flow and Kanban** use continuous delivery without sprint cadence. Track work with `/sweetclaude:project-issues`.
-> - **Level Up** uses fixed-time cycles with pitches, not sprints. Create issues from a pitch with `/sweetclaude:project-issues`.
+> - **Shape Up** uses fixed-time cycles with pitches, not sprints. Create issues from a pitch with `/sweetclaude:project-issues`.
 >
 > To use sprint tracking, shift to Agile mode: `/sweetclaude:project-mode shift agile`"
 

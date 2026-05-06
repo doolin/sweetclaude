@@ -43,7 +43,7 @@ mode_defaults:
       - phase: PLAN
         condition: issues_from_backlog
         action: block
-        message: "Level Up has no backlog. Issues must be derived from an approved pitch."
+        message: "Shape Up has no backlog. Issues must be derived from an approved pitch."
 
   agile:
     default_tdd_level: 2

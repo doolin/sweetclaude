@@ -1,6 +1,6 @@
 ---
 name: project-assess-shape
-description: Interview user and recommend a SweetClaude project mode (Flow, Kanban, Level Up, or Agile)
+description: Interview user and recommend a SweetClaude project mode (Flow, Kanban, Shape Up, or Agile)
 version: 1.0.0
 ---
 
@@ -49,7 +49,7 @@ Proceed if mode is unset or user explicitly invoked this skill.
 Evaluate in order:
 
 1. Q4=Yes (regulated data) → **Agile** (note: Agile + Enterprise available later for full compliance pipeline)
-2. Q2=Fixed cycles AND Q5=Shape Up → **Level Up**
+2. Q2=Fixed cycles AND Q5=Shape Up → **Shape Up**
 3. Q1=Larger org OR Q3=4 OR Q5=Scrum → **Agile**
 4. Q2=Continuous AND Q3 ≤ 2 → **Kanban**
 5. Default → **Flow**
@@ -78,7 +78,7 @@ Confirm: "Mode set to **{mode}**. Effective gates compiled."
 |---|---|
 | Flow | `flow` |
 | Kanban | `kanban` |
-| Level Up | `shape_up` |
+| Shape Up | `shape_up` |
 | Agile | `agile` |
 
 ## Skip

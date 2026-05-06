@@ -4,18 +4,20 @@
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 
-A discipline layer for Claude Code — phase gates, TDD enforcement, and multi-agent review that make AI-assisted development reproducible and auditable.
+A software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship.
 
-SweetClaude adds structure to Claude Code: phase gates that enforce exit criteria before advancing, TDD hooks that physically prevent test/implementation drift, and a QA caucus that isolates reviewers so findings stay honest. It is the right tool when quality and traceability matter more than raw velocity. It was originally built as my own personal Claude Code toolchain and quickly evolved to support early-stage founders, technical solopreneurs, and senior independent consultants who want structure — from strategy to deployment, with variable discipline levels depending on your project needs.
+SweetClaude adapts to your working style. Start with vibe-coding in Flow Mode — no ceremony, no gates, SweetClaude quietly collects artifacts as you go. When you're ready for more structure, switch to Kanban, Shape Up, or Agile — the artifacts you've accumulated are already there, so you're not starting from zero. Or apply full enterprise-class discipline from day one: phase gates, TDD pipelines with subagent isolation, QA caucuses, architecture reviews, and security gates. The framework adjusts to the project, not the other way around.
 
-SweetClaude has 70+ skills under the hood, all purpose-developed and refined. These skills are combined into workflows that operate in one of four modes:
+SweetClaude has 98 skills built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. These skills compose into dynamic, situation-driven workflows across four operating modes:
 
-- **Flow** — Solo dev in early exploration. No ceremony. SweetClaude observes quietly and stays out of the way.
-- **Kanban** — Continuous delivery, no fixed sprints. Issues flow through a status board at whatever pace fits.
-- **Level Up** — 6-week cycles with pitches. Fixed appetite, variable scope. Structure without standups.
-- **Agile** — Sprint-based. Velocity tracking, backlog grooming, retrospectives. Full rhythm.
+- **Flow Mode** — No ceremony. SweetClaude observes quietly, builds what you ask, and collects thin artifacts in the background.
+- **Kanban** — WIP-limited continuous flow. Hard block at 3 in-progress items. No sprints.
+- **Shape Up** — 6-week cycles with pitches and a betting table. Fixed appetite, variable scope.
+- **Agile** — Sprint-based. Active sprint required to implement.
 
-You can start with one mode and migrate later. So start with vibe-coding in flow mode, which will passively and quietly collect artifacts as you go. When you're ready for Kanban or higher-level structures, those artifacts will be there, so you're not starting from zero.
+There's also **John Wick mode** — an experimental, fully autonomous SDLC pipeline from discovery through PR, for when you want maximum automation and discipline end-to-end.
+
+SweetClaude was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
 
 Requires [Claude Code](https://claude.ai/code) and an Anthropic subscription.
 
@@ -66,7 +68,7 @@ Once SweetClaude is installed, here are some things to try. You'll quickly get o
 * `/sweetclaude:help`
 * `/sweetclaude:go give me a quick overview of what you can do`
 * `/sweetclaude:go tell me about the product development lifecycle phases you use`
-* `/sweetclaude:go tell me about the differences in flow mode, kanban mode, level up mode, and agile mode`
+* `/sweetclaude:go tell me about the differences in flow mode, kanban mode, shape up mode, and agile mode`
 * `/sweetclaude:go help me choose the best mode for my project`
 * `/sweetclaude:go give me a breakdown of all skills by product lifecycle phase`
 * `/sweetclaude:go explain how you would onboard my existing project`

@@ -3,9 +3,11 @@
 **Version:** 1.0
 **Date:** 2026-05-01
 
-Most AI coding tools start at implementation. SweetClaude starts at the idea.
+SweetClaude is a software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship.
 
-That distinction shapes everything else. SweetClaude is a Claude Code plugin for the full lifecycle of building software — articulating what you are building and why, defining who it is for, designing the architecture, writing tests before code, reviewing what gets shipped, and keeping the resulting documents organized so you can find them six months later. It works with any language because the workflow discipline is the product, not the boilerplate.
+It adapts to your working style. Start with vibe-coding in Flow Mode — no ceremony, no gates. Switch to Kanban, Shape Up, or Agile as the project matures. Or apply full enterprise-class discipline from day one. The framework adjusts to the project, not the other way around. It works with any language because the workflow discipline is the product, not the boilerplate.
+
+SweetClaude was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
 
 This guide is the long form. The README on the front page sells the idea; these pages explain how it actually fits together when you sit down to use it.
 
@@ -54,7 +56,7 @@ This is by design. SweetClaude is opinionated software with a workflow that came
 ```
 /sweetclaude:go     Pick up where you left off — routes to the right skill automatically
 /sweetclaude:status Project status — active work, roadmap, backlog
-/sweetclaude:help   All commands organized by category
+/sweetclaude:help   Conversational help — explains SweetClaude, walks through modes and phases, helps you decide where to start
 ```
 
 `/sweetclaude:go` reads state, detects where you are (setup needed, work in flight, phase exit criteria), and routes to the right skill. You can also pass plain-English arguments: `/sweetclaude:go pick up where I left off`, `/sweetclaude:go I want to work on the auth flow`.

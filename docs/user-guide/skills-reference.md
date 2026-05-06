@@ -3,9 +3,9 @@
 **Version:** 1.5
 **Date:** 2026-05-05
 
-All skills, organized by domain. This page is reference — for narrative explanations of how skills fit together, read [Walkthroughs](walkthroughs.md) and [How It Works](how-it-works.md).
+All 98 skills, organized by domain. This page is reference — for narrative explanations of how skills fit together, read [Walkthroughs](walkthroughs.md) and [How It Works](how-it-works.md).
 
-You rarely need to memorize commands. `/sweetclaude:go` routes automatically based on project state and what you describe in plain English. The list below is for when you know exactly what you want.
+You rarely need to memorize commands. `/sweetclaude:go` is the single entry point — it routes automatically based on project state and what you describe in plain English. The list below is for when you know exactly what you want.
 
 Many skills accept `$ARGUMENTS` to skip menus: `/sweetclaude:code-testing security`, `/sweetclaude:product-milestones add`, `/sweetclaude:document-corpus triage`.
 
@@ -49,7 +49,7 @@ Framework management — setup, teardown, updates, audits, and guards. Always av
 | **Update** | `/sweetclaude:update` | Fetch the latest version from GitHub and sync to all installed locations. Shows what changed. Migrates `phase.yaml`/`skills.yaml` from v2.x to `sweetclaude.yaml` format. |
 | **Fix SweetClaude** | `/sweetclaude:fix-sweetclaude` | Audit and repair configuration. Checks CLAUDE.md accuracy, phase state, file locations, `sweetclaude.yaml` consistency, empty registers, hook registrations. If `sweetclaude.yaml` is unparseable, offers repair options. Proposes fixes — does not change anything without asking. |
 | **Purge** | `/sweetclaude:purge` | Delete all SweetClaude artifacts. Recommends a backup branch first. Requires typed confirmation. |
-| **Assess Mode** | `/sweetclaude:project-assess-shape` | Five-question interview to recommend and configure a project mode (Flow, Kanban, Level Up, or Agile). Writes mode to `sweetclaude.yaml` and compiles `effective-gates.yaml`. Runs automatically at init; available on demand to re-assess. |
+| **Assess Mode** | `/sweetclaude:project-assess-shape` | Five-question interview to recommend and configure a project mode (Flow, Kanban, Shape Up, or Agile). Writes mode to `sweetclaude.yaml` and compiles `effective-gates.yaml`. Runs automatically at init; available on demand to re-assess. |
 | **Behavioral Regression** | `/sweetclaude:behavioral-regression` | Run the 15-contract behavioral test suite against the current model version. Tests phase dwelling, propose-not-ask, TDD enforcement claims, deference levels, detour recovery, improvement register triggers, and more. Run after any Claude model upgrade to detect silent behavioral drift. |
 | **Mode Regression** | `/sweetclaude:sweetclaude-behavioral-regression` | Validate that mode enforcement is working correctly across all four modes. Tests all three enforcement layers: `effective-gates.yaml`, `wip-limit.sh` hook, and MODE_CHECK blocks. Run after any change to the modes system. |
 | **Guardian On** | `/sweetclaude:guardian-on` | Enable Protocol Guardian. Enforces skill invocations, TDD discipline, and artifact saves for the rest of the session. |

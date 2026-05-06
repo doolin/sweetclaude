@@ -96,14 +96,16 @@ The work type determines the shape. You do not pick. When you describe the work 
 
 ## Project Modes
 
-SweetClaude has four project modes that calibrate structure and enforcement to where your project is. You pick a mode at init; enforcement is immediate.
+SweetClaude has four project modes that calibrate structure and enforcement to where your project is. You pick a mode at init; enforcement is immediate. Think of it as a dial — Flow Mode is the lightweight end, Agile is the structured end, with Kanban and Shape Up in between.
 
 | Mode | What it signals | TDD level | Key enforcement |
 |---|---|---|---|
-| **Flow** | Solo exploration, early stage, no ceremony needed | Level 1 | No WIP limits, all skills available |
-| **Kanban** | Continuous delivery, work organized as a flowing board | Level 1 | WIP limit (default 3 in-progress issues), sprint-planning skills blocked |
-| **Level Up** | 6-week cycles with a betting table | Level 2 | Sprint and backlog-triage skills blocked, betting table approval required before implementation |
-| **Agile** | Sprint-based, velocity tracked, retrospectives | Level 2 | Single active sprint enforced, retrospective required on close |
+| **Flow Mode** | Solo exploration, early stage, no ceremony needed | Level 1 | No gates, all skills available. Quietly accumulates thin artifacts in the background. |
+| **Kanban** | Continuous delivery, work organized as a flowing board | Level 1 | WIP limit (default 3 in-progress issues, hard block), sprint-planning skills blocked |
+| **Shape Up** | 6-week cycles with pitches and a betting table | Level 2 | Sprint and backlog-triage skills blocked, betting table approval required before implementation, ship/no-ship gate at cycle end |
+| **Agile** | Sprint-based, structured iteration | Level 2 | Active sprint required to implement (hard block), sprint close required before ship |
+
+There is also **John Wick mode** — an experimental, fully autonomous SDLC pipeline from discovery through PR (TDD Level 3, subagent isolation, QA caucus). Invoked via `/sweetclaude:john-wick`, not through the mode selector.
 
 Modes are not permanent. `/sweetclaude:project-mode` re-assesses or accepts a direct argument. Every shift snapshots state first.
 
@@ -161,7 +163,7 @@ The structured state files in `.sweetclaude/state/` are the source of truth — 
 
 When you resume a session, `/sweetclaude` reads state and re-orients. You do not have to remember what you were doing.
 
-This is why `.sweetclaude/` should be committed to git. The state is project history, not scratch. If you switch machines or someone else picks up the work, the context travels with the repo.
+`.sweetclaude/` is intentionally separate from your distributable code — SweetClaude keeps its own artifacts there so they never mingle with the codebase you ship. This is why `.sweetclaude/` should be committed to git. The state is project history, not scratch. If you switch machines or someone else picks up the work, the context travels with the repo.
 
 ---
 
