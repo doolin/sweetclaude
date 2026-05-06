@@ -23,7 +23,7 @@ A quality checkpoint between phases. SweetClaude will not advance to the next ph
 A separate Claude instance spawned for a specific task — test writing, implementation, code review, QA, security review. Subagents have isolated context windows: the implementer never sees the spec, only the failing tests. This prevents rationalization across contexts.
 
 **Subagent isolation**
-The design principle that test writers and implementers must never share context. Prevents the implementer from knowing what the tests are supposed to prove, which would allow it to write code that passes tests without satisfying the underlying intent.
+The design principle that test writers and implementers must never share context. Prevents the implementer from knowing what the tests are supposed to prove, which would allow it to write code that passes tests without satisfying the underlying intent. Applies at TDD Levels 2 and 3; Level 1 uses a single context.
 
 **TDD Level**
 The degree of test-driven development enforcement. Four levels: *Level 0* (hotfix — regression test written in same session), *Level 1* (light — test-first, single context), *Level 2* (standard — subagent separation, test-guardian hook active), *Level 3* (full — Gherkin specs, QA caucus, maximum isolation). See [TDD Levels](tdd.md) for full details.
@@ -35,10 +35,10 @@ A Claude Code hook that physically blocks edits to test files during the IMPLEME
 A Claude Code hook that runs the test suite automatically after every source file edit during IMPLEMENT. Gives instant feedback on whether the change moved the tests from RED to GREEN.
 
 **Version stage**
-Where the project is in its lifecycle: PROTOTYPE → ALPHA → BETA → GA → SCALED → MAINTAINED. Controls which work types and phase gates are visible. A PROTOTYPE-stage project doesn't see compliance work types; a GA project gets them surfaced automatically.
+Where the project is in its lifecycle: IDEA → PRE-ALPHA → PROTOTYPE → ALPHA → BETA → GA → SCALED → MAINTAINED. Controls which work types and phase gates are visible. A PROTOTYPE-stage project doesn't see compliance work types; a GA project gets them surfaced automatically. New projects start at IDEA or PRE-ALPHA depending on how they were initialized.
 
 **Betting table**
-A Shape Up concept. A decision artifact produced during the DEFINE phase that records: the core outcome if this ships, the rabbit holes (likely scope explosions), and what is explicitly out of scope. Implementation is hard-blocked until the betting table is approved.
+A Shape Up concept (does not exist in Kanban or Agile modes). A decision artifact produced during the DEFINE phase that records: the core outcome if this ships, the rabbit holes (likely scope explosions), and what is explicitly out of scope. Implementation is hard-blocked until the betting table is approved.
 
 **`.sweetclaude/` directory**
 Where SweetClaude keeps all its own artifacts — state, product docs, design docs, plans. Intentionally separate from your distributable codebase so SweetClaude's work never mingles with the code you ship. Commit this directory to git — it's project history, not scratch.
