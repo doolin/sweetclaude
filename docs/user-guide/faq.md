@@ -43,16 +43,6 @@ If you want the underlying Claude Code experience, run Claude Code without Sweet
 
 ---
 
-## What is the relationship between SweetClaude and Superpowers?
-
-SweetClaude orchestrates Superpowers — it does not replace it. When you install SweetClaude, the recommended setup also installs Superpowers, and SweetClaude code skills (like `code-feature`) call into Superpowers skills (`writing-plans`, `executing-plans`, `using-git-worktrees`, `systematic-debugging`, `dispatching-parallel-agents`).
-
-The split is:
-- **Superpowers** provides the implementation primitives: plans, worktrees, parallel agent dispatch, debugging discipline.
-- **SweetClaude** provides the surrounding workflow: phases, gates, strategy and product layers, TDD enforcement, state persistence.
-
-You can use Superpowers without SweetClaude. You cannot use the full SweetClaude pipeline without Superpowers (the strategy-skills-only install does not require it).
-
 ---
 
 ## Do I have to use the whole pipeline?

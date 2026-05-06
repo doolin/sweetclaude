@@ -3,7 +3,7 @@
 **Version:** 1.0
 **Date:** 2026-05-01
 
-SweetClaude depends on two external plugins plus the Claude Code platform itself. This document states what each dependency does, what fails if it goes away, whether a contingency plan exists, and what would trigger a reconsideration of the architecture.
+SweetClaude depends on one external plugin plus the Claude Code platform itself. This document states what each dependency does, what fails if it goes away, whether a contingency plan exists, and what would trigger a reconsideration of the architecture.
 
 This is transparency, not alarm. These are known and accepted tradeoffs — but a project that depends on commercial platforms owes its users a written answer to "what happens if the platform changes?"
 
@@ -23,23 +23,7 @@ This is transparency, not alarm. These are known and accepted tradeoffs — but 
 
 ---
 
-## Dependency 2: Superpowers ([obra/superpowers](https://github.com/obra/superpowers))
-
-**What it is:** Superpowers is a Claude Code plugin that provides implementation primitives: plans, git worktrees, parallel agent dispatch, systematic debugging. Some SweetClaude code skills invoke Superpowers skills — for example, `code-issue` calls `superpowers:verification-before-completion` for its verify step.
-
-**License:** MIT
-
-**What fails if it goes unmaintained:** Code-phase skills degrade. Strategy, product, design, corpus, and orchestration skills are unaffected — they have no Superpowers dependency. The `--strategy-skills-only` install path works without Superpowers.
-
-**Contingency plan:** The Superpowers dependency is wrapped at the skill call boundary. If Superpowers becomes unavailable, the affected skills (`code-feature`, `code-issue`, `code-debt`) can be rewritten to implement their functionality directly. This would be multi-week work, not multi-month.
-
-**What would trigger reconsideration:** Superpowers becoming unmaintained and incompatible with current Claude Code versions, with no active fork. At that point, internalizing the functionality is the likely path.
-
-**Risk assessment:** Moderate dependency, contained blast radius. The isolation of the `--strategy-skills-only` install means the majority of SweetClaude's value surface is unaffected by Superpowers availability.
-
----
-
-## Dependency 3: mcp-local-rag (npm)
+## Dependency 2: mcp-local-rag (npm)
 
 **What it is:** mcp-local-rag provides local vector search for the corpus management RAG features. It runs a per-project vector database on your machine with no external services.
 
@@ -68,3 +52,4 @@ If you are evaluating SweetClaude for a context where commercial AI platform dep
 | Date | Change |
 |---|---|
 | 2026-05-01 | Initial version |
+| 2026-05-05 | Removed Superpowers dependency — replaced with native sweetclaude:code-verify skill |

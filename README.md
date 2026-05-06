@@ -8,7 +8,7 @@ A discipline layer for Claude Code — phase gates, TDD enforcement, and multi-a
 
 SweetClaude adds structure to Claude Code: phase gates that enforce exit criteria before advancing, TDD hooks that physically prevent test/implementation drift, and a QA caucus that isolates reviewers so findings stay honest. It is the right tool when quality and traceability matter more than raw velocity. It was originally built as my own personal Claude Code toolchain and quickly evolved to support early-stage founders, technical solopreneurs, and senior independent consultants who want structure — from strategy to deployment, with variable discipline levels depending on your project needs.
 
-SweetClaude has 70+ skills under the hood, mostly purpose-developed and refined. Some code-related skills leverage Jesse Vincent's excellent Superpowers project.  These skills are combined into workflows that operate in one of four modes:
+SweetClaude has 70+ skills under the hood, all purpose-developed and refined. These skills are combined into workflows that operate in one of four modes:
 
 - **Flow** — Solo dev in early exploration. No ceremony. SweetClaude observes quietly and stays out of the way.
 - **Kanban** — Continuous delivery, no fixed sprints. Issues flow through a status board at whatever pace fits.
@@ -120,11 +120,8 @@ Individual workflow skills (product, design, code, testing, corpus) are accessib
 
 ## Dependencies
 
-SweetClaude orchestrates these plugins — it does not fork or modify them:
-
 | Dependency | License | Required | Role |
 |---|---|---|---|
-| [Superpowers](https://github.com/obra/superpowers) | MIT | Required for code/TDD features | Dev mechanics (plans, worktrees, debugging, code review). Not required for strategy-skills-only install. |
 | [mcp-local-rag](https://www.npmjs.com/package/mcp-local-rag) | MIT | Optional | Local semantic search — per-project vector index, no external services |
 
 For dependency risk, failure modes, and contingency plans → [Platform Dependencies](docs/user-guide/platform-dependencies.md)

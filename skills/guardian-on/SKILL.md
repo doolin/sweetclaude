@@ -93,7 +93,7 @@ If `.sweetclaude/state/phase.yaml` does not exist or is unreadable, use the Unkn
 *Unknown or no phase:* Create a single task: "Determine current phase and invoke the appropriate skill."
 
 **5. For subagent dispatch:**
-When guardian is active and you use `superpowers:subagent-driven-development`, prepend this block to every implementer subagent prompt before dispatching:
+When guardian is active and you dispatch any implementer subagent (via `sweetclaude:code-feature`, `sweetclaude:code-tdd`, or any other subagent dispatch), prepend this block to every implementer subagent prompt before dispatching:
 
 ```
 PROTOCOL REQUIREMENTS (guardian active):

@@ -9,7 +9,7 @@
 | [GitHub CLI](https://cli.github.com/) | `gh --version` | `brew install gh` or [cli.github.com](https://cli.github.com/) |
 | Node.js (for RAG) | `node --version` | [nodejs.org](https://nodejs.org/) — optional, needed only for corpus management and semantic search |
 
-Claude Code requires an Anthropic subscription. [Superpowers](https://github.com/obra/superpowers) (minimum version 5.0.7) is required for code and TDD features; not required for strategy-skills-only installs.
+Claude Code requires an Anthropic subscription.
 
 ---
 
@@ -24,7 +24,7 @@ cd ~/dev/sweetclaude
 > **Note:** Clone to `~/dev/sweetclaude`. Some skills reference scripts at `~/dev/sweetclaude/scripts/` and require the repository to remain at that path after install.
 
 The installer:
-- Checks prerequisites (Claude Code, Git; Superpowers for full install)
+- Checks prerequisites (Claude Code, Git, GitHub CLI)
 - Backs up your existing `~/.claude/` configuration
 - Scans for conflicting plugins and offers to clean them up
 - Copies skills, hooks, agents, rules, and config to `~/.claude/`
@@ -43,7 +43,7 @@ If you want product thinking, strategy, and corpus management — without code a
 ./install.sh --strategy-skills-only
 ```
 
-Installs strategy, product, corpus, and orchestration skills. No TDD hooks, no subagents, no Superpowers required. Upgrade to the full install later by running `./install.sh`.
+Installs strategy, product, corpus, and orchestration skills. No TDD hooks, no subagents. Upgrade to the full install later by running `./install.sh`.
 
 ---
 
