@@ -271,56 +271,42 @@ else
     if grep -q "sweetclaude/test-guardian" "$SETTINGS_FILE" 2>/dev/null; then
       echo "  Hooks already configured in settings.json."
     else
-      echo ""
-      echo "  NOTE: SweetClaude hooks need to be added to your settings.json."
-      echo "  Add the following to your settings.json 'hooks' section:"
-      echo ""
-      cat << 'HOOKCONFIG'
-  "PreToolUse": [
-    {
-      "matcher": "",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "~/.claude/hooks/sweetclaude/preflight-guard.sh"
-        }
-      ]
-    },
-    {
-      "matcher": "Write|Edit",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "~/.claude/hooks/sweetclaude/test-guardian.sh"
-        }
-      ]
-    }
-  ],
-  "PostToolUse": [
-    {
-      "matcher": "Write|Edit",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "~/.claude/hooks/sweetclaude/auto-test-runner.sh"
-        }
-      ]
-    }
-  ],
-  "Stop": [
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "~/.claude/hooks/sweetclaude/phase-dwelling-guard.sh"
-        }
-      ]
-    }
-  ]
-HOOKCONFIG
-      echo ""
-      echo "  Automatic settings.json merging is not yet supported."
-      echo "  Please add hooks manually to preserve your existing settings."
+      python3 - "$SETTINGS_FILE" "$CLAUDE_DIR/hooks/sweetclaude" << 'PYMERGE'
+import sys, json, os, tempfile
+
+settings_path = sys.argv[1]
+hooks_dir = sys.argv[2]
+
+new_hooks = {
+    "PreToolUse": [
+        {"matcher": "", "hooks": [{"type": "command", "command": f"{hooks_dir}/preflight-guard.sh"}]},
+        {"matcher": "Write|Edit", "hooks": [{"type": "command", "command": f"{hooks_dir}/test-guardian.sh"}]},
+    ],
+    "PostToolUse": [
+        {"matcher": "Write|Edit", "hooks": [{"type": "command", "command": f"{hooks_dir}/auto-test-runner.sh"}]},
+    ],
+    "Stop": [
+        {"hooks": [{"type": "command", "command": f"{hooks_dir}/phase-dwelling-guard.sh"}]},
+    ],
+}
+
+with open(settings_path) as f:
+    settings = json.load(f)
+
+hooks = settings.setdefault("hooks", {})
+for event, entries in new_hooks.items():
+    existing = hooks.setdefault(event, [])
+    for entry in entries:
+        cmd = entry["hooks"][0]["command"]
+        if not any(cmd in str(e) for e in existing):
+            existing.append(entry)
+
+with tempfile.NamedTemporaryFile("w", dir=os.path.dirname(settings_path), suffix=".tmp", delete=False) as tmp:
+    json.dump(settings, tmp, indent=2)
+    tmp_name = tmp.name
+os.replace(tmp_name, settings_path)
+print("  Merged SweetClaude hooks into existing settings.json.")
+PYMERGE
     fi
   else
     cat > "$SETTINGS_FILE" << 'SETTINGS'

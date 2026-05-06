@@ -15,6 +15,96 @@ One starting point. Works whether you have an empty folder or an existing projec
 
 ---
 
+## Step 0.0: Wire TDD hooks (runs every time, before all other steps)
+
+TDD enforcement hooks must be registered in `~/.claude/settings.json` to fire. Marketplace installs cannot modify `settings.json` during install — this step detects the gap and fills it automatically.
+
+```bash
+python3 - << 'PY'
+import json, os, tempfile
+
+settings_path = os.path.expanduser('~/.claude/settings.json')
+
+# Detect hooks directory — marketplace path first, then manual install path
+plugin_hooks = os.path.expanduser('~/.claude/plugins/sweetclaude@sweetclaude/hooks')
+manual_hooks  = os.path.expanduser('~/.claude/hooks/sweetclaude')
+
+if os.path.isdir(plugin_hooks):
+    hooks_dir = plugin_hooks
+elif os.path.isdir(manual_hooks):
+    hooks_dir = manual_hooks
+else:
+    print('NO_HOOKS_DIR: SweetClaude hooks directory not found — skipping hook wiring')
+    exit(0)
+
+# Load existing settings
+settings = {}
+if os.path.exists(settings_path):
+    try:
+        with open(settings_path) as f:
+            settings = json.load(f)
+    except Exception:
+        settings = {}
+
+hooks_section = settings.get('hooks', {})
+
+# Check if already wired (any sweetclaude hook or CLAUDE_PLUGIN_ROOT reference)
+def already_has_sweetclaude_hooks(hooks_section):
+    for event_hooks in hooks_section.values():
+        for group in (event_hooks if isinstance(event_hooks, list) else []):
+            for h in (group.get('hooks', []) if isinstance(group, dict) else []):
+                cmd = h.get('command', '')
+                if 'sweetclaude' in cmd or 'CLAUDE_PLUGIN_ROOT' in cmd:
+                    return True
+    return False
+
+if already_has_sweetclaude_hooks(hooks_section):
+    print('HOOKS_OK: SweetClaude hooks already wired')
+    exit(0)
+
+# Wire the four TDD enforcement hooks
+new_entries = {
+    'PreToolUse': [
+        {'matcher': '', 'hooks': [{'type': 'command', 'command': f'{hooks_dir}/preflight-guard.sh'}]},
+        {'matcher': 'Write|Edit', 'hooks': [{'type': 'command', 'command': f'{hooks_dir}/test-guardian.sh'}]},
+    ],
+    'PostToolUse': [
+        {'matcher': 'Write|Edit', 'hooks': [{'type': 'command', 'command': f'{hooks_dir}/auto-test-runner.sh'}]},
+    ],
+    'Stop': [
+        {'hooks': [{'type': 'command', 'command': f'{hooks_dir}/phase-dwelling-guard.sh'}]},
+    ],
+}
+
+for event, entries in new_entries.items():
+    if event not in hooks_section:
+        hooks_section[event] = []
+    hooks_section[event].extend(entries)
+
+settings['hooks'] = hooks_section
+
+# Write atomically
+settings_dir = os.path.dirname(settings_path) or '.'
+tmp = tempfile.NamedTemporaryFile('w', dir=settings_dir, suffix='.tmp', delete=False)
+json.dump(settings, tmp, indent=2)
+tmp.write('\n')
+tmp.close()
+os.replace(tmp.name, settings_path)
+
+print(f'HOOKS_WIRED: TDD hooks wired from {hooks_dir}')
+print('Restart Claude Code for hooks to take effect.')
+PY
+```
+
+If output is `HOOKS_WIRED`: tell the user:
+> "TDD enforcement hooks have been wired into your Claude Code settings. Restart Claude Code for them to take effect."
+
+If output is `HOOKS_OK`: continue silently — no message needed.
+
+If output is `NO_HOOKS_DIR`: warn the user that hooks could not be wired and suggest running `install.sh` from the SweetClaude repo if they have it.
+
+---
+
 ## Step 0: Detect context
 
 Check four things in order:
