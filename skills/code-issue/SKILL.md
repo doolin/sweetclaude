@@ -45,7 +45,7 @@ Implement GitHub issue $ARGUMENTS using the SweetClaude pipeline.
    - Bug fixes: Level 1-2 — regression test first, then fix
    - Features: Level 2-3 — depends on whether Gherkin specs exist
 
-5. **Verify.** Run lint and tests for affected packages. Invoke `superpowers:verification-before-completion`.
+5. **Verify.** Run lint and tests for affected packages. Invoke `sweetclaude:code-verify`.
 
 6. **Update docs.** Run `sweetclaude:documents-update-docs` to check if documentation needs updating.
 

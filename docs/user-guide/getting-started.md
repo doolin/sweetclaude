@@ -34,7 +34,7 @@ The installer backs up your existing `~/.claude/` configuration, copies skills, 
 
 After install, every Claude Code session — in any project folder — has 52 SweetClaude skills available as `/sweetclaude:something` commands.
 
-If you only want the strategy and product skills (no TDD hooks, no subagent infrastructure, no Superpowers prerequisite), install the lighter variant:
+If you only want the strategy and product skills (no TDD hooks, no subagent infrastructure), install the lighter variant:
 
 ```bash
 ./install.sh --strategy-skills-only

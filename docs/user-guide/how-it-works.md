@@ -206,8 +206,6 @@ This is the part most documentation skips. SweetClaude has explicit non-goals:
 
 **It will not assume your stack.** Codebase discovery drives all configuration. Templates, not constants. SweetClaude works on Python, Go, TypeScript, Rust, or anything else because the workflow is the product.
 
-**It will not replace Superpowers.** SweetClaude orchestrates Superpowers (when present); it does not fork or override it. Plans, worktrees, parallel agents, systematic debugging — those are Superpowers skills SweetClaude calls into.
-
 ---
 
 ## Enforcement Tiers
