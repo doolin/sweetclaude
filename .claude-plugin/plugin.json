@@ -1,7 +1,7 @@
 {
   "name": "sweetclaude",
   "description": "A discipline layer for Claude Code — phase gates, TDD enforcement, and multi-agent review that make AI-assisted development reproducible and auditable.",
-  "version": "3.43.5",
+  "version": "3.43.6",
   "author": {
     "name": "Carson Sweet",
     "email": "cs@carsonsweet.com"
