@@ -57,8 +57,12 @@ Any backlog filename containing `bug`, `hotfix`, `security`, `p0`, `p1`, `critic
 **Priority 3 — Active roadmap:**
 Milestones exist in `${product_base}/milestones/`. Any milestone has `Status: active`. Read its Contributing work items and find the first open one.
 
+If an active milestone exists but has no open contributing work items (all done, none listed, or item files missing), record internally: MILESTONE_GAP = true, ACTIVE_MS = {the milestone filename stem}. Fall through to Priority 4.
+
 **Priority 4 — Other backlog items:**
 Non-bug backlog items. Use the first filename found.
+
+If `active_milestone` is set in the pre-loaded state and MILESTONE_GAP is not already true: read the proposed item's file and check for a `**Milestone:**` header. If the header is absent or its value does not match `active_milestone`, record internally: ITEM_ORPHANED = true.
 
 **Priority 5 — Nothing queued:**
 None of the above tiers have anything actionable.
@@ -78,6 +82,10 @@ Output the bold header followed by one prose paragraph explaining the proposal. 
 
 {One clear paragraph: what you're proposing to work on, why this item ranks first, and what specifically would happen if the user says proceed. Name the work item or backlog filename. Reference the priority tier reason: "You have unfinished work in progress" / "There's an open bug" / "Your active milestone has a pending work item" / "Top of your backlog is..." Be direct, not hedging.}
 ```
+
+**Drift advisories — append after the proposal paragraph when applicable (do not omit):**
+- If MILESTONE_GAP is true: `⚠ Active milestone advisory: **{ACTIVE_MS}** has no open linked work items. Run \`/sweetclaude:product-milestones blockers {ACTIVE_MS}\` to check status or link new work.`
+- If ITEM_ORPHANED is true: `⚠ Milestone drift: this item is not linked to your active milestone (**{active_milestone}**). Proceeding may not advance your current roadmap target.`
 
 Then immediately call AskUserQuestion with these three options:
 

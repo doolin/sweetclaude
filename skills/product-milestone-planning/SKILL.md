@@ -224,6 +224,16 @@ Then apply these checks — as questions, not verdicts:
 
 Present each flag one at a time. Wait for the user's response before moving to the next. Accept "leave it" for any flag.
 
+**Sequence assignment:**
+After all flags are addressed, show the agreed-upon order and propose sequence numbers:
+> "Based on our sequence discussion, I'll assign these sequence numbers:
+>   1 — {milestone name}
+>   2 — {milestone name}
+>   ...
+> Confirm, or tell me how to adjust."
+
+Wait for confirmation. Apply any adjustments. Sequence numbers go into each milestone's `**Sequence:**` field in Step 5 output.
+
 ---
 
 ## Step 5: Output
@@ -262,6 +272,7 @@ On confirmation, write each file:
 # MS-{N}: {milestone name}
 
 **Status:** Planned
+**Sequence:** {N}
 **Type:** {Gate | Checkpoint | Gate / Checkpoint (conditional)}
 **Confidence:** {High | Medium | Low | Not sure}
 **Created:** {today}

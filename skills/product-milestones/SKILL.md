@@ -114,6 +114,7 @@ If `$ARGUMENTS` is empty or doesn't match, default to `review`.
 # MS-XXX: Title
 
 **Status:** proposed | active | achieved | dropped | superseded
+**Sequence:** ~
 **Owner:** [name/role]
 **Depends on:** (other MS-XXX refs, if any)
 
@@ -321,8 +322,8 @@ If nothing found:
 ```markdown
 # Milestones Index
 
-| ID | Title | Status | Owner | Short summary |
-|----|-------|--------|-------|---------------|
+| ID | Seq | Title | Status | Owner | Short summary |
+|----|-----|-------|--------|-------|---------------|
 ```
 
 2. Find the highest existing `MS-XXX` in the index. Increment by 1. If the index is empty, start at `MS-001`.
@@ -333,12 +334,13 @@ If nothing found:
    - Non-goals: require at least one. If the user offers none, prompt: "What is this milestone explicitly NOT? A non-goals list with zero items is a scope red flag."
    - Depends on: list of other MS-XXX refs (optional)
    - Owner: default to the value of `owner` in `.sweetclaude/state/phase.yaml` if present; otherwise prompt.
+   - Sequence: "Sequence position for ordering in the milestone list? (optional — enter an integer, or press enter to skip): " Store as `sequence` integer or null if skipped.
 4. Default `Status:` to `proposed`. Ask the user only if they indicate otherwise.
 5. Write the file at `{base_path}/milestones/MS-XXX-<slug>.md` using the milestone template from the previous section, filling in all fields. `<slug>` is a dash-lowercased version of the title (e.g., "Exit Stealth" → `exit-stealth`).
 6. Append a row to `{base_path}/milestones/MILESTONES-INDEX.md`:
 
 ```
-| MS-XXX | [Title](MS-XXX-slug.md) | proposed | Owner | One-sentence outcome summary |
+| MS-XXX | {sequence or ~} | [Title](MS-XXX-slug.md) | proposed | Owner | One-sentence outcome summary |
 ```
 
 7. Tell the user: "Added MS-XXX: {title}. Status: proposed. File: {base_path}/milestones/MS-XXX-{slug}.md"
@@ -346,7 +348,9 @@ If nothing found:
 ### `review` — List milestones by commitment level
 
 1. Scan `{base_path}/milestones/` for all files matching `MS-*.md` (exclude `MILESTONES-INDEX.md`).
-2. Read each file's `**Status:**` field.
+2. Read each file's `**Status:**` and `**Sequence:**` fields.
+   - Sort displayed milestones within each group by `**Sequence:**` value ascending. Milestones with no sequence value (or `~`) sort after sequenced ones.
+   - Before displaying, scan for duplicate sequence values among non-terminal milestones (status not `achieved`, `dropped`, or `superseded`). For each duplicate, output: `⚠ Sequence conflict: MS-XXX and MS-YYY both have sequence {N}.`
 3. Group:
    - **Now**: `active`
    - **Next**: (see Open Items — default empty; promotion mechanism is an open design question in the spec)
