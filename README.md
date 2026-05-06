@@ -39,8 +39,8 @@ Then go to your project and run:
 **Manual install** (full hook wiring, no extra step):
 
 ```bash
-git clone https://github.com/carson-sweet/sweetclaude.git ~/dev/sweetclaude
-cd ~/dev/sweetclaude && ./install.sh
+git clone https://github.com/carson-sweet/sweetclaude.git
+cd sweetclaude && ./install.sh
 ```
 
 

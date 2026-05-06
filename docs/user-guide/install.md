@@ -29,8 +29,8 @@ Preferred if you want hooks wired automatically with no extra step, or if you wa
 | Node.js (for RAG) | `node --version` | [nodejs.org](https://nodejs.org/) — optional, needed only for corpus management and semantic search |
 
 ```bash
-git clone https://github.com/carson-sweet/sweetclaude.git ~/dev/sweetclaude
-cd ~/dev/sweetclaude
+git clone https://github.com/carson-sweet/sweetclaude.git
+cd sweetclaude
 ./install.sh
 ```
 
@@ -127,7 +127,7 @@ Without RAG installed, the corpus pipeline still works through the Promote step 
 ./uninstall.sh
 ```
 
-Run from the repository directory (`~/dev/sweetclaude`). The installer generated this script during install. It restores your pre-install `~/.claude/` configuration from the backup.
+Run from the repository directory. The installer generated this script during install. It restores your pre-install `~/.claude/` configuration from the backup.
 
 To suspend SweetClaude for one project without uninstalling globally:
 
