@@ -34,9 +34,7 @@ Then go to your project and run:
 /sweetclaude:go introduce me to sweetclaude
 ```
 
-> **Note:** TDD enforcement hooks require a one-time setup after marketplace install. Run `/sweetclaude:on` in your first project to wire them, or use the manual install path below if you prefer.
-
-**Manual install** (full hook wiring, no extra step):
+**Manual install:**
 
 ```bash
 git clone https://github.com/carson-sweet/sweetclaude.git

@@ -11,13 +11,11 @@ Inside Claude Code, no terminal required:
 
 All skills are immediately available. Then go to your project and run `/sweetclaude:go` to begin.
 
-**One extra step for TDD hooks:** The marketplace install copies files but cannot modify your `settings.json`. TDD enforcement hooks (test-guardian, auto-test-runner) need to be wired once. Run `/sweetclaude:on` in your first project — it detects the install and wires them automatically.
-
 ---
 
 ## Manual Install
 
-Preferred if you want hooks wired automatically with no extra step, or if you want the `--strategy-skills-only` variant (explained below).
+Preferred if you want the `--strategy-skills-only` variant (explained below).
 
 ### Prerequisites
 
