@@ -1,4 +1,4 @@
-<img src="sweetclaude.png" alt="SweetClaude" width="180">
+<img src="sweetclaude.png" alt="SweetClaude" width="180" style="display:block;margin-left:0;">
 
 # SweetClaude
 
@@ -161,7 +161,7 @@ Contributions welcome. SweetClaude is built by solo developers, for solo develop
 
 For skill improvements, documentation, walkthroughs, and examples — read [CONTRIBUTING.md](CONTRIBUTING.md) for where to start. Questions and ideas belong in [GitHub Discussions](https://github.com/carson-sweet/sweetclaude/discussions). Bugs and PRs go to Issues.
 
-<img src="sweetclaude-workshop.png" alt="SweetClaude Workshop" width="600">
+<img src="sweetclaude-workshop.png" alt="SweetClaude Workshop" width="600" style="display:block;margin-left:0;">
 
 
 
@@ -172,7 +172,7 @@ If you're getting value from SweetClaude, consider [buying me a coffee](https://
 Which in reality means you're moving dollars from my coffee budget to [my dog Smushford's](http://instagram.com/smushford) treat budget. 
 
 Smushford thanks you.
-<img src="smushford.png" alt="Smushford Wellington DuBois III" width="400">
+<img src="smushford.png" alt="Smushford Wellington DuBois III" width="400" style="display:block;margin-left:0;">
 
 
 
