@@ -226,12 +226,12 @@ BACKLOG
 ───────
 ```
 
-For each horizon bucket that is non-empty, in order: next, sooner, soon, later, someday, unscheduled:
+For each horizon bucket that is non-empty, in order: next, sooner, soon, later, someday, unscheduled. Use `horizon_order` from the JSON to determine sort order (next=1 sorts first, unscheduled=6 sorts last).
 
 Output the heading as ANSI bold blue followed by the item count:
 `\033[1;34m{BUCKET_LABEL}\033[0m ({N}{suffix})`
 
-Where `{BUCKET_LABEL}` is the bucket name in uppercase (e.g. `NEXT`, `SOONER`, `UNSCHEDULED`), and `{suffix}` is ` — no horizon set` for the unscheduled bucket only.
+Where `{BUCKET_LABEL}` is the bucket name in uppercase (e.g. `NEXT`, `SOONER`, `UNSCHEDULED`), and `{suffix}` is ` — no horizon set` for the unscheduled bucket and empty string for all others.
 
 Under each heading, show up to 5 items:
 `  · {id}  [{priority_badge}]  {title}`
