@@ -172,8 +172,8 @@ If you're getting value from SweetClaude, consider [buying me a coffee](https://
 Which in reality means you're moving dollars from my coffee budget to [my dog Smushford's](http://instagram.com/smushford) treat budget. 
 
 Smushford thanks you.
-<img src="smushford.png" alt="Smushford Wellington DuBois III" width="400" style="display:block;margin-left:0;">
 
+<img src="smushford.png" alt="Smushford Wellington DuBois III" width="400" style="display:block;margin-left:0;">
 
 
 
