@@ -26,4 +26,4 @@ SweetClaude operates inside Claude Code, which sends your conversation and conte
 
 ## Contact
 
-Questions: cs@carsonsweet.com
+Questions: open an issue at https://github.com/carson-sweet/sweetclaude/issues
