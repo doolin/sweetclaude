@@ -17,7 +17,7 @@ SweetClaude has 98 skills built natively on Claude Code's Skills framework and A
 * **Shape Up** — 6-week cycles with pitches and a betting table. Fixed appetite, variable scope.
 * **Agile** — Sprint-based. Active sprint required to implement.
 
-There's also **John Wick mode** *(experimental and dangerous)* — a fully autonomous SDLC pipeline from discovery to merged PR. TDD Level 3, subagent isolation, QA caucus, hard gates at key decisions. Not for everyday use — but nothing else comes close for maximum automation. Fast, quiet, potentially dangerous - but disciplined. No loose ends.  `/sweetclaude:john-wick`
+There's also **John Wick mode** *(experimental and dangerous)* — a fully autonomous SDLC pipeline from discovery to merged PR. TDD Level 3, subagent isolation, QA caucus, hard gates at key decisions. Not for everyday use — but nothing else comes close for maximum automation. Fast, quiet, admittedly dangerous - but disciplined. No loose ends.  `/sweetclaude:john-wick`
 
 SweetClaude was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
 
