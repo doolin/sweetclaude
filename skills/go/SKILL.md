@@ -28,7 +28,20 @@ product_base=$(cat .sweetclaude/state/session-state.yaml 2>/dev/null | python3 -
 if [ "$product_base" != "MANIFEST_MISSING" ]; then
   ls ${product_base}/milestones/MS-*.md 2>/dev/null | head -10
   grep -rh "\*\*Status:\*\*" ${product_base}/milestones/ 2>/dev/null | head -10
-  ls ${product_base}/backlog/*.md 2>/dev/null | head -60
+  python3 -c "
+import glob, re, os
+base = '${product_base}'
+HORIZON_ORDER = {'next':1,'sooner':2,'soon':3,'later':4,'someday':5}
+rows = []
+for f in sorted(glob.glob(os.path.join(base,'backlog','BL-*.md'))):
+    c = open(f).read()
+    m = re.search(r'\*\*Horizon:\*\*\s*(\S+)', c)
+    h = (m.group(1).lower() if m else 'unscheduled')
+    rows.append((HORIZON_ORDER.get(h, 6), os.path.basename(f)))
+rows.sort()
+for _, fn in rows[:60]:
+    print(fn)
+" 2>/dev/null
   echo "--- DONE ITEMS (exclude from proposals) ---"
   grep -irl "\*\*Status:\*\*.*done\|\*\*Status:\*\*.*deferred\|^status:.*done\|^status:.*deferred\|^completed:" ${product_base}/backlog/BL-*.md 2>/dev/null | sed 's|.*/||' | sort
   echo "--- RECENT COMMITS (cross-check item IDs) ---"
@@ -60,7 +73,7 @@ Milestones exist in `${product_base}/milestones/`. Any milestone has `Status: ac
 If an active milestone exists but has no open contributing work items (all done, none listed, or item files missing), record internally: MILESTONE_GAP = true, ACTIVE_MS = {the milestone filename stem}. Fall through to Priority 4.
 
 **Priority 4 — Other backlog items:**
-Non-bug backlog items. Use the first filename found.
+Non-bug backlog items. The filenames above are already sorted by horizon (next first, unscheduled last). Use the first filename in that sorted list.
 
 If `active_milestone` is set in the pre-loaded state and MILESTONE_GAP is not already true: read the proposed item's file and check for a `**Milestone:**` header. If the header is absent or its value does not match `active_milestone`, record internally: ITEM_ORPHANED = true.
 
