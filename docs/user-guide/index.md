@@ -42,6 +42,7 @@ If you are deciding whether SweetClaude is the right tool for what you are doing
 | [State and Memory](state-and-memory.md) | What lives in `.sweetclaude/`, how it survives sessions, what to commit. |
 | [Corpus and RAG](corpus-system.md) | Document pipeline (consolidate → triage → reconcile → promote) and local semantic search. |
 | [FAQ](faq.md) | Honest answers. When SweetClaude is the right tool. When it is not. |
+| [Glossary](glossary.md) | Definitions for SweetClaude-specific terms: phase gates, caucus, deference levels, subagent isolation, and more. |
 
 ---
 
@@ -64,3 +65,5 @@ This is by design. SweetClaude is opinionated software with a workflow that came
 `/sweetclaude:go` reads state, detects where you are (setup needed, work in flight, phase exit criteria), and routes to the right skill. You can also pass plain-English arguments: `/sweetclaude:go pick up where I left off`, `/sweetclaude:go I want to work on the auth flow`.
 
 All workflow skills are documented in the [Skills Reference](skills-reference.md). You rarely need to memorize commands — `/sweetclaude:go` routes to all of them automatically.
+
+→ [Glossary of SweetClaude terms](glossary.md)
