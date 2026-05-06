@@ -13,21 +13,24 @@ STOP. Before executing this skill, check: does .sweetclaude/state/phase.yaml exi
 
 ## Step 1: Choose review type
 
-If $ARGUMENTS specifies a type (e.g. `security`, `compliance`, `1 3`), use that and skip the menu.
+If $ARGUMENTS specifies a type (e.g. `security`, `compliance`, `caucus`, `1 3`), use that and skip the menu.
 
-Otherwise present:
+Otherwise present via AskUserQuestion:
 
 ```
-What do you want reviewed? (pick one or several)
+What do you want reviewed?
 
   1. Code review      — logic errors, edge cases, regressions, performance
   2. Security review  — auth, injection, secrets, OWASP Top 10
   3. Compliance review — licenses, data handling, privacy, regulatory
-
-Selection:
+  4. Caucus review    — 5 parallel specialty agents with consensus scoring (higher coverage, lower false positives)
 ```
 
-Wait for selection. Run chosen reviews in order: 1 → 2 → 3.
+Options 1–3 can be combined. Option 4 is standalone.
+
+If options 1–3 selected: run chosen reviews in order: 1 → 2 → 3. Skip to Step 2.
+
+If option 4 (caucus) selected: skip to **Caucus Review** section below.
 
 ## Step 2: Establish scope
 
@@ -176,9 +179,86 @@ Compliance Review: {scope} [{frameworks}]
 
 ---
 
+---
+
+## Caucus Review
+
+Five specialty agents review the same diff independently with no access to each other's findings. A coordinator then synthesizes by confidence.
+
+**Isolation is mandatory.** Each agent sees only the diff and the codebase — never another agent's output. Cross-contamination collapses the diversity that produces low false positives.
+
+### Step C1: Dispatch specialty agents in parallel
+
+Dispatch all five agents simultaneously against the established scope (Step 2):
+
+| Agent | Domain |
+|---|---|
+| `code-reviewer` | Logic errors, edge cases, regressions, error handling |
+| `security-reviewer` | Auth, injection, secrets, OWASP Top 10 |
+| `architecture-reviewer` | Module boundaries, coupling, API surface, design patterns |
+| `performance-reviewer` | Complexity, N+1, unbounded growth, blocking calls |
+| `tests-reviewer` | Missing tests, brittle assertions, untested edge cases |
+
+Each agent receives: the diff (or file list), a pointer to the relevant codebase context, and its own system prompt only. No agent output is visible to any other agent.
+
+Offer background dispatch per the run mode rules in Step 2b.
+
+### Step C2: Collect and normalize findings
+
+Wait for all five agents to complete. For each finding, record:
+- `agent` — which agent raised it
+- `location` — file and line
+- `severity` — Critical / Warning / Nit (normalized across agents)
+- `description` — what the problem is
+- `fix` — specific suggestion
+
+### Step C3: Deduplicate and score confidence
+
+Group findings that refer to the same location and problem (fuzzy match on file + line ± 3 and topic). For each group:
+
+- **Flagged by 3–5 agents → Consensus** (★★★)
+- **Flagged by 2 agents → Corroborated** (★★☆)
+- **Flagged by 1 agent → Unconfirmed** (★☆☆)
+
+Within each confidence tier, sort by severity: Critical first, then Warning, then Nit.
+
+### Step C4: Present synthesis
+
+```
+Caucus Review: {scope}
+══════════════════════
+
+★★★ Consensus (flagged by multiple agents — high confidence):
+
+  ✗ Critical:
+    - {finding} — {file}:{line}  [{agents who flagged it}]
+      Problem: {description}
+      Fix: {specific suggestion}
+
+  ⚠ Warning:
+    - ...
+
+★★☆ Corroborated (2 agents):
+
+  ✗ / ⚠ / → [same format]
+
+★☆☆ Unconfirmed (single agent — review before acting):
+
+  ✗ / ⚠ / → [same format, include which agent flagged it]
+
+✓ No findings in: {domains with no findings}
+
+Coverage: {N}/5 agents completed  |  {N} consensus  |  {N} corroborated  |  {N} unconfirmed
+```
+
+Unconfirmed findings are surfaced but visually separated — they are not suppressed. A single expert finding on a security issue is still worth seeing.
+
+---
+
 ## Rules
 
 - Be adversarial. Assume problems exist and find them.
 - Every finding must have a specific fix suggestion.
 - Read-only. Do not modify code.
 - If the code is solid, say so. Do not manufacture findings.
+- **Caucus isolation.** Never show one agent's output to another agent before synthesis. Violation collapses the confidence signal.
