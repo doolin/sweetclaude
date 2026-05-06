@@ -10,21 +10,6 @@ Review: Carson Sweet, assisted by GPT-5.3-Codex (OpenAI)
 
 SweetClaude requires [Claude Code](https://docs.anthropic.com/en/docs/claude-code) as its host environment.
 
-### Upstream Plugins (Required for Full Install)
-
-| Dependency | License | Min Version | Role |
-|---|---|---|---|
-| [Superpowers](https://github.com/obra/superpowers) | MIT | 5.0.7 | Dev mechanics: plans, worktrees, debugging, code review, parallel agents |
-
-**Superpowers skills used directly:**
-- `superpowers:writing-plans`
-- `superpowers:executing-plans`
-- `superpowers:using-git-worktrees`
-- `superpowers:systematic-debugging`
-- `superpowers:dispatching-parallel-agents`
-- `superpowers:subagent-driven-development`
-- `superpowers:verification-before-completion`
-
 ### Standalone Claude Code Skills (Used, Not Wrapped)
 
 These are third-party skills invoked by name but not forked or modified:

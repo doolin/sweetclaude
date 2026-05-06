@@ -20,10 +20,8 @@ for arg in "$@"; do
       echo ""
       echo "  --strategy-skills-only  Install strategy, product, and corpus skills only."
       echo "                          No code/design skills, no TDD hooks, no subagents."
-      echo "                          Does not require Superpowers."
       echo ""
-      echo "  (no flags)              Full install — all 49 skills, TDD hooks, subagents."
-      echo "                          Requires Superpowers."
+      echo "  (no flags)              Full install — all skills, TDD hooks, subagents."
       exit 0
       ;;
     *)
@@ -81,33 +79,6 @@ if ! command -v gh &> /dev/null; then
 else
   GH_VER=$(gh --version 2>/dev/null | head -1)
   echo "  $GH_VER"
-fi
-
-# Superpowers — required for full install, skipped for strategy-only
-if [ "$STRATEGY_ONLY" = false ]; then
-  SP_MIN="5.0.7"
-  PLUGINS_JSON="$CLAUDE_DIR/plugins/installed_plugins.json"
-  SP_VERSION=""
-
-  if [ -f "$PLUGINS_JSON" ]; then
-    SP_VERSION=$(grep -A5 '"superpowers@' "$PLUGINS_JSON" 2>/dev/null | grep '"version"' | head -1 | sed 's/.*: *"\([^"]*\)".*/\1/')
-  fi
-
-  if [ -z "$SP_VERSION" ] || [ "$SP_VERSION" = "unknown" ]; then
-    echo "  ERROR: Superpowers plugin not found."
-    echo "         Install in Claude Code: /install superpowers"
-    echo "         Minimum: $SP_MIN"
-    PREREQ_OK=false
-  else
-    echo "  Superpowers: v$SP_VERSION"
-    if ! version_gte "$SP_VERSION" "$SP_MIN"; then
-      echo "  ERROR: Superpowers $SP_VERSION is below minimum ($SP_MIN)."
-      echo "         Update in Claude Code: /install superpowers"
-      PREREQ_OK=false
-    fi
-  fi
-else
-  echo "  (strategy-skills-only — Superpowers not required)"
 fi
 
 if [ "$PREREQ_OK" = false ]; then

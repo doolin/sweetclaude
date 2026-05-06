@@ -1,6 +1,6 @@
 # SweetClaude Phase Gates
 # Schema version: 2
-# Generated from: docs/superpowers/specs/2026-04-29-phase-workflow-separation-design.md
+# Generated from: docs/internal/specs/2026-04-29-phase-workflow-separation-design.md
 
 Entry and exit criteria for each work type × phase combination.
 A phase cannot advance until exit criteria are met.
