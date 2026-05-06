@@ -1,14 +1,14 @@
 {
   "name": "sweetclaude",
-  "description": "End-to-end development framework for solo developers",
+  "description": "A discipline layer for Claude Code — phase gates, TDD enforcement, and multi-agent review",
   "owner": {
     "name": "Carson Sweet"
   },
   "plugins": [
     {
       "name": "sweetclaude",
-      "description": "End-to-end development framework: strategy, product, design, code — from concept to shipped code",
-      "version": "1.0.0",
+      "description": "A discipline layer for Claude Code — phase gates, TDD enforcement, and multi-agent review that make AI-assisted development reproducible and auditable.",
+      "version": "3.36.1",
       "source": "./"
     }
   ]

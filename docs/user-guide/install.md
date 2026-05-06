@@ -1,6 +1,25 @@
 # Installing SweetClaude
 
-## Prerequisites
+## Marketplace Install (Recommended)
+
+Inside Claude Code, no terminal required:
+
+```
+/plugin marketplace add https://github.com/carson-sweet/sweetclaude
+/plugin install sweetclaude@sweetclaude
+```
+
+All skills are immediately available. Then go to your project and run `/sweetclaude:go` to begin.
+
+**One extra step for TDD hooks:** The marketplace install copies files but cannot modify your `settings.json`. TDD enforcement hooks (test-guardian, auto-test-runner) need to be wired once. Run `/sweetclaude:on` in your first project — it detects the install and wires them automatically.
+
+---
+
+## Manual Install
+
+Preferred if you want hooks wired automatically with no extra step, or if you want the `--strategy-skills-only` variant.
+
+### Prerequisites
 
 | Dependency | Check | Install |
 |---|---|---|
@@ -8,12 +27,6 @@
 | Git | `git --version` | [git-scm.com](https://git-scm.com/downloads) |
 | [GitHub CLI](https://cli.github.com/) | `gh --version` | `brew install gh` or [cli.github.com](https://cli.github.com/) |
 | Node.js (for RAG) | `node --version` | [nodejs.org](https://nodejs.org/) — optional, needed only for corpus management and semantic search |
-
-Claude Code requires an Anthropic subscription.
-
----
-
-## Full Install
 
 ```bash
 git clone https://github.com/carson-sweet/sweetclaude.git ~/dev/sweetclaude
@@ -31,11 +44,7 @@ The installer:
 - Wires TDD enforcement hooks into `settings.json`
 - Generates `uninstall.sh` and `restore-config.sh` for clean removal
 
-After install, all skills are available as `/sweetclaude:skill-name` in every Claude Code session. The first time you run `/sweetclaude:go` in a project, it will walk through setup and run a short mode-assessment interview to configure enforcement for your workflow (Flow, Kanban, Level Up, or Agile).
-
----
-
-## Strategy Skills Only
+### Strategy Skills Only
 
 If you want product thinking, strategy, and corpus management — without code and TDD phases:
 
