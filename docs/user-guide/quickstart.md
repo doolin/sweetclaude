@@ -6,13 +6,21 @@ You have SweetClaude installed. Here is how to use it.
 
 ## Your First Session
 
-**Everything starts here:**
+**New to SweetClaude? Start here:**
+
+```
+/sweetclaude:help
+```
+
+Conversational onboarding — explains what SweetClaude is, walks you through the four operating modes, and helps you decide where to start. Takes about 5 minutes. Teaches itself through conversation so you don't have to read docs first.
+
+**Ready to work? Use this:**
 
 ```
 /sweetclaude:go
 ```
 
-Detects where you are and routes automatically. Empty folder → setup. Active project → picks up where you left off. No project state yet → walks through setup, product discovery, and hands off to the pipeline. Pass plain-English arguments to skip the prompt: `/sweetclaude:go I need to fix a bug in auth`.
+Your daily driver. Detects where you are and routes automatically. Empty folder → setup. Active project → picks up where you left off. Pass plain-English arguments: `/sweetclaude:go I need to fix a bug in auth`.
 
 **Suspend or remove SweetClaude:**
 
@@ -27,7 +35,7 @@ Detects where you are and routes automatically. Empty folder → setup. Active p
 /sweetclaude:help
 ```
 
-Conversational onboarding — explains what SweetClaude is, walks through modes and phases, helps you choose where to start, or answers specific questions.
+Conversational onboarding — explains what SweetClaude is, walks you through the four operating modes, and helps you decide where to start. Teaches itself through conversation so you don't have to read docs first.
 
 ---
 
@@ -36,6 +44,9 @@ Conversational onboarding — explains what SweetClaude is, walks through modes 
 ### "I have an idea for a product but have not started building anything"
 
 Run `/sweetclaude:go` in an empty folder. SweetClaude will:
+
+> **First time?** Run `/sweetclaude:help` before `/sweetclaude:go` — it'll explain what to expect and help you choose the right operating mode.
+
 1. Set up the project (git, directory structure, CLAUDE.md)
 2. Run a short mode-assessment interview (5 questions) to configure enforcement — Flow, Kanban, Shape Up, or Agile
 3. Ask what you want to build
