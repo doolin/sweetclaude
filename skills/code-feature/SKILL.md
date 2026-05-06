@@ -86,6 +86,14 @@ Run the full Level 3 pipeline from `sweetclaude:code-tdd`:
 
 6. **Spawn implementer subagent.** Receives: test files (read-only), existing codebase. Never sees user stories, Gherkin, or test-writing reasoning. Instruction: make the tests pass with minimum code.
 
+   Before dispatching, offer via AskUserQuestion:
+   - **Implement now (inline)** — run in this conversation; see progress in real time
+   - **Implement in background** — dispatch as a background agent; continue working and get notified when tests are green
+
+   If "Implement in background": dispatch implementer Agent with `run_in_background: true`. Confirm: "Implementer running in background. You'll be notified when tests pass." Stop — verification and refactor will follow in the next turn when the agent reports back.
+
+   If "Implement now (inline)": dispatch synchronously and continue to step 7.
+
 7. **Verify GREEN.** All tests pass. No other tests regressed.
 
 8. **Refactor.** Clean up implementation. Tests stay green after each change.
