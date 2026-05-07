@@ -1,0 +1,61 @@
+# State File Schema
+
+Maintain `.sweetclaude/state/john-wick.yaml` throughout the pipeline:
+
+```yaml
+schema_version: 1
+status: active | paused | waiting_for_user | complete | error
+feature_name: string
+feature_branch: string
+github_mode: boolean
+phase_checkins: boolean
+
+current_phase: BOOTSTRAP | DEFINE | PLAN | DESIGN | IMPLEMENT_PREP | IMPLEMENT | VERIFY
+current_step: string
+
+discovery_artifacts:
+  personas: string | null
+  task_analysis: string | null
+  constraints: string | null
+compliance_context: string | null
+d1_flags: []
+
+created_artifacts:
+  - step: string
+    type: prd | stories | gherkin | architecture | tech_spec | contract_analysis | tests | report | pr
+    path: string
+    version: integer
+
+issue_list:
+  - number: integer
+    title: string
+    branch: string
+    status: pending | in_progress | complete | escalated | skipped
+
+caucus_outputs:
+  - step: string
+    path: string
+
+checkin_outputs:
+  - step: string
+    path: string
+    findings: none | minor | significant
+    escalated: boolean
+
+interactive_gate_pending:
+  step: string | null
+  description: string | null
+
+locked_test_files:
+  - string
+
+context_checkpoint:
+  step: string
+  timestamp: string
+  notes: string
+
+sessions:
+  - started: string
+    ended: string | null
+    steps_completed: [string]
+```
