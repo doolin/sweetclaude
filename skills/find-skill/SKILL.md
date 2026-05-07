@@ -14,23 +14,25 @@ STOP. Before executing this skill, check: does .sweetclaude/state/phase.yaml exi
 
 Describe what you want to do. This skill figures out which skill fits, confirms, and starts it.
 
+The full work-type → skill mapping lives in [routing-tables.md](routing-tables.md) (8 buckets: strategy, product, design, code, project, testing, operations, system). Read it when the algorithm tells you to in Step 4.
+
 ## Process
 
-1. **Read version stage.** Read `.sweetclaude/state/phase.yaml`. Extract `version_stage` (default: PROTOTYPE if not set). This controls which work types are surfaced.
+1. **Read version stage.** Read `.sweetclaude/state/phase.yaml`. Extract `version_stage` (default: PROTOTYPE if not set). This controls which buckets are surfaced — see the visibility note at the top of `routing-tables.md`.
 
 1b. **Check structured state for starting phase.** Before classifying or prompting, read the authoritative state sources in order:
 
-1. **`phase.yaml` `active_work_item`** — already read in Step 1. If a work item is active and matches the request, use its `phase` directly. Do not re-derive.
-2. **Roadmap file** — if the request references a roadmap epic, find it in the roadmap file and read its `Status:` field:
-   - `not_started` → `{starting_phase}` = first phase in the workflow
-   - `in_progress` + a `Phase:` annotation → use that phase
-   - `blocked` → note the blocker to the user; ask if they want to proceed anyway
-3. **Backlog file front matter** — if the request matches a backlog item, read its YAML front matter for any `phase:` or `status:` field.
-4. **No structured state found** → `{starting_phase}` = first phase in the workflow (genuine cold-start)
+  1. **`phase.yaml` `active_work_item`** — already read in Step 1. If a work item is active and matches the request, use its `phase` directly. Do not re-derive.
+  2. **Roadmap file** — if the request references a roadmap epic, find it in the roadmap file and read its `Status:` field:
+     - `not_started` → `{starting_phase}` = first phase in the workflow
+     - `in_progress` + a `Phase:` annotation → use that phase
+     - `blocked` → note the blocker to the user; ask if they want to proceed anyway
+  3. **Backlog file front matter** — if the request matches a backlog item, read its YAML front matter for any `phase:` or `status:` field.
+  4. **No structured state found** → `{starting_phase}` = first phase in the workflow (genuine cold-start)
 
-Do NOT scan code directories, git history, or arbitrary doc files to infer phase. Structured state is the source of truth. If structured state is absent, ask the user: "Where are you in this work? (Not started / In design / Writing code / Ready for review)"
+  Do NOT scan code directories, git history, or arbitrary doc files to infer phase. Structured state is the source of truth. If structured state is absent, ask the user: "Where are you in this work? (Not started / In design / Writing code / Ready for review)"
 
-Store the result as `{starting_phase}` — used in Step 7.
+  Store the result as `{starting_phase}` — used in Step 7.
 
 2. **Determine entry category** from context before asking anything:
    - `cold-start` — project has no prior `active_work_item` OR user is explicitly starting something new from scratch
@@ -45,134 +47,7 @@ Store the result as `{starting_phase}` — used in Step 7.
 
    Wait for confirmation before proceeding.
 
-4. **Classify into a work type.** Use the tables below. Only surface work types appropriate for the current `version_stage` (see `config/workflow-templates.yaml → progressive_disclosure.{version_stage}.visible_buckets` for the authoritative list):
-   - **PROTOTYPE**: strategy + product buckets only (net-new-feature, security-planning)
-   - **ALPHA**: strategy + product + design + code (net-new-feature, bug-fix, external-integration, enhancement)
-   - **BETA / GA / SCALED**: full catalog
-   - **MAINTAINED**: code + operations buckets only (bug-fix, security-patch, dependency-upgrade, compliance-requirement)
-   - **system/ is always visible** at every version stage — framework management is never hidden.
-
-### strategy/ — why it matters and to whom
-
-| Work Type | Template Phases | Skill to invoke |
-|---|---|---|
-| Concept articulation / framing | DISCOVER, DEFINE, SHIP | `sweetclaude:product-discovery` *(fallback — `sweetclaude:concept-framing` planned, see BL-008)* |
-| Pain analysis | DISCOVER, DEFINE, SHIP | `sweetclaude:product-discovery` |
-| Customer profiling | DISCOVER, DEFINE, SHIP | `sweetclaude:user-personas` |
-| Synthetic panel research / concept testing | DISCOVER, DEFINE | `sweetclaude:product-user-focus-group` *(requires validated personas — gate enforced)* |
-| Competitive landscape | DISCOVER, DEFINE, SHIP | `sweetclaude:product-competition` |
-| Research / deep research | DISCOVER, DEFINE, SHIP | `sweetclaude:documents-academic-research` |
-| Meeting preparation | DEFINE | `sweetclaude:misc-meeting-prep` |
-| Market messaging | DEFINE | `sweetclaude:product-market-messaging` |
-| Security planning | DISCOVER, DEFINE, SHIP | `sweetclaude:security-planning` *(Plan 3)* |
-| Course correction | DISCOVER, DEFINE, TRIAGE, SHIP | `sweetclaude:course-correction` *(Plan 3)* |
-
-### product/ — what to build and why
-
-| Work Type | Template Phases | Skill to invoke |
-|---|---|---|
-| Net-new feature | DISCOVER, DEFINE, DESIGN, PLAN, IMPLEMENT, VERIFY, SHIP | `sweetclaude:product-discovery` |
-| Enhancement / iteration | DEFINE, DESIGN, IMPLEMENT, VERIFY, SHIP | `sweetclaude:product-prd` |
-| Product brief | DEFINE | `sweetclaude:product-brief` |
-| Requirements / PRD | DEFINE | `sweetclaude:product-prd` |
-| User stories | PLAN | `sweetclaude:product-user-stories` |
-| Test specs from stories | PLAN | `sweetclaude:product-user-tdd-tests` |
-| Scope change | any | `sweetclaude:product-manage-scope` |
-| Parking lot / deferred ideas | any | `sweetclaude:product-parking-lot` |
-| Sprint / release planning | DEFINE, PLAN, SHIP | `sweetclaude:product-sprint-plan` |
-| Market / technical research | DISCOVER | `sweetclaude:product-research` |
-| Release planning | DEFINE, PLAN, SHIP | `sweetclaude:release-planning` *(Plan 3)* |
-
-### design/ — how it's structured
-
-| Work Type | Template Phases | Skill to invoke |
-|---|---|---|
-| System architecture | DESIGN | `sweetclaude:design-architecture` |
-| Technical specification | DESIGN | `sweetclaude:design-tech-spec` |
-| UX/UI design | DESIGN | `sweetclaude:design-ux` |
-| Solution validation | DESIGN | `sweetclaude:design-solutioning-gate` |
-| Impact analysis | any | `sweetclaude:design-change-impact-analysis` |
-| Doc updates | VERIFY | `sweetclaude:documents-update-docs` |
-| Data model / schema | DESIGN | `sweetclaude:design-data-model` |
-| API design | DESIGN | `sweetclaude:design-api-design` |
-| Record a decision | any | `sweetclaude:design-manage-decisions` |
-| Onboarding flow design | DEFINE, DESIGN, IMPLEMENT, VERIFY, SHIP | `sweetclaude:onboarding-flow-design` *(Plan 3)* |
-
-### code/ — writing and verifying code
-
-| Work Type | Template Phases | Skill to invoke |
-|---|---|---|
-| Net-new feature (implement) | IMPLEMENT | `sweetclaude:code-feature` |
-| Bug fix | DIAGNOSE, IMPLEMENT, VERIFY, SHIP | `sweetclaude:code-issue` |
-| Enhancement | IMPLEMENT | `sweetclaude:code-issue` |
-| Tech debt / refactor | DEFINE, SCOPE, IMPLEMENT, VERIFY, SHIP | `sweetclaude:code-debt` |
-| Hotfix | DIAGNOSE, IMPLEMENT, SHIP, POST-MORTEM | `sweetclaude:hotfix` *(Plan 3)* |
-| Security patch | DIAGNOSE, IMPLEMENT, VERIFY, SHIP | `sweetclaude:security-patch` *(Plan 3)* |
-| Performance optimization | DIAGNOSE, DESIGN, IMPLEMENT, VERIFY, SHIP | `sweetclaude:code-issue` |
-| External integration | DISCOVER, DEFINE, DESIGN, PLAN, IMPLEMENT, VERIFY, SHIP | `sweetclaude:external-integration` *(Plan 3)* |
-| Technology migration | ASSESS, DESIGN, PLAN, IMPLEMENT, VERIFY, CUTOVER, CLEANUP | `sweetclaude:code-debt` |
-| Data migration | ASSESS, DESIGN, PLAN, IMPLEMENT, VERIFY, SHIP | `sweetclaude:code-debt` |
-| API deprecation | ASSESS, DEFINE, IMPLEMENT, VERIFY, SHIP, CLEANUP | `sweetclaude:code-feature` |
-| Dependency upgrade | ASSESS, IMPLEMENT, VERIFY, SHIP | `sweetclaude:code-debt` |
-| Infrastructure change | DEFINE, DESIGN, IMPLEMENT, VERIFY, SHIP | `sweetclaude:code-debt` |
-| Rollback / revert | DIAGNOSE, SHIP | `sweetclaude:code-issue` |
-| Code review | VERIFY | `sweetclaude:code-review` |
-| Compliance requirement | ASSESS, DEFINE, DESIGN, IMPLEMENT, VERIFY, SHIP | `sweetclaude:code-feature` |
-
-### project/ — managing the work
-
-| Work Type | Template Phases | Skill to invoke |
-|---|---|---|
-| Issue / bug tracking | any | `sweetclaude:project-issues` |
-| Import GitHub Issues into local store | any | `sweetclaude:project-gh-import-issues` |
-| Sync issue status with GitHub | any | `sweetclaude:project-gh-sync-issues` |
-| Epic management | any | `sweetclaude:project-epics` |
-| Sprint planning and execution | PLAN, IMPLEMENT | `sweetclaude:project-sprints` |
-| Backlog view and promotion | any | `sweetclaude:project-backlog` |
-| Backlog grooming / triage | any | `sweetclaude:project-backlog-triage` |
-| Roadmap management | any | `sweetclaude:product-roadmap` |
-| Roadmap prioritization / RICE analysis | any | `sweetclaude:product-roadmap-analysis` |
-| Scope definition and updates | DEFINE, any | `sweetclaude:project-scope` |
-| Goal tracking | any | `sweetclaude:project-goals` |
-| Project mode (flow/kanban/agile) | any | `sweetclaude:project-mode` |
-
-### testing/ — validating the work
-
-| Work Type | Template Phases | Skill to invoke |
-|---|---|---|
-| Test plan / test strategy | PLAN, VERIFY | `sweetclaude:testing-plan` |
-| Security review / threat model | VERIFY, any | `sweetclaude:testing-security` |
-| Compliance control testing | any | `sweetclaude:testing-compliance` |
-| Manual QA session | VERIFY | `sweetclaude:testing-session` |
-| Performance / load testing | VERIFY, any | `sweetclaude:testing-performance` |
-| Accessibility audit | VERIFY, any | `sweetclaude:testing-accessibility` |
-
-### operations/ — keeping it running
-
-| Work Type | Template Phases | Skill to invoke |
-|---|---|---|
-| Something broke | DIAGNOSE, SHIP, POST-MORTEM | `sweetclaude:something-broke` *(Plan 3)* |
-| Postmortem | DIAGNOSE, SHIP | `sweetclaude:postmortem` *(Plan 3)* |
-| Break-glass notes | DEFINE, SHIP | `sweetclaude:break-glass-notes` *(Plan 3)* |
-| Onboarding playbook | DEFINE, IMPLEMENT, SHIP | `sweetclaude:code-feature` |
-
-### system/ — managing the framework
-
-Always visible regardless of `version_stage`. No phases — these are point-in-time management operations.
-
-| Work Type | Skill to invoke |
-|---|---|
-| Set up SweetClaude on a new or existing project | `sweetclaude:setup` |
-| Bootstrap infrastructure only (no product discovery) | `sweetclaude:init` |
-| Deactivate SweetClaude for a project | `sweetclaude:off` |
-| Update SweetClaude to the latest version | `sweetclaude:update` |
-| Audit or repair SweetClaude configuration | `sweetclaude:fix-sweetclaude` |
-| Delete all SweetClaude artifacts | `sweetclaude:purge` |
-| Validate framework behavioral contracts | `sweetclaude:behavioral-regression` |
-| Enable protocol enforcement for the session | `sweetclaude:guardian-on` |
-| Disable protocol enforcement | `sweetclaude:guardian-off` |
-| Toggle or view usage tracking | `sweetclaude:usage` |
-| Get help with SweetClaude | `sweetclaude:help` |
+4. **Classify into a work type.** Read [routing-tables.md](routing-tables.md). Find the row matching the user's intent. Note the work type (slug form like `bug-fix`), template phases, and target skill. Filter by `version_stage` per the visibility note at the top of that file.
 
 5. **Apply entry category behavior:**
 
@@ -190,19 +65,12 @@ Always visible regardless of `version_stage`. No phases — these are point-in-t
    > "Got it — moving fast. Tell me: {triage question specific to work type, e.g. 'what exactly is broken?' for bug/hotfix, or 'which version is affected?' for security patch}."
    Skip all prerequisite checks. One triage question max before starting.
 
-6. **Plan 3 guard.** Before writing state, check whether the matched skill is marked `*(Plan 3)*` in the routing table above.
+6. **Plan 3 guard.** Before writing state, check whether the matched skill is marked `*(Plan 3)*` in `routing-tables.md`.
 
    **If Plan 3:** Do NOT write state. Say:
    > "`sweetclaude:{skill}` is planned but not yet available. I can fall back to `{fallback}` (closest available skill in this bucket), or note this work type in the backlog and defer. Which would you prefer?"
 
-   Use these fallbacks by bucket:
-   - **strategy/** Plan 3 → `sweetclaude:product-discovery`
-   - **product/** Plan 3 → `sweetclaude:product-sprint-plan`
-   - **design/** Plan 3 → `sweetclaude:design-ux`
-   - **code/** Plan 3 hotfix/security-patch → `sweetclaude:code-issue`; external-integration → `sweetclaude:code-feature`
-   - **project/** Plan 3 → `sweetclaude:project-issues`
-   - **testing/** Plan 3 → `sweetclaude:testing-session`
-   - **operations/** Plan 3 → `sweetclaude:code-issue`
+   See the **Plan 3 fallbacks** table at the bottom of `routing-tables.md` for the bucket → fallback mapping.
 
    If the user chooses **defer**: add the work type to `docs/backlog/` and stop. Do not write state.
    If the user chooses **fallback**: substitute the fallback skill and proceed to step 7 with the fallback skill as the matched skill.
@@ -219,7 +87,7 @@ Always visible regardless of `version_stage`. No phases — these are point-in-t
    active_work_item:
      id: WI-{NNN}
      type: {work_type_key}
-     workflow: [{phases from table above, comma-separated}]
+     workflow: [{phases from routing-tables.md, comma-separated}]
      phase: {starting_phase — assessed in Step 1b, NOT assumed to be first phase}
      title: "{one-sentence description from user's request}"
      started: {YYYY-MM-DD today}
