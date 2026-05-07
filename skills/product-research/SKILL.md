@@ -1,6 +1,8 @@
 ---
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:product-research
+user-invocable: true
+disable-model-invocation: true
 description: Survey the solution field — what exists commercially and open source — so the user understands what they're entering before building. Feeds the competitive seed list.
 ---
 

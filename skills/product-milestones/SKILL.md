@@ -1,5 +1,7 @@
 ---
 spdx-license: AGPL-3.0-or-later
+user-invocable: true
+disable-model-invocation: true
 description: "Manage roadmap targets (milestones) that span strategy and product work. Create, review, link work items to, and track completion of outcome-driven milestones like 'Exit Stealth' or 'Paid Pilot Live'."
 category: product
 ---

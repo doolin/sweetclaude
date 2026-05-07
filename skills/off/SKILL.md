@@ -1,6 +1,8 @@
 ---
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:off
+user-invocable: true
+disable-model-invocation: true
 description: Deactivate SweetClaude for the current project. Preserves all artifacts. Run sweetclaude:on to reactivate.
 ---
 

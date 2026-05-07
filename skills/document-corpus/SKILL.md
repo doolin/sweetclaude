@@ -1,5 +1,7 @@
 ---
 spdx-license: AGPL-3.0-or-later
+user-invocable: true
+disable-model-invocation: true
 description: "Manage the full document corpus pipeline — consolidate raw files, triage, reconcile into canonical documents, promote, set up semantic search (RAG), and reindex. Presents a menu at start."
 ---
 

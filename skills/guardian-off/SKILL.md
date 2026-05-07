@@ -2,6 +2,7 @@
 spdx-license: AGPL-3.0-or-later
 name: guardian-off
 user-invocable: false
+disable-model-invocation: true
 description: Disable the Protocol Guardian for the current session
 ---
 

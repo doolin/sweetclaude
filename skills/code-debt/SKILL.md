@@ -1,5 +1,7 @@
 ---
 spdx-license: AGPL-3.0-or-later
+user-invocable: true
+disable-model-invocation: true
 description: "Tech debt cleanup. Locks current behavior with tests first, then refactors. Tests before touch, always. Use for refactoring, cleanup, performance work, or maintainability improvements."
 ---
 

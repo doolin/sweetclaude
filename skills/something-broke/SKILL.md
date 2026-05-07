@@ -1,6 +1,8 @@
 ---
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:something-broke
+user-invocable: true
+disable-model-invocation: true
 description: "Reactive production incident skill. DIAGNOSE → SHIP → POST-MORTEM. Triage scope and severity, identify root cause, decide fix vs. rollback, resolve, and spawn the required postmortem. Entry point for anything broken in a live environment."
 ---
 

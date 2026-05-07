@@ -1,6 +1,8 @@
 ---
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:product-competition
+user-invocable: true
+disable-model-invocation: true
 description: Competitive analysis at three depth levels — from a quick company survey to feature-by-feature deep analysis. Consolidates strategic and feature-level competitive work.
 category: strategy
 ---

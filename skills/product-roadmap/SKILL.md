@@ -1,6 +1,8 @@
 ---
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:product-roadmap
+user-invocable: true
+disable-model-invocation: true
 description: "Manage the product roadmap — feature delivery targets, releases, and priority stack. Routes to the correct workflow on activation."
 ---
 
