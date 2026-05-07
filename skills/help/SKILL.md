@@ -2,7 +2,7 @@
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:help
 user-invocable: true
-description: Interactive help for SweetClaude. Conversational — explains what SweetClaude is, how it works, and how to get started. Adapts based on what the user wants to explore.
+description: "SweetClaude help and skill discovery. Use when the user asks what SweetClaude can do, needs to find the right skill, or is new to the framework. Skill families available: Navigation — status (where are we?), go (what to work on), recap, something-broke (production incidents), bootstrap (session start). Code — code-feature (build a feature), code-issue (implement a GitHub issue), code-review, code-tdd, code-verify. Product planning — product-milestones, product-roadmap, product-backlog, product-brief, product-prd, product-user-stories. Design — design-ux, design-architecture, design-tech-spec, design-api-design, design-wireframes, design-data-model. Testing — testing-plan, testing-session, testing-security, testing-performance, testing-accessibility. Project management — project-goals, project-backlog, project-epics, project-sprints, project-issues. Documents — documents-update-docs, documents-academic-research. Misc — retro, session-export, user-personas, epic-design, ultraplan. For any described task, Claude should suggest the matching skill by name."
 ---
 
 # SweetClaude Help
