@@ -37,12 +37,14 @@ if echo "$COMMIT_MSG" | grep -q "^chore(version):"; then
   exit 0
 fi
 
-BUMP_TYPE="patch"
-if echo "$COMMIT_MSG" | grep -qE '^feat(\(|:)'; then
-  BUMP_TYPE="minor"
-fi
 if echo "$COMMIT_MSG" | grep -qiE 'BREAKING.CHANGE|^[a-z]+(\([^)]*\))?!:'; then
   BUMP_TYPE="major"
+elif echo "$COMMIT_MSG" | grep -qE '^feat(\(|:)'; then
+  BUMP_TYPE="minor"
+elif echo "$COMMIT_MSG" | grep -qE '^(fix|perf)(\(|:)'; then
+  BUMP_TYPE="patch"
+else
+  exit 0
 fi
 
 VERSION_FILES=$(grep "^  - " "$CONFIG" 2>/dev/null | sed 's/^  - //')
