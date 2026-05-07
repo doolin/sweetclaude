@@ -2,7 +2,6 @@
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:setup
 user-invocable: false
-disable-model-invocation: true
 description: Consolidated onboarding skill. Detects project context (new project or existing codebase) and runs the appropriate onboarding flow. Called by /sweetclaude when setup_complete = false.
 ---
 
