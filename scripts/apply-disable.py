@@ -9,9 +9,12 @@ import os
 import re
 import sys
 
-# Group B — user-invocable: true (73 skills)
+# Group B — user-invocable: true (80 skills after corpus split)
 EXPLICIT_ONLY = [
-    "code-debt", "code-review", "code-testing", "code-verify", "deploy-ship",
+    "code-debt", "code-review", "code-testing", "code-verify",
+    "corpus-consolidate", "corpus-promote", "corpus-rag-reindex",
+    "corpus-rag-setup", "corpus-reconcile", "corpus-status", "corpus-triage",
+    "deploy-ship",
     "design-api-design", "design-architecture", "design-change-impact-analysis",
     "design-data-model", "design-manage-decisions", "design-tech-spec",
     "design-user-flows", "design-ux", "design-ux-review", "design-wireframes",
