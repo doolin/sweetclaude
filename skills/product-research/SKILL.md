@@ -14,7 +14,7 @@ Survey the solution landscape for the problem you're solving. This skill produce
 
 ## Entry
 
-Check for `.sweetclaude/` directory. If not found, tell the user to run `/sweetclaude:on` first. Stop.
+Check for `.sweetclaude/` directory. If not found, tell the user to run `/sweetclaude:setup` first. Stop.
 
 Check for `.sweetclaude/log.md`. If not found, create it.
 

@@ -3,7 +3,7 @@ spdx-license: AGPL-3.0-or-later
 name: sweetclaude:setup
 user-invocable: false
 disable-model-invocation: true
-description: Consolidated setup skill — absorbs sweetclaude:on and sweetclaude:adopt. Detects project context and runs the appropriate onboarding branch. Called by /sweetclaude when setup_complete = false.
+description: Consolidated onboarding skill. Detects project context (new project or existing codebase) and runs the appropriate onboarding flow. Called by /sweetclaude when setup_complete = false.
 ---
 
 # SweetClaude Setup
@@ -106,7 +106,7 @@ Run the same directory setup and write as Branch A, with `type: existing-code` a
 
 > "This looks like an inherited or organically grown codebase. I'll run a full assessment before setting things up — this takes a few minutes but makes everything that follows much smoother."
 
-Run the full ASSESS → DIAGNOSE → PLAN → SCAFFOLD flow from the original `sweetclaude:adopt` skill. Key phases:
+Run the full ASSESS → DIAGNOSE → PLAN → SCAFFOLD flow for existing codebases. Key phases:
 
 **ASSESS:** Understand what exists — architecture, dependencies, test coverage, naming conventions, tech debt surface area.
 **DIAGNOSE:** Identify the highest-impact problems. Prioritize by: broken builds > no tests > no structure > style issues.

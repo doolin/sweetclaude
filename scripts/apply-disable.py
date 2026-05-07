@@ -34,11 +34,11 @@ EXPLICIT_ONLY = [
     "update", "usage", "user-personas",
 ]
 
-# Group C — user-invocable: false (13 skills)
+# Group C — user-invocable: false (11 skills after on/adopt deletion)
 INTERNAL_ALSO_NOT_INVOCABLE = [
-    "adopt", "behavioral-regression", "claude-config-audit", "code-tdd",
+    "behavioral-regression", "claude-config-audit", "code-tdd",
     "design-solutioning-gate", "documents-update-docs", "guardian-off",
-    "guardian-on", "john-wick-checkin", "next-steps", "on", "setup",
+    "guardian-on", "john-wick-checkin", "next-steps", "setup",
     "sweetclaude-behavioral-regression",
 ]
 

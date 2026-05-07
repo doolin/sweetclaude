@@ -21,7 +21,7 @@ Before doing ANY work, verify SweetClaude is correctly set up. Run this check th
 If `.sweetclaude/disabled` exists:
 > "SweetClaude is not active for this project. Would you like to activate it?"
 
-If the user says yes, invoke `sweetclaude:on`. Otherwise stop — do not proceed with any SweetClaude skill or pipeline work.
+If the user says yes, invoke `sweetclaude:setup`. Otherwise stop — do not proceed with any SweetClaude skill or pipeline work.
 
 **Step 1: Check global installation.**
 - `~/.claude/skills/sweetclaude/SKILL.md` exists
@@ -189,7 +189,7 @@ When delegating to early-phase skills, set depth expectations:
 
 ## State Directory
 
-SweetClaude internal state always lives in `.sweetclaude/`. Planning artifact paths (milestones, backlog, product briefs, architecture docs, etc.) are determined per-project by the artifact privacy manifest — set during `/sweetclaude:on` and stored in `.sweetclaude/artifact-privacy.yaml`.
+SweetClaude internal state always lives in `.sweetclaude/`. Planning artifact paths (milestones, backlog, product briefs, architecture docs, etc.) are determined per-project by the artifact privacy manifest — set during `/sweetclaude:setup` and stored in `.sweetclaude/artifact-privacy.yaml`.
 
 ```
 .sweetclaude/
@@ -208,8 +208,8 @@ SweetClaude internal state always lives in `.sweetclaude/`. Planning artifact pa
   design/               → design artifacts when design category is private
                           (wireframes/, user-flows/, ux.md, etc.)
 
-{configured path}/      → public artifact locations as confirmed during /sweetclaude:on
+{configured path}/      → public artifact locations as confirmed during /sweetclaude:setup
                           (e.g. docs/, strategy/, docs/design/ — or user-specified paths)
 ```
 
-All planning skills read `.sweetclaude/artifact-privacy.yaml` before writing any file. If the manifest does not exist, skills stop and direct the user to run `/sweetclaude:on`.
+All planning skills read `.sweetclaude/artifact-privacy.yaml` before writing any file. If the manifest does not exist, skills stop and direct the user to run `/sweetclaude:setup`.

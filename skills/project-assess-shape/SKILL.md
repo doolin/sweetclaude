@@ -8,7 +8,7 @@ version: 1.0.0
 
 # project-assess-shape
 
-Recommend a project mode by interviewing the user. Called automatically from `/sweetclaude:on` at init and available on demand.
+Recommend a project mode by interviewing the user. Called automatically from `/sweetclaude:setup` at init and available on demand.
 
 ## MODE CHECK
 

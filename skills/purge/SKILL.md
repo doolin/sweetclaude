@@ -95,4 +95,4 @@ Report:
 
 > "Done. {N} files deleted.
 >
-> Run `/sweetclaude:on` to reinitialize this project."
+> Run `/sweetclaude:setup` to reinitialize this project."

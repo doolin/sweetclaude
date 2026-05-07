@@ -43,8 +43,7 @@ Framework management — setup, teardown, updates, audits, and guards. Always av
 | Skill | Invocation | What it does |
 |---|---|---|
 | **Setup** | _(internal)_ | Activate on any project — new idea or existing codebase. Detects context, walks through setup, writes `sweetclaude.yaml`. Invoked automatically by `/sweetclaude` when no state file exists. |
-| **Init** | `/sweetclaude:init` | Bootstrap SweetClaude infrastructure only (no product discovery). Detects project type, creates `.sweetclaude/`, generates CLAUDE.md stub. For existing codebases with real history, use `:adopt` instead. |
-| **Adopt** | `/sweetclaude:adopt` | Onboard an existing codebase with real history. ASSESS → DIAGNOSE → PLAN → SCAFFOLD → ITERATE. Never touches src/ or tests/ without consent. |
+| **Init** | `/sweetclaude:init` | Bootstrap SweetClaude infrastructure only (no product discovery). Detects project type, creates `.sweetclaude/`, generates CLAUDE.md stub. For existing codebases with real history, use `/sweetclaude` (which routes to setup) instead. |
 | **Off** | `/sweetclaude:off` | Suspend SweetClaude for this project. Preserves all artifacts. Reactivate with `/sweetclaude`. |
 | **Update** | `/sweetclaude:update` | Fetch the latest version from GitHub and sync to all installed locations. Shows what changed. Migrates `phase.yaml`/`skills.yaml` from v2.x to `sweetclaude.yaml` format. |
 | **Fix SweetClaude** | `/sweetclaude:fix-sweetclaude` | Audit and repair configuration. Checks CLAUDE.md accuracy, phase state, file locations, `sweetclaude.yaml` consistency, empty registers, hook registrations. If `sweetclaude.yaml` is unparseable, offers repair options. Proposes fixes — does not change anything without asking. |
@@ -240,9 +239,9 @@ You rarely use one skill in isolation. The patterns below are the chains that sh
 → code-feature
 ```
 
-**Adopting an existing codebase:**
+**Onboarding an existing codebase:**
 ```
-/sweetclaude:adopt
+/sweetclaude  (routes to sweetclaude:setup, which detects existing codebase)
 → ASSESS (language/toolchain/CI/security scan)
 → DIAGNOSE (Critical/High/Medium/Low findings)
 → PLAN (remediation sequence)

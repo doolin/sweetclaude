@@ -3,7 +3,7 @@ spdx-license: AGPL-3.0-or-later
 name: sweetclaude:init
 user-invocable: true
 disable-model-invocation: true
-description: "Bootstrap the SweetClaude infrastructure for any project — new or existing. Creates .sweetclaude/state/, strategy/, and CLAUDE.md. Thin infrastructure primitive; does not run product discovery (use /sweetclaude:on for that)."
+description: "Bootstrap the SweetClaude infrastructure for any project — new or existing. Creates .sweetclaude/state/, strategy/, and CLAUDE.md. Thin infrastructure primitive; does not run product discovery (use /sweetclaude:setup for that)."
 ---
 
 !`cat .sweetclaude/state/session-state.yaml 2>/dev/null || echo "STATE_NOT_FOUND"`
@@ -24,7 +24,7 @@ cat .sweetclaude/state/phase.yaml | grep -E "schema_version|version_stage|phase:
 ```
 Report:
 > "This project is already configured for SweetClaude (phase.yaml exists). Nothing to do.
-> Run `/sweetclaude:status` to see where things stand, or `/sweetclaude:on` to re-run the full setup."
+> Run `/sweetclaude:status` to see where things stand, or `/sweetclaude:setup` to re-run the full setup."
 
 Stop.
 
@@ -290,14 +290,14 @@ SweetClaude Initialized
 > {- CLAUDE.md (if created)}
 > {- `pre-sweetclaude` git branch (if existing project)}
 >
-> Next: Run `/sweetclaude:on` to start a product discovery session, or jump straight to `/sweetclaude:go` if you already know what you're building."
+> Next: Run `/sweetclaude:setup` to start a product discovery session, or jump straight to `/sweetclaude:go` if you already know what you're building."
 
 ---
 
 ## Rules
 
 - Never overwrite files that already exist — skip and report.
-- Never run product discovery — that is `sweetclaude:on`'s job.
+- Never run product discovery — that is `sweetclaude:setup`'s job.
 - Ask project type once; do not re-ask.
 - For CLAUDE.md: present before writing (unless autonomous deference).
 - If `.sweetclaude/disabled` exists: warn "SweetClaude is disabled for this project (`.sweetclaude/disabled` exists). Remove it to proceed." Stop.

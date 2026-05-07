@@ -14,7 +14,7 @@ Orient in one screen. Reads state files directly — no background agent.
 
 ## Entry
 
-If pre-loaded state is `STATE_NOT_FOUND`, or neither `.sweetclaude/state/sweetclaude.yaml` nor `.sweetclaude/state/phase.yaml` exists: "This project is not configured for SweetClaude. Run `/sweetclaude:on` to set it up." Stop.
+If pre-loaded state is `STATE_NOT_FOUND`, or neither `.sweetclaude/state/sweetclaude.yaml` nor `.sweetclaude/state/phase.yaml` exists: "This project is not configured for SweetClaude. Run `/sweetclaude:setup` to set it up." Stop.
 
 ## Step 1: Read current state
 
