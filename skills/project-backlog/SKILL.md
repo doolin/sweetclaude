@@ -2,7 +2,6 @@
 spdx-license: AGPL-3.0-or-later
 name: sweetclaude:project-backlog
 user-invocable: true
-disable-model-invocation: true
 description: "View and manage the unscheduled issue backlog. Promotes issues into sprints. Surfaces triage needs."
 ---
 
