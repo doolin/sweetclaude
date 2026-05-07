@@ -245,4 +245,6 @@ _BB=$'\033[1;34m'
 _RST=$'\033[0m'
 _ACTIVE_MSG="${_BR}SweetClaude is active. Type ${_BB}/sweetclaude:go${_BR} to begin.${_RST}"
 
-emit_ctx "$_ACTIVE_MSG" "${CTX}"$'\n\n'"Invoke sweetclaude:bootstrap now before responding to the user."
+STYLE_CTX="SweetClaude output style: use markdown headers (## / ###) and bold labels (**text**) for structure; dash lists (-) for bullets; no ASCII box-drawing (════ ────) or ANSI color codes. Apply this to all skill output."
+
+emit_ctx "$_ACTIVE_MSG" "${CTX}"$'\n\n'"${STYLE_CTX}"$'\n\n'"Invoke sweetclaude:bootstrap now before responding to the user."

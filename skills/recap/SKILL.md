@@ -37,33 +37,23 @@ tail -10 .sweetclaude/state/improvement-register.md 2>/dev/null || echo "NO_REGI
 
 ## Step 2: Produce the recap
 
-Output in this format:
+Output in this format. Use clean markdown — no box-drawing characters.
 
 ```
-════════════════════════════════════
-SweetClaude Recap — {ISO date}
-════════════════════════════════════
+## SweetClaude Recap — {ISO date}
 
-Phase:        {active_work_item.phase or "none set"}
-Work item:    {active_work_item.id — active_work_item.title, or "none active"}
-Deference:    {deference}
+**Phase:** {active_work_item.phase or "none set"}
+**Work item:** {active_work_item.id — active_work_item.title, or "none active"}
+**Deference:** {deference}
 
-────────────────────────────────────
-Recent commits
-────────────────────────────────────
+### Recent commits
 {last 3 git log lines, or "none"}
 
-────────────────────────────────────
-Checkpoint
-────────────────────────────────────
+### Checkpoint
 {checkpoint_next if set, or "No checkpoint — clean slate"}
 
-────────────────────────────────────
-Open flags
-────────────────────────────────────
+### Open flags
 {improvement register entries if any, or "None"}
-
-════════════════════════════════════
 ```
 
 Keep each section to 3–5 lines maximum. This is a quick orientation, not a full status report. For full status, run `/sweetclaude:status`.

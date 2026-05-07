@@ -148,98 +148,73 @@ Compute derived values:
 - **ROADMAP_PLANNED** = all others (not achieved/complete)
 - **BACKLOG_BY_HORIZON** = backlog items grouped by horizon: next, sooner, soon, later, someday, unscheduled (items where `horizon` field is absent or unrecognized)
 
-Output exactly:
+Output in this format. Use clean markdown — no box-drawing characters, no ANSI codes.
 
-```
-{project name}
-════════════════════════════════════
+## {project name} · {version_stage}
 
-UNFINISHED WORK
-───────────────
-```
+### Unfinished Work
 
-Then for each of the following, emit a `·` bullet if the condition is true. If none are true, emit `· Nothing open.`
+For each of the following, emit a `-` list item if the condition is true. If none are true, emit `Nothing open.`
 
-- UNCOMMITTED_COUNT > 0: `· {N} uncommitted file(s) in working tree`
-- checkpoint_next is set (non-null, non-empty): `· Checkpoint: {checkpoint_next}`
-- scratch files found: `· Scratch: {filenames}`
-- IN_PROGRESS_ISSUES non-empty: `· {N} issue(s) in progress: {comma-separated IDs}`
+- UNCOMMITTED_COUNT > 0: `- {N} uncommitted file(s) in working tree`
+- checkpoint_next is set (non-null, non-empty): `- Checkpoint: {checkpoint_next}`
+- scratch files found: `- Scratch: {filenames}`
+- IN_PROGRESS_ISSUES non-empty: `- {N} issue(s) in progress: {comma-separated IDs}`
 
 Then:
 
-```
+### Roadmap
 
-ROADMAP
-───────
-```
 
 If no roadmap files exist:
 ```
 No roadmap configured. Ask me to build one with `/sweetclaude:product-roadmap`.
 ```
 
-Otherwise: `{total} items: {ROADMAP_ACHIEVED} achieved · {ROADMAP_ACTIVE} active · {ROADMAP_PLANNED} planned`
+Otherwise: `{total} items · {ROADMAP_ACHIEVED} achieved · {ROADMAP_ACTIVE} active · {ROADMAP_PLANNED} planned`
 
-Then, if ROADMAP_ACTIVE > 0, list active items:
-```
+Then, if ROADMAP_ACTIVE > 0, list active items one per line:
 
-  Active:
-    {id}: {title}
-    ...
-```
+`**Active:** {id} — {title}`
 
-Else if ROADMAP_PLANNED > 0, list up to 3 planned items:
-```
+Else if ROADMAP_PLANNED > 0, list up to 3 planned items one per line:
 
-  Up next:
-    {id}: {title}
-    ...
-```
+`**Up next:** {id} — {title}`
 
 Then:
 
-```
-
-EPICS
-─────
-```
+### Epics
 
 Group OPEN_ISSUES by their `roadmap` field. For each active or planned roadmap item that has open issues, show:
-```
-  {roadmap-id} — {roadmap title}:
-    · {issue-id}: {title} [{status}]
-```
+
+**{roadmap-id} — {roadmap title}**
+- {issue-id}: {title} [{status}]
 
 After linked issues, if any open issues have `roadmap` = "(none)" or empty:
-```
-  Unlinked:
-    · {issue-id}: {title} [{status}]
-```
+
+**Unlinked**
+- {issue-id}: {title} [{status}]
 
 If no open issues at all: `No open epics.`
 
 Then:
 
-```
-
-BACKLOG
-───────
-```
+### Backlog
 
 For each horizon bucket that is non-empty, in order: next, sooner, soon, later, someday, unscheduled. Use `horizon_order` from the JSON to determine sort order (next=1 sorts first, unscheduled=6 sorts last).
 
-Output the heading as ANSI bold blue followed by the item count:
-`\033[1;34m{BUCKET_LABEL}\033[0m ({N}{suffix})`
+Output the bucket heading as bold markdown followed by the item count:
+`**{Bucket_Label}** ({N}{suffix})`
 
-Where `{BUCKET_LABEL}` is the bucket name in uppercase (e.g. `NEXT`, `SOONER`, `UNSCHEDULED`), and `{suffix}` is ` — no horizon set` for the unscheduled bucket and empty string for all others.
+Where `{Bucket_Label}` is the bucket name in title case (e.g. `Next`, `Sooner`, `Unscheduled`), and `{suffix}` is ` — no horizon set` for the unscheduled bucket and empty string for all others.
 
 Under each heading, show up to 5 items:
-`  · {id}  [{priority_badge}]  {title}`
+`- {id}  [{priority_badge}]  {title}`
 
 Where `{priority_badge}` is the item's **Priority:** value (e.g. `P1`, `SPIKE`) or `—` if unset.
 
 After all buckets: if total open backlog > 10, append:
-`  ({total} total — ask me to run a backlog triage if it's getting unwieldy)`
+`({total} total — run a backlog triage if it's getting unwieldy)`
 
 If backlog is empty: `Backlog is clear.`
 
