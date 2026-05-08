@@ -4,24 +4,39 @@
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 
-A software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship. **SweetClaude is the only Claude Code plugin that teaches itself through conversation** — run `/sweetclaude:help` and it walks you through what it is, how it works, and whether it's right for your project before touching a single file. You're always in control.
+A software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship. SweetClaude teaches itself about your project and preferences through conversation, then applies those learnings to deal with the less-fun parts of the project.
 
-SweetClaude adapts to your working style. Start with vibe-coding in Flow Mode — no ceremony, no gates, SweetClaude quietly collects artifacts as you go. When you're ready for more structure, switch to Kanban, Shape Up, or Agile — the artifacts you've accumulated are already there, so you're not starting from zero. Or apply full enterprise-class discipline from day one: phase gates, TDD pipelines with subagent isolation, QA caucuses, architecture reviews, and security gates. The framework adjusts to the project, not the other way around.
-
-SweetClaude right if quality and traceability matter. Wrong tool if you just want to go faster — we suggest [GStack](https://github.com/garry-tan/gstack) if speed is your primary goal.
-
-SweetClaude has over 100 skills built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. These skills compose into dynamic, situation-driven workflows across four operating modes:
-
-* **Flow Mode** — No ceremony. SweetClaude observes quietly, builds what you ask, and collects thin artifacts in the background.
-* **Kanban** — WIP-limited continuous flow. Hard block at 3 in-progress items. No sprints.
-* **Shape Up** — 6-week cycles with pitches and a betting table. Fixed appetite, variable scope.
-* **Agile** — Sprint-based. Active sprint required to implement.
-
-There's also **John Wick mode** *(experimental and dangerous)* — a fully autonomous SDLC pipeline from discovery to merged PR. TDD Level 3, subagent isolation, QA caucus, hard gates at key decisions. Not for everyday use — but nothing else comes close for maximum automation. Fast, quiet, admittedly dangerous - but disciplined. No loose ends.  `/sweetclaude:john-wick`
-
-SweetClaude was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
+SweetClaude works well when structure, traceability, and product thinking over is valued over raw coding speed. It's the wrong tool if you just want to go faster — we suggest [GStack](https://github.com/garry-tan/gstack) if speed is your primary goal. It was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
 
 Requires [Claude Code](https://claude.ai/code) and an Anthropic subscription.
+
+Run `/sweetclaude:help` and it walks you through what it is, how it works, and whether it's right for your project before touching a single file. You're always in control.
+
+
+
+## Key Design Principles
+
+There are too many Claude Code plugins to count. To help you decide if SweetClaude might be helpful for you, here are the principles of SweetClaude's design:
+
+* **Successful projects take more than code.** If you're here you probably already know this, but really thinking through what you're building, for who, why, and how they'll use it results in a good product that delivers value to users. Unfortunately, that part is a lot less fun than vibe-coding — it's real work. SweetClaude is primarily about taking care of that work for you in a structured, reliable way.
+* **Hide the complexity**. SweetClaude has over 100 skills built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. These skills compose into dynamic, situation-driven workflows across four operating modes. Few people want to learn all that.  To hide that complexity, SweetClaude uses a conversational interface with just a few commands as entry points, and an orchestrator skill does the rest (you can also manually invoke most skills if you want).
+* **Adapt to user preferences as they evolve.** AI assisted vibe-coding is fantastic for rapid experimentation and iteration to see if an idea is viable. An assistant framework should be able to capture things passively without killing the vibe and then be able to use what it captured to dial up the structure and discipline as needed, based on what it learned in the vibe phase. The framework adjusts to the project, not the other way around.
+
+
+
+## Operating Modes
+
+SweetClaude has four operating modes that support everything from vibe-coding hobby projects through enterprise-class B2B product development. It also has one potentially fun mode that isn't recommended for anything that remotely matters - but it is very fast, maybe good for initial prototyping. Those modes are:
+
+* **Flow Mode** — the starting point for any new project or quick experiment. No phases, no gates, no ceremony. SweetClaude observes quietly, builds what you ask, and collects thin artifacts in the background — personas, decisions, scope notes — without interrupting your momentum. When you're ready to dial up the structure, everything it captured is already there. Best for: early-stage exploration, side projects, and any time you need to move fast and figure out what you're building.
+* **Kanban** — continuous delivery with one hard rule: no more than three things in progress at once. No sprints, no planning ceremonies, no velocity calculations. Work flows from backlog to done at whatever pace makes sense. SweetClaude enforces the WIP limit and surfaces blocked items before they quietly pile up. Best for: maintenance work, steady feature delivery, and solo developers who want lightweight structure without sprint overhead.
+* **Shape Up** — six-week cycles where appetite is fixed and scope is variable. Work starts with a pitch: what problem are we solving, what's the rough shape of the solution, and what won't we build? A betting table decides what gets the next cycle. No backlog grooming, no story points, no carry-over. If it doesn't ship in the cycle, it goes back to the pile. Best for: product-focused work where you want strong scope discipline and a natural forcing function against gold-plating.
+* **Agile** — sprint-based delivery with a full planning, execution, and retrospective cycle. Each sprint anchors to a milestone and has an explicit active/closed state — SweetClaude won't let you implement work that isn't in the active sprint. Velocity is tracked on close and feeds into future planning. Best for: projects with defined delivery commitments, multiple contributors, or any situation where stakeholders expect predictable, time-boxed output.
+* **John Wick mode** — an experiment at the intersection of vibe-coding and disciplined product development. John Wick mode goes fully autonomous after a short project discovery cycle. Intensely disciplined — TDD Level 3, subagent isolation, QA caucus, hard gates at key decisions. Not for everyday use — but no other mode comes close for maximum automation. Fast, independent, admittedly dangerous - but disciplined. No loose ends. `/sweetclaude:john-wick`
+
+Switch modes at any time with `/sweetclaude:project-mode`. SweetClaude snapshots your current state before any transition.
+
+
 
 ## Quick Start
 
