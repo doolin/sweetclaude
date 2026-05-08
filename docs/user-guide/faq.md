@@ -177,14 +177,6 @@ The current backlog priorities are personas and synthetic research (a focus-grou
 
 ---
 
-## Where can I see SweetClaude in action?
-
-The README has examples. The `/sweetclaude:help` command produces a live tour. The walkthroughs in this guide simulate end-to-end flows.
-
-For a real demonstration, the SweetClaude repo uses individual SweetClaude skills as development tools — code review, testing, and design skills — and the `.sweetclaude/state/` files are visible in the repo. You can see the state structure in practice.
-
----
-
 ## What to Read Next
 
 - If you have not yet → [Getting Started](getting-started.md)
