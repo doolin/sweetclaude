@@ -6,7 +6,9 @@
 
 A software development partner for the full project lifecycle — from the first idea through design, implementation, testing, and ship. SweetClaude teaches itself about your project and preferences through conversation, then applies those learnings to deal with the less-fun parts of the project.
 
-SweetClaude works well when structure, traceability, and product thinking over is valued over raw coding speed. It's the wrong tool if you just want to go faster — we suggest [GStack](https://github.com/garry-tan/gstack) if speed is your primary goal. It was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work.
+SweetClaude works well when structure, traceability, and product thinking over is valued over raw coding speed. It's the wrong tool if you just want to go faster — we suggest [GStack](https://github.com/garry-tan/gstack) if speed is your primary goal. It was built for software development, but has also been used successfully for academic research, product marketing strategy, and other knowledge-intensive work. 
+
+*EXPERIMENTAL: If you want fast and disciplined, there is the experimental (and therefore potentially unpredictable) [John Wick mode](#operating-modes).*
 
 Requires [Claude Code](https://claude.ai/code) and an Anthropic subscription. We recommend using a model designed for day-to-day work (e.g. Sonnet 4.6 at the time of writing) although you can take it up to top-tier frontier models — just be mindful that models like Opus burn through your Anthropic usage way faster. Our honest experience is that Opus is overkill for most anything except perhaps initial product discovery and brainstorming, or if Sonnet gets stuck on a tough problem. You can always switch models mid-stream with the Claude Code command  `/model` .
 
