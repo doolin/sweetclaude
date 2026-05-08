@@ -1,0 +1,36 @@
+#!/bin/bash
+# Blocks files matching .gitignore patterns from entering history.
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+BLOCKED=()
+
+while IFS= read -r file; do
+  [ -z "$file" ] && continue
+  if git check-ignore --no-index -q "$file" 2>/dev/null; then
+    BLOCKED+=("$file")
+  fi
+done <<< "$STAGED"
+
+if [ ${#BLOCKED[@]} -gt 0 ]; then
+  echo ""
+  echo "Commit blocked. The following staged files match .gitignore patterns:"
+  echo ""
+  for f in "${BLOCKED[@]}"; do
+    rule=$(git check-ignore --no-index -v "$f" 2>/dev/null | awk '{print $1}')
+    echo "  $f"
+    [ -n "$rule" ] && echo "    matched by: $rule"
+  done
+  echo ""
+  echo "To fix:"
+  echo "  Unstage:    git restore --staged <file>"
+  echo "  Override:   git commit --no-verify  (only if you are certain)"
+  echo ""
+  exit 1
+fi
+
+exit 0
