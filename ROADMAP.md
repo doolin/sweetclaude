@@ -8,8 +8,7 @@ SweetClaude is in active development. This roadmap reflects current direction, n
 
 Work that is actively in progress or nearly complete.
 
-- **OSS launch readiness** — Community surface, documentation gaps, README restructuring, behavioral contract status tracking. Most of Phase 1 and Phase 2 complete.
-- **Demo terminal recording** — A 90-second recording showing `/sweetclaude` through a first product brief skeleton. Pending.
+- **Demo terminal recording** — A 90-second recording showing `/sweetclaude:go` through a first product brief skeleton. Pending.
 - **Co-maintainer search** — Actively looking. See [issue #7](https://github.com/carson-sweet/sweetclaude/issues/7).
 
 ---
