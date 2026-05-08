@@ -54,21 +54,24 @@ Inside Claude Code, the primary command is `/sweetclaude:go` which keeps things 
 
 Use `/sweetclaude:go` followed by what you want to do, in plain English — "show me milestones and sprints", "let's see the backlog", I want to start building X", "what should I work on next".  Or use `/sweetclaude:go` with no arguments to just pick up where you left off. SweetClaude will ask questions if needed and the orchestrator detects your project state, routes to the right skill, and collaborates with you — it handles the red tape, you do the creating.
 
+You can use SweetClaude to start a new effort from scratch, or have it adopt an existing project. Just point to any documents you might have — backlog, roadmaps, design, etc. — it will assess and migrate what you have and then help you fill in the gaps.
+
 A few other key commands to know about are: 
 
 * `/sweetclaude:help` — the guided tour. Walks you through what SweetClaude is, how it works, and whether it's right for your project before touching a single file.
 * `/sweetclaude:status` — project dashboard. Active work item, phase, roadmap, backlog, recent commits at a glance.
 * `/sweetclaude:fix-sweetclaude` — if SweetClaude is behaving unexpectedly, run this. It audits configuration, checks for drift, and proposes fixes without changing anything until you confirm.
 
-You can also check out the [skills reference](docs/user-guide/skills-reference.md) inside the [user guide](docs/user-guide/index.md) if you want to learn about SweetClaude internals.
 
-You can use SweetClaude to start a new effort from scratch, or have it adopt an existing project. Just point to any documents you might have — backlog, roadmaps, design, etc. — it will assess and migrate what you have and then help you fill in the gaps.
+We've tried to design SweetClaude to be intuitive, but additional documentation is available if needed or desired:
 
 → [Full install options, updating, uninstalling](docs/user-guide/install.md)
 
 → [First session walkthrough](docs/user-guide/quickstart.md)
 
-→ [All skills by category](docs/user-guide/skills-reference.md)
+→ [Full user guide](docs/user-guide/index.md) 
+
+→ [Full skills reference](docs/user-guide/skills-reference.md) 
 
 
 
@@ -98,9 +101,7 @@ SweetClaude has four operating modes that support everything from vibe-coding ho
 
 Switch modes at any time with `/sweetclaude:project-mode`. SweetClaude snapshots your current state before any transition. It's also best to take a Git snapshot for belt-and-suspenders safety - SweetClaude can do that for you too, as well as roll things back if needed. Just tell SweetClaude what you need to do.
 
-
-
-## 
+ 
 
 ## Major Features
 
@@ -173,7 +174,7 @@ For dependency risk, failure modes, and contingency plans → [Platform Dependen
 
 [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0-or-later) — free to use, modify, and distribute. No restrictions for personal or commercial tools you build. AGPL obligations activate only if you deploy SweetClaude as a network service offered to others — full terms in [LICENSE](LICENSE).
 
-Enterprises: contact the project owner to inquire about licensing, or if you're interested in customizations for your organization's needs.
+**Enterprises**: [open a GitHub Discussion](https://github.com/carson-sweet/sweetclaude/discussions) to inquire about licensing or customizations for your organization's needs.
 
 
 
@@ -184,6 +185,7 @@ Contributions welcome. SweetClaude is built by solo developers, for solo develop
 **Looking for a technical co-maintainer.** SweetClaude is currently maintained by one person. The areas that need a second reviewer — the hook system, migration registry, and orchestration layer — require someone who understands how the phase pipeline works end to end. If you have read through the codebase and want meaningful ownership of a growing open-source project, open an issue introducing yourself. See [what requires full framework knowledge](CONTRIBUTING.md#what-requires-full-framework-knowledge) for the scope.
 
 For skill improvements, documentation, walkthroughs, and examples — read [CONTRIBUTING.md](CONTRIBUTING.md) for where to start. Questions and ideas belong in [GitHub Discussions](https://github.com/carson-sweet/sweetclaude/discussions). Bugs and PRs go to Issues.
+
 
 <img src="sweetclaude-workshop.png" alt="SweetClaude Workshop" width="600" style="display:block;margin-left:0;">
 
