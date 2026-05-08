@@ -16,8 +16,6 @@ restore-config.sh
 !/docs/README.md
 !/docs/user-guide/
 !/docs/user-guide/**
-!/docs/plans/
-!/docs/plans/**
 
 # Internal strategy, plans, and design docs — never public
 /docs-internal/
