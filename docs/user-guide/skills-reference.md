@@ -1,9 +1,9 @@
 # SweetClaude Skills Reference
 
-**Version:** 1.5
-**Date:** 2026-05-05
+**Version:** 1.6
+**Date:** 2026-05-07
 
-All 98 skills, organized by domain. This page is reference — for narrative explanations of how skills fit together, read [Walkthroughs](walkthroughs.md) and [How It Works](how-it-works.md).
+All 103 skills, organized by domain. Internal framework skills (_health, _migrate, _offer, _route, bootstrap, master) are listed in their sections but not user-invocable. This page is reference — for narrative explanations of how skills fit together, read [Walkthroughs](walkthroughs.md) and [How It Works](how-it-works.md).
 
 You rarely need to memorize commands. `/sweetclaude:go` is the single entry point — it routes automatically based on project state and what you describe in plain English. The list below is for when you know exactly what you want.
 
@@ -33,6 +33,7 @@ Session navigation and automatic routing. Most of these fire without being invok
 | **Retro** | `/sweetclaude:retro` | End-of-phase or end-of-project retrospective. Surfaces what went well, what didn't, and what to adjust. Writes learnings to the improvement register so future sessions start with them applied. |
 | **Session Export** | `/sweetclaude:session-export` | Export a Claude.ai conversation as a structured document for corpus ingestion. |
 | **Hibernate** | `/sweetclaude:hibernate` | Freeze a project. Saves full state, exports session context, disables auto-status. Resume later with `/sweetclaude:go`. |
+| **Ultraplan** | `/sweetclaude:ultraplan` | Prepare a structured ultraplan prompt from current phase artifacts, launch ultraplan, and ingest the resulting plan as the DESIGN phase architecture artifact. |
 
 ---
 
@@ -58,7 +59,7 @@ Framework management — setup, teardown, updates, audits, and guards. Always av
 
 ---
 
-## Product (15 skills)
+## Product (18 skills)
 
 Strategy and product definition. Useful before any code is written and on existing projects to document implicit strategy.
 
@@ -87,6 +88,8 @@ Strategy and product definition. Useful before any code is written and on existi
 | **Product Market Messaging** | `/sweetclaude:product-market-messaging` | Elevator pitches, value propositions, key messages per audience. |
 | **Product Milestones** | `/sweetclaude:product-milestones [sub]` | Outcome-driven roadmap targets like "Exit Stealth" or "Paid Pilot Live." Sub-commands: `add`, `review`, `link [US-XXX] [MS-XXX]`, `status`, `blockers`, `complete`, `unassigned`. State-tracked: first invocation runs a lightweight setup; use `pause` to suspend, `onboard` for full ceremony. |
 | **Product Roadmap Analysis** | `/sweetclaude:product-roadmap-analysis [analyze\|alignment\|item RM-NNN]` | RICE scoring (Reach × Impact × Confidence ÷ Effort) for all planned and active roadmap items. Scope and milestone alignment check. Proposes a revised stack-rank — applies only on confirmation. |
+| **Product Milestone Planning** | `/sweetclaude:product-milestone-planning` | Guided workshop for defining milestone success criteria, dependency mapping, and risk bets. Challenges weak definitions. Hands off to `product-milestones` for tracking. |
+| **Product Terminology** | `/sweetclaude:product-terminology` | Define and maintain a shared domain glossary. Each entry records term name, definition, rationale, aliases, and words to avoid. Prevents naming drift across docs, code, and conversation. |
 
 ---
 
@@ -113,7 +116,7 @@ Technical design. Every significant decision is recorded with context and ration
 
 ---
 
-## Code (6 skills)
+## Code (7 skills)
 
 Implementation. These skills enforce TDD via hooks, run tests and reviews, and manage the implementation lifecycle.
 
@@ -125,6 +128,7 @@ Implementation. These skills enforce TDD via hooks, run tests and reviews, and m
 | **Code Testing** | `/sweetclaude:code-testing [mode]` | Menu of four checks: test suite, mutation testing, security review, PR pre-check. Pick one or several. Skips menu if `$ARGUMENTS` passed. |
 | **Code Review** | `/sweetclaude:code-review [type]` | Adversarial code, security, and compliance review. Opens a menu. Pick one or several. Assumes problems exist and finds them. |
 | **Code TDD** | `/sweetclaude:code-tdd` | TDD enforcement and guidance. Explains the levels, runs the appropriate pipeline for the current work, enforces RED → GREEN → refactor. |
+| **Code Verify** | `/sweetclaude:code-verify` | Run verification before claiming work is complete. Evidence before claims — always. Required before any success assertion, commit, or phase advancement. |
 
 ### Code Testing modes
 
@@ -207,17 +211,19 @@ Long-form document work, corpus management, and specialized strategy capabilitie
 | **John Wick** | `/sweetclaude:john-wick` | Autonomous multi-session SDLC pipeline. Runs the full pipeline without stopping at every sub-step, using phase check-ins to validate exit criteria. For when you want maximum autonomy. |
 | **John Wick Check-In** | `/sweetclaude:john-wick-checkin` | Phase check-in subagent used internally by John Wick. Available standalone for drift detection. |
 
-### Document Corpus modes
+### Document Corpus sub-skills
 
-```
-status       Pipeline state, file counts, what to do next
-consolidate  Scan, deduplicate, ingest into raw/inbox/
-triage       Classify each file (keep/reconcile/discard/defer)
-reconcile    Draft canonical documents from related files
-promote      Finalize with provenance, archive sources, RAG index
-rag          Set up local RAG search (installs mcp-local-rag)
-reindex      Rebuild RAG embeddings
-```
+Each pipeline step is also a standalone skill you can invoke directly:
+
+| Skill | Invocation | What it does |
+|---|---|---|
+| **Corpus Status** | `/sweetclaude:corpus-status` | Pipeline state, file counts, what to do next. |
+| **Corpus Consolidate** | `/sweetclaude:corpus-consolidate` | Scan, deduplicate, ingest documents into `raw/inbox/`. |
+| **Corpus Triage** | `/sweetclaude:corpus-triage` | Classify each file: keep / reconcile / discard / defer. |
+| **Corpus Reconcile** | `/sweetclaude:corpus-reconcile` | Draft canonical documents from related or conflicting files. |
+| **Corpus Promote** | `/sweetclaude:corpus-promote` | Finalize with provenance, archive sources, rebuild RAG index. |
+| **Corpus RAG Setup** | `/sweetclaude:corpus-rag-setup` | Set up local RAG search (installs mcp-local-rag). |
+| **Corpus RAG Reindex** | `/sweetclaude:corpus-rag-reindex` | Rebuild RAG embeddings after document changes. |
 
 ---
 

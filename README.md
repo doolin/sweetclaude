@@ -10,7 +10,7 @@ SweetClaude adapts to your working style. Start with vibe-coding in Flow Mode �
 
 SweetClaude right if quality and traceability matter. Wrong tool if you just want to go faster — we suggest [GStack](https://github.com/garry-tan/gstack) if speed is your primary goal.
 
-SweetClaude has 98 skills built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. These skills compose into dynamic, situation-driven workflows across four operating modes:
+SweetClaude has over 100 skills built natively on Claude Code's Skills framework and Anthropic's multi-agent architecture. These skills compose into dynamic, situation-driven workflows across four operating modes:
 
 * **Flow Mode** — No ceremony. SweetClaude observes quietly, builds what you ask, and collects thin artifacts in the background.
 * **Kanban** — WIP-limited continuous flow. Hard block at 3 in-progress items. No sprints.

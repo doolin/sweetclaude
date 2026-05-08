@@ -19,7 +19,6 @@ Work that is actively in progress or nearly complete.
 Committed work that hasn't started yet.
 
 - **Behavioral regression CI** — Automate the 15-contract behavioral test suite against a CI trigger tied to model version tags. Turns the manual process into published, model-version-tagged compliance reports. Significant engineering; the most differentiating capability on the roadmap.
-- **Deploy bucket** — SweetClaude covers everything up to SHIP but has no skills for deployment workflows. This is the largest functional gap. Likely covers: infrastructure-as-code review, environment promotion, rollback procedures, post-deploy smoke tests.
 - **Standalone `init` and `adopt` skills** — The v3 `setup` skill handles new and existing projects via auto-detection. `init` and `adopt` still exist as explicit alternatives. More distinct entry path UX may still be worth investing in.
 
 ---
