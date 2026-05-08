@@ -174,7 +174,7 @@ For dependency risk, failure modes, and contingency plans → [Platform Dependen
 
 [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0-or-later) — free to use, modify, and distribute. No restrictions for personal or commercial tools you build. AGPL obligations activate only if you deploy SweetClaude as a network service offered to others — full terms in [LICENSE](LICENSE).
 
-**Enterprises**: [open a GitHub Discussion](https://github.com/carson-sweet/sweetclaude/discussions) to inquire about licensing or customizations for your organization's needs.
+**Enterprises**: use the [contact form on the project owner's website](https://www.carsonsweet.com) to inquire about licensing or customizations for your organization's needs.
 
 
 
